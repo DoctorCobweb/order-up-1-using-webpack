@@ -7,14 +7,14 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">OrderUp: AppMain</h1>
+          <h1 className="App-title">OrderUp: AppOne</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
+          To get started, edit <code>src/renderer-process/AppOne/index.js</code> and save to reload.
         </p>
       </div>
     );
   }
 }
 
-export default App;
+export default App

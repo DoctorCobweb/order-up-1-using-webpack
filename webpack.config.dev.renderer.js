@@ -15,18 +15,22 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 // NOTE: for this to work, the libraryTarget: 'commonjs2' entry in 'output' was necessary. see below
 import { dependencies as externalDeps } from './app/package'
 
+const APP_MAIN = 'appMain'
+const APP_ONE = 'appOne'
+let entries = {}
+entries[APP_MAIN] = './src/renderer-process/appMain/index.js'
+entries[APP_ONE] = './src/renderer-process/appOne/index.js'
+
 module.exports = {
   mode: 'development',
   target: 'electron-renderer',
   externals: [
     ...Object.keys(externalDeps || {})
   ],
-  entry: {
-    main: './src/renderer-process/appMain/index.js'
-  },
+  entry: entries,
   output: {
-    filename: 'dev.index.js',
-    path: path.join(__dirname, 'app/appMain'),
+    filename: '[name]/dev.index.js',
+    path: path.join(__dirname, 'app'),
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
   module: {
@@ -48,8 +52,17 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      inject: true,
+      chunks: [APP_MAIN],
       title: 'OrderUp appMain',
-      filename: 'index.html',
+      filename: `${APP_MAIN}/index.html`,
+      template: './indexTemplate.ejs'
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: [APP_ONE],
+      title: 'OrderUp appOne',
+      filename: `${APP_ONE}/index.html`,
       template: './indexTemplate.ejs'
     })
   ],
