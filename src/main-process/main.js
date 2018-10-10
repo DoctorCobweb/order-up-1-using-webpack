@@ -4,13 +4,7 @@ import url from 'url'
 import log from 'electron-log'
 import SerialPort from 'serialport'
 
-// const { app, BrowserWindow } = require('electron')
-// const path = require('path')
-// const url = require('url')
-// const log = require('electron-log')
-// const sqlite3 = require('sqlite3')
 log.transports.file.level = 'info'
-
 console.log(__dirname)
 
 // import electronReload from 'electron-reload'

@@ -3,3 +3,4 @@ app/*/
 app/dev.main.js
 .DS_Store
 .env.*
+app/*.svg

@@ -39,6 +39,23 @@ module.exports = {
         test: /\.js$/,
         exclude: '/node_modules/',
         loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      },{
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              publicPath: '../' // the svg files get moved to './app'
+            }
+          }
+        ]
       }
     ]
   },
