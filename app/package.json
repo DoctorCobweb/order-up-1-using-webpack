@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "electron-rebuild": "^1.8.2",
+    "electron-reload": "^1.2.5",
     "serialport": "^7.0.2",
     "sqlite3": "^4.0.2"
   }

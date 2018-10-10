@@ -4,11 +4,24 @@ import url from 'url'
 import log from 'electron-log'
 import SerialPort from 'serialport'
 
-log.transports.file.level = 'info'
-console.log(__dirname)
+import { createStore, applyMiddleware, compose } from 'redux'
+import reducer from './reducers/reducer'
+import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redux'
 
-// import electronReload from 'electron-reload'
-// electronReload(__dirname)
+const store = createStore(
+  reducer,
+  ['initial order'],
+  applyMiddleware(forwardToRenderer) // IMPORTANT: this goes last
+)
+replayActionMain(store)
+
+store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
+console.log(store.getState())
+
+// works if webpack watches for changes for changes in renderer and main folders
+// see scripts in root package.json
+import electronReload from 'electron-reload'
+electronReload(__dirname)
 // Let electron reload by itself when webpack watches changes in
 // if (process.env.ELECTRON_START_URL_APP_MAIN || process.env.ELECTRON_START_URL_APP_1) {
 //   require('electron-reload')(__dirname)
@@ -22,6 +35,9 @@ SerialPort.list()
 .catch(err => {
   if (err) throw err;
 });
+
+log.transports.file.level = 'info'
+console.log(__dirname)
 
 // To avoid being garbage collected
 let winMain
