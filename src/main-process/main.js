@@ -20,8 +20,8 @@ console.log(store.getState())
 
 // works if webpack watches for changes for changes in renderer and main folders
 // see scripts in root package.json
-import electronReload from 'electron-reload'
-electronReload(__dirname)
+// import electronReload from 'electron-reload'
+// electronReload(__dirname)
 // Let electron reload by itself when webpack watches changes in
 // if (process.env.ELECTRON_START_URL_APP_MAIN || process.env.ELECTRON_START_URL_APP_1) {
 //   require('electron-reload')(__dirname)
@@ -57,12 +57,12 @@ app.on('ready', () => {
         height: 500
     })
 
-    const startUrlAppMain = process.env.ELECTRON_START_URL_APP_MAIN || url.format({
+    const startUrlAppMain = process.env.ELECTRON_APP_MAIN_URL || url.format({
           pathname: path.join(__dirname, `${APP_MAIN}/index.html`),
           protocol: 'file:',
           slashes: true
     });
-    const startUrlApp1 = process.env.ELECTRON_START_URL_APP_1 || url.format({
+    const startUrlAppOne = process.env.ELECTRON_APP_ONE_URL || url.format({
           pathname: path.join(__dirname, `${APP_ONE}/index.html`),
           protocol: 'file:',
           slashes: true
@@ -70,9 +70,11 @@ app.on('ready', () => {
     // log.info('__dirname: ',__dirname)
     // log.info('process.env.ELECTRON_START_URL_APP_MAIN', process.env.ELECTRON_START_URL_APP_MAIN)
     // log.info('process.env.ELECTRON_START_URL_APP_1', process.env.ELECTRON_START_URL_APP_1)
+    console.log(startUrlAppMain)
+    console.log(startUrlAppOne)
 
     winMain.loadURL(startUrlAppMain)
-    win1.loadURL(startUrlApp1)
+    win1.loadURL(startUrlAppOne)
 
     const blahUrl = url.format({
       pathname: path.join(__dirname, 'index.main.html'),

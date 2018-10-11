@@ -5,7 +5,12 @@
   "scripts": {
     "dev:renderer": "node -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.dev.renderer.js --colors --watch",
     "dev:main": "node -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.dev.main.js --colors --watch",
-    "dev:electron": "electron ./app/dev.main.js"
+    "dev:electron": "electron ./app/dev.main.js",
+
+    "dev:renderer:wds": " node -r @babel/register ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack.config.dev.renderer.js",
+    "dev:main:wds": "node -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.dev.main.js --colors",
+    "dev:electron:wds": "ELECTRON_APP_MAIN_URL=http://localhost:8181/appMain/index.html ELECTRON_APP_ONE_URL=http://localhost:8181/appOne/index.html electron ./app/dev.main.js"
+
   },
   "devDependencies": {
     "@babel/register": "^7.0.0",

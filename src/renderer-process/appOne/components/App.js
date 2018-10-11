@@ -11,7 +11,7 @@ class App extends Component {
           <h1 className="App-title">OrderUp: AppOne</h1>
         </header>
         <p className="App-intro">
-          To get get started, edit <code>src/renderer-process/AppOne/index.js</code> and save to reload.
+          To get get get started, edit <code>src/renderer-process/AppOne/index.js</code> and save to reload.
         </p>
       </div>
     );

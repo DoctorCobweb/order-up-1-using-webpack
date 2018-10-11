@@ -60,11 +60,8 @@ module.exports = {
     ]
   },
   devtool: 'inline-source-map',
-
-
-  // TODO: review settings
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'app'),
     port: 8181
   },
   plugins: [
