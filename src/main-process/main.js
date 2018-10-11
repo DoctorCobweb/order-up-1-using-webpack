@@ -68,19 +68,11 @@ app.on('ready', () => {
           slashes: true
     });
     // log.info('__dirname: ',__dirname)
-    // log.info('process.env.ELECTRON_START_URL_APP_MAIN', process.env.ELECTRON_START_URL_APP_MAIN)
-    // log.info('process.env.ELECTRON_START_URL_APP_1', process.env.ELECTRON_START_URL_APP_1)
     console.log(startUrlAppMain)
     console.log(startUrlAppOne)
 
     winMain.loadURL(startUrlAppMain)
     win1.loadURL(startUrlAppOne)
-
-    const blahUrl = url.format({
-      pathname: path.join(__dirname, 'index.main.html'),
-      protocol: 'file',
-      slashes: true
-    })
 
     winMain.webContents.openDevTools()
     win1.webContents.openDevTools()

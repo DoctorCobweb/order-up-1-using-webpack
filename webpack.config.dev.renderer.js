@@ -7,6 +7,7 @@
 
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from 'webpack'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -62,7 +63,8 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'app'),
-    port: 8181
+    port: 8181,
+    hot: true
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -78,7 +80,8 @@ module.exports = {
       title: 'OrderUp appOne',
       filename: `${APP_ONE}/index.html`,
       template: './indexTemplate.ejs'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
 
   /**
