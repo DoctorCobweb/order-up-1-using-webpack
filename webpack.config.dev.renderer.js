@@ -68,19 +68,11 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new CleanWebpackPlugin(
-      [
+    new CleanWebpackPlugin([
+        // TODO: add more folders here once more react apps are made
         'app/appMain',
-        'app/appOne'
-      ],
-      {
-        exclude: [
-          'package.json',
-          'yarn.lock',
-          'node_modules/'
-        ]
-      }
-    ),
+        'app/appOne',
+    ]),
     new HtmlWebpackPlugin({
       inject: true,
       chunks: [APP_MAIN],

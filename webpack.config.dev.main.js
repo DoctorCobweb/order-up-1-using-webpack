@@ -6,6 +6,7 @@
 // 5. cool
 
 import path from 'path'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -52,7 +53,21 @@ module.exports = {
   node: {
     __dirname: false,
     __filename: false
-  }
+  },
+  plugins: [
+    new CleanWebpackPlugin(
+      [
+        'app'
+      ],
+      {
+        exclude: [
+          'package.json',
+          'yarn.lock',
+          'node_modules'
+        ]
+      }
+    )
+  ]
   // ?? uncomment later when writing ./app related code and failure to load modules ??
   // Tell webpack what directories should be searched when resolving modules.
   // Absolute and relative paths can both be used, but be aware that they will behave a bit differently.
