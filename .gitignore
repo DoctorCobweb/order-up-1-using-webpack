@@ -5,3 +5,5 @@ app/dev.main.js
 .env.*
 app/*.svg
 yarn-error.log*
+rethinkdb_data
+escpos-*

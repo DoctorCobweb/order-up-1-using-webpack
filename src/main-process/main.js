@@ -1,36 +1,23 @@
+import knuckleDragger from './knuckle-dragger/main'
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import url from 'url'
 import log from 'electron-log'
-import SerialPort from 'serialport'
 import configureStore from './store/configureStore'
 
+log.transports.file.level = 'info'
+
+// setup our shared electron-redux store.
+// => the store on the main process becomes the single source of truth
 const store = configureStore()
 store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
 console.log('store.getState():', store.getState())
 
-
-
-// works if webpack watches for changes for changes in renderer and main folders
-// see scripts in root package.json
-// import electronReload from 'electron-reload'
-// electronReload(__dirname)
-// Let electron reload by itself when webpack watches changes in
-// if (process.env.ELECTRON_START_URL_APP_MAIN || process.env.ELECTRON_START_URL_APP_1) {
-//   require('electron-reload')(__dirname)
-// }
-
-// checking to see if native dep. serialport is working
-SerialPort.list()
-.then(ports => {
-  console.log('PORTS AVAILABLE: ', ports);
-})
-.catch(err => {
-  if (err) throw err;
-});
-
-log.transports.file.level = 'info'
-// console.log(__dirname)
+// this setups
+// 0. rethinkdb
+// 1. serialport to listen
+// 2. parse escpos data to make orders
+knuckleDragger()
 
 // To avoid being garbage collected
 let winMain

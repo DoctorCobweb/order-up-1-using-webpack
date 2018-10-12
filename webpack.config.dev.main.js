@@ -40,11 +40,6 @@ module.exports = {
   },
   devtool: 'inline-source-map',
 
-  // TODO: review setup
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    port: 8181
-  },
   /**
    * Disables webpack processing of __dirname and __filename.
    * If you run the bundle in node.js it falls back to these values of node.js.
