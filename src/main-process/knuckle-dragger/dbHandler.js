@@ -1,20 +1,17 @@
-const globalConfig = require('./global-config');
-const dbHost= globalConfig['DB_HOST'];
-const dbPort = globalConfig['DB_PORT'];
-const dbName = globalConfig['DB_NAME'];
-const dbTableName= globalConfig['DB_TABLE_NAME'];
-const r = require('rethinkdb');
+import globalConfig from './global-config'
+import r from 'rethinkdb'
 
-// ------------------------------------------------------------
-exports.insertSingleOrder = insertSingleOrder; 
-exports.insertManyOrders = insertManyOrders; 
-// ------------------------------------------------------------
+const dbHost= globalConfig['DB_HOST']
+const dbPort = globalConfig['DB_PORT']
+const dbName = globalConfig['DB_NAME']
+const dbTableName= globalConfig['DB_TABLE_NAME']
 
-function insertSingleOrder(order) {
+
+export const insertSingleOrder = (order) => {
   // rethinkdb expects an Object to insert
 
-  console.log('in insertSingleOrder... order is:');
-  console.log(order);
+  console.log('in insertSingleOrder... order is:')
+  console.log(order)
 
   // everytime insertSingleOrder is called, as new connection
   // is made to the db. good/bad??
@@ -27,20 +24,20 @@ function insertSingleOrder(order) {
       .insert(order)
       .run(conn)
       .then(results => {
-        console.log('SUCCESS: inserted a single order');
-        console.log(results);
+        console.log('SUCCESS: inserted a single order')
+        console.log(results)
       })
       .catch(err => {
-        if (err) throw err;
-      });
+        if (err) throw err
+      })
   })
   .catch(err => {
-    if (err) throw err;
-  });
+    if (err) throw err
+  })
 }
 
-function insertManyOrders(orders) {
+export const insertManyOrders = (orders) => {
   //orders is an array of arrays of strings
   //[['blah','yadda',...,'foo'], ['blah', 'yadda',...,'foo'],....]
-  console.log('heeloo from insertManyOrders');
+  console.log('heeloo from insertManyOrders')
 }

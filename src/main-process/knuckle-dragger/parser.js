@@ -1,3 +1,9 @@
+
+
+
+// DEPRECATED in favour of parserV2.js //
+
+
 const globalConfig = require('./global-config');
 const menuConstants = require('./menuConstants');
 const MENU_ITEMS = menuConstants.menuItems;

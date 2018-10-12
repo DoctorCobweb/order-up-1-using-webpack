@@ -1,6 +1,4 @@
-'use strict';
-
-const docketTemplate = {
+export const docketTemplate = {
   area: "",
   metaData: {},
   tableNumber: "",
@@ -18,33 +16,33 @@ const docketTemplate = {
     "COFFEE TYPES": [],
     "SIDES": []
   }
-};
+}
 
 // only used in parserV2.js
-const metaContentKeys = [
+export const metaContentKeys = [
   "NAME:",
   "TABLE NO",
   "ORDER NUMBER",
   "COVERS:",
   "PRINT A/C -", 
-];
+]
 
-const variableContentKeys = [
+export const variableContentKeys = [
   "NAME:",
   "TABLE NO",
   "ORDER NUMBER",
   "COVERS:",
-];
+]
 
-const docketStartFields = [
+export const docketStartFields = [
   "RESTAURANT BAR",
   "TAB BAR",
   "JUKE BAR",
   "GAMING BAR",
   "SPORTS BAR",
-];
+]
 
-const courseFields = [
+export const courseFields = [
   "ENTREES DINNER",
   "MAINS DINNER",
   "MAINS LUNCH",
@@ -56,18 +54,18 @@ const courseFields = [
   "SPECIAL INSTRUCTIONS",
   "COFFEE TYPES",
   "SIDES"
-];
+]
 
 // not exported at this stage.
-const anonymousContent = [
+export const anonymousContent = [
    // ANOMALOUS CONTENT ==> this is a worry.
   "for the band",
   "add gravy",
   "EXTRA PEPP SAUCE"
-];
+]
 
 
-const menuItems = [
+export const menuItems = [
   //normal items
   "AFFOGATO",
   "ARANCINI",
@@ -178,13 +176,4 @@ const menuItems = [
   "WHITING",
   "WINTER GREENS",
   "WRAP"
-];
-
-// ----------------------------------------
-exports.docketTemplate = docketTemplate;
-exports.metaContentKeys = metaContentKeys;
-exports.menuItems = menuItems;
-exports.courseFields = courseFields;
-exports.docketStartFields = docketStartFields;
-exports.variableContentKeys = variableContentKeys;
-// ----------------------------------------
+]

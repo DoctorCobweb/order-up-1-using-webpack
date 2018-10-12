@@ -85,7 +85,7 @@ const startListeningToSerialPort = (conn) => {
       console.log('PORTS AVAILABLE: ', ports)
       const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
       if (port) {
-        listen.startListening()
+        listen()
       }
     })
     .catch(err => {

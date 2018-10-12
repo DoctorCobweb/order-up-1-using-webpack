@@ -1,4 +1,4 @@
-const config = {
+export default {
   "ESCPOS_SINGLE_ORDER": "escpos-single-order.bin",
   "ESCPOS_DATA_LOG": "escpos-data-log.bin",
   "MAX_BUFFER_SIZE": 5096,
@@ -9,7 +9,3 @@ const config = {
   "DB_NAME":"orderUp",
   "DB_TABLE_NAME":"orders",
 }
-
-// ------------------------------------------------------------
-module.exports = config;
-// ------------------------------------------------------------
