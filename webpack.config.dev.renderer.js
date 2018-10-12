@@ -7,6 +7,7 @@
 
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
 import webpack from 'webpack'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
@@ -67,6 +68,19 @@ module.exports = {
     hot: true
   },
   plugins: [
+    new CleanWebpackPlugin(
+      [
+        'app/appMain',
+        'app/appOne'
+      ],
+      {
+        exclude: [
+          'package.json',
+          'yarn.lock',
+          'node_modules/'
+        ]
+      }
+    ),
     new HtmlWebpackPlugin({
       inject: true,
       chunks: [APP_MAIN],

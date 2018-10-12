@@ -4,3 +4,4 @@ app/dev.main.js
 .DS_Store
 .env.*
 app/*.svg
+yarn-error.log*

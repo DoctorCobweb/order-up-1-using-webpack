@@ -3,20 +3,13 @@ import path from 'path'
 import url from 'url'
 import log from 'electron-log'
 import SerialPort from 'serialport'
+import configureStore from './store/configureStore'
 
-import { createStore, applyMiddleware, compose } from 'redux'
-import reducer from './reducers/reducer'
-import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redux'
-
-const store = createStore(
-  reducer,
-  ['initial order'],
-  applyMiddleware(forwardToRenderer) // IMPORTANT: this goes last
-)
-replayActionMain(store)
-
+const store = configureStore()
 store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
-console.log(store.getState())
+console.log('store.getState():', store.getState())
+
+
 
 // works if webpack watches for changes for changes in renderer and main folders
 // see scripts in root package.json
@@ -37,7 +30,7 @@ SerialPort.list()
 });
 
 log.transports.file.level = 'info'
-console.log(__dirname)
+// console.log(__dirname)
 
 // To avoid being garbage collected
 let winMain
@@ -50,11 +43,15 @@ app.on('ready', () => {
 
     let winMain = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+        x: 0,
+        y: 0
     })
     let win1 = new BrowserWindow({
         width: 700,
-        height: 500
+        height: 500,
+        x: 600,
+        y: 250
     })
 
     const startUrlAppMain = process.env.ELECTRON_APP_MAIN_URL || url.format({
