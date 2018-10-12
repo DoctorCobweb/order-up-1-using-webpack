@@ -10,14 +10,16 @@ log.transports.file.level = 'info'
 // setup our shared electron-redux store.
 // => the store on the main process becomes the single source of truth
 const store = configureStore()
-store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
+// store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
 console.log('store.getState():', store.getState())
 
 // this setups
 // 0. rethinkdb
 // 1. serialport to listen
 // 2. parse escpos data to make orders
-knuckleDragger()
+//
+// 3. insert order into redux store
+knuckleDragger(store)
 
 // To avoid being garbage collected
 let winMain

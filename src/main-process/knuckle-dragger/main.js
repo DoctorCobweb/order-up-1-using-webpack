@@ -9,7 +9,10 @@ const dbName = globalConfig['DB_NAME']
 const dbTableName = globalConfig['DB_TABLE_NAME']
 const serialManufacturer = globalConfig['SERIAL_MANUFACTURER']
 
-export default () => {
+let store
+
+export default (_store) => {
+  store = _store
   r.connect({
     host: dbHost,
     port:dbPort
@@ -85,7 +88,7 @@ const startListeningToSerialPort = (conn) => {
       console.log('PORTS AVAILABLE: ', ports)
       const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
       if (port) {
-        listen()
+        listen(store)
       }
     })
     .catch(err => {

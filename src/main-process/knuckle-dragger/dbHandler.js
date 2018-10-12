@@ -6,15 +6,17 @@ const dbPort = globalConfig['DB_PORT']
 const dbName = globalConfig['DB_NAME']
 const dbTableName= globalConfig['DB_TABLE_NAME']
 
+let store
 
-export const insertSingleOrder = (order) => {
+export const insertSingleOrder = (order, _store) => {
+  store = _store
   // rethinkdb expects an Object to insert
 
   console.log('in insertSingleOrder... order is:')
   console.log(order)
 
   // everytime insertSingleOrder is called, as new connection
-  // is made to the db. good/bad??
+  // is made to the db. good/ba??
   r.connect({
     host: dbHost,
     port: dbPort
@@ -26,6 +28,10 @@ export const insertSingleOrder = (order) => {
       .then(results => {
         console.log('SUCCESS: inserted a single order')
         console.log(results)
+        // store.dispatch({type: 'ADD_ORDER', order})
+        console.log(store)
+        store.dispatch({type: 'ADD_ORDER', order: 'blah'})
+        console.log(store.getState())
       })
       .catch(err => {
         if (err) throw err

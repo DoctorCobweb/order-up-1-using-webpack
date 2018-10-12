@@ -5,7 +5,6 @@ import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redu
 export default() => {
   const store = createStore(
     reducer,
-    ['initial order'],
     applyMiddleware(forwardToRenderer) // IMPORTANT: this goes last
   )
   replayActionMain(store)

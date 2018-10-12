@@ -25,12 +25,10 @@ let myBuffer = Buffer.alloc(0)
 const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])  
 
 
-// // ------------------------------------------------------------
-// module.exports.startListening = startListening
-// // ------------------------------------------------------------
+let store
 
-
-export default () => {
+export default (_store) => {
+  store = _store
   const port = new SerialPort(SERIAL_PORT_COM_NAME)
 
   port.on('error', (err) => {
@@ -202,7 +200,7 @@ export default () => {
         // parser.parseSingleOrderOfBytes(singleOrder)
 
         // demo this
-        parseSingleOrder(singleOrder)
+        parseSingleOrder(singleOrder, store)
        
         // make a KEEPSAFE of all single orders
         // write the completed order to the data log

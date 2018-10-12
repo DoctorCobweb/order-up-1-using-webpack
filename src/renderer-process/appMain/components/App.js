@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import logo from './../assets/logo.svg'
 import './App.css'
 
-class App extends Component {
+export class App extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
     return (
       <div className="App">
@@ -13,9 +18,16 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
         </p>
+        <p>renderer store: {this.props.orders.length}</p>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    orders: state
+  }
+}
+
+export default connect(mapStateToProps)(App)

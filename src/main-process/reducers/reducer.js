@@ -1,6 +1,8 @@
 // orders reducer
 
-export default (state=[], action) => {
+const ordersReducerDefaultState = ['baz']
+
+export default (state=ordersReducerDefaultState, action) => {
   switch(action.type) {
     case 'ADD_ORDER': 
       return [

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 import './index.css'
 import App from './components/App'
 
@@ -14,8 +15,19 @@ const store = createStore(
 )
 replayActionRenderer(store)
 
-console.log(store.getState())
+// setInterval(() => {
+//   console.log(store.getState())
+// }, 2000)
 
-ReactDOM.render( <App/>, document.getElementById('root'))
+// Provider will provide the redux store to 
+// all components in the app
+const jsx = (
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+
+ReactDOM.render( jsx, document.getElementById('root'))
 
 console.log('hi from appMain/index.js')
+// console.log(store.getState())
