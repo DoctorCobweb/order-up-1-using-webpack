@@ -30,7 +30,7 @@ export class App extends Component {
         </p>
         <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
-        <p>renderer store: {this.props.orders.length}</p>
+        <p>renderer store: {this.props.orders.map(order => order.metaData.location)}</p>
       </div>
     );
   }

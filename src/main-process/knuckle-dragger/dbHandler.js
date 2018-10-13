@@ -30,7 +30,7 @@ export const insertSingleOrder = (order, _store) => {
         console.log('SUCCESS: inserted a single order')
         console.log(results)
         // console.log(store)
-        store.dispatch(addOrder(order.metaData.orderSentAt))
+        store.dispatch(addOrder(order))
         // console.log(store.getState())
       })
       .catch(err => {
