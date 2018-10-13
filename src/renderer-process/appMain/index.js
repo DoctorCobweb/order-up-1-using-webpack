@@ -15,10 +15,6 @@ const store = createStore(
 )
 replayActionRenderer(store)
 
-// setInterval(() => {
-//   console.log(store.getState())
-// }, 2000)
-
 // Provider will provide the redux store to 
 // all components in the app
 const jsx = (

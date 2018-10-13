@@ -1,8 +1,20 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import logo from './../assets/logo.svg'
 import './App.css'
+import { addOrder } from '../../../main-process/actions/orders'
 
-class App extends Component {
+export class App extends Component {
+  constructor(props) {
+    super(props)
+  }
+  onClick = () => {
+    this.props.addOrder('yadda')
+    console.log(this.props.orders)
+  }
+  onClickLog = () => {
+    console.log(this.props.orders)
+  }
   render() {
     return (
       <div className="App">
@@ -13,9 +25,18 @@ class App extends Component {
         <p className="App-intro">
           To get get get started, edit <code>src/renderer-process/AppOne/index.js</code> and save to reload.
         </p>
+        <button onClick={this.onClick}>click me</button>
+        <button onClick={this.onClickLog}>log orders</button>
+        <p>renderer store: {this.props.orders.length}</p>
       </div>
     );
   }
 }
 
-export default App
+const mapStateToProps = (state) => ({ orders: state })
+
+const mapDispatchToProps = (dispatch) => ({
+  addOrder: (order) => dispatch(addOrder(order))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App) 

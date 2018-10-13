@@ -30,7 +30,7 @@ export class App extends Component {
         </p>
         <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
-        <p>renderer store: {this.props.orders.map(order => order.metaData.location)}</p>
+        <p>renderer store: {this.props.orders.length}</p>
       </div>
     );
   }
@@ -38,11 +38,8 @@ export class App extends Component {
 
 const mapStateToProps = (state) => ({ orders: state })
 
-// action creators??
-
 const mapDispatchToProps = (dispatch) => ({
   addOrder: (order) => dispatch(addOrder(order))
-  // TODO
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
