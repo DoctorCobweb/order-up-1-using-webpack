@@ -29,9 +29,9 @@ export const insertSingleOrder = (order, _store) => {
       .then(results => {
         console.log('SUCCESS: inserted a single order')
         console.log(results)
-        console.log(store)
-        store.dispatch(addOrder('blah'))
-        console.log(store.getState())
+        // console.log(store)
+        store.dispatch(addOrder(order.metaData.orderSentAt))
+        // console.log(store.getState())
       })
       .catch(err => {
         if (err) throw err

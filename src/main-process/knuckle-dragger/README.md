@@ -29,6 +29,9 @@ works fine with node 10.6.0.
 
 2.  in rules.js of npos package, you need to change 'r': 0 to 'r': 1 in the ESC rules array.  failing to do this will crash the parser when using a docket with two colours,  black and red.  
 
+3. electron-redux: if you DONT adhere to the following, then you will still be able to add/remove/etc an item from the store but it WILL NOT be shared across main & renderer processes:  
+Actions MUST be FSA compliant. Meaning, the action has a `type` and `payload` property.
+
 ## RUN
 
 1. make sure rethinkdb is installed on computer and running
