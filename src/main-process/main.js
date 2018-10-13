@@ -21,6 +21,10 @@ console.log('store.getState():', store.getState())
 // 3. insert order into redux store
 knuckleDragger(store)
 
+setInterval(() => {
+    console.log(store.getState())
+}, 2000)
+
 // To avoid being garbage collected
 let winMain
 let win1

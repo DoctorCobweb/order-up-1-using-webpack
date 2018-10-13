@@ -28,6 +28,3 @@ const jsx = (
 )
 
 ReactDOM.render( jsx, document.getElementById('root'))
-
-console.log('hi from appMain/index.js')
-// console.log(store.getState())
