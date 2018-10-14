@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addOrder } from '../../../main-process/actions/orders'
+import { addOrder } from '../../../shared/actions/orders'
 import logo from './../assets/logo.svg'
 import './App.css'
+import OrderList from './OrderList'
 
 export class App extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export class App extends Component {
         <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
         <p>renderer store: {this.props.orders.length}</p>
+        <OrderList/>
       </div>
     );
   }

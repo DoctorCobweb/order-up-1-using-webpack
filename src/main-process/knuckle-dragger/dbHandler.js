@@ -1,6 +1,6 @@
 import globalConfig from './global-config'
 import r from 'rethinkdb'
-import { addOrder } from '../actions/orders'
+import { addOrder } from '../../shared/actions/orders'
 
 const dbHost= globalConfig['DB_HOST']
 const dbPort = globalConfig['DB_PORT']
@@ -30,7 +30,11 @@ export const insertSingleOrder = (order, _store) => {
         console.log('SUCCESS: inserted a single order')
         console.log(results)
         // console.log(store)
-        store.dispatch(addOrder(order))
+        const orderWithDbKey = {
+          ...order,
+          id: results.generated_keys[0]
+        }
+        store.dispatch(addOrder(orderWithDbKey))
         // console.log(store.getState())
       })
       .catch(err => {

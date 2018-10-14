@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import url from 'url'
 import log from 'electron-log'
-import configureStore from './store/configureStore'
+import configureStore from '../shared/store/configureStore'
 
 log.transports.file.level = 'info'
 

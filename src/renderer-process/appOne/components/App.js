@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import logo from './../assets/logo.svg'
 import './App.css'
-import { addOrder } from '../../../main-process/actions/orders'
+import { addOrder } from '../../../shared/actions/orders'
 
 export class App extends Component {
   constructor(props) {
