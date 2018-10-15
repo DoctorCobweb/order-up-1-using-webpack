@@ -83,9 +83,11 @@ const createOrderUpTable =  (conn) => {
 }
 
 const startListeningToSerialPort = (conn) => {
-  if (process.env.MOCK_ORDERS) {
+  if (process.env.MOCK_ORDERS === 'yes') {
+    console.log('mocking')
     listen(store, { mocking: true })
   } else {
+    console.log('not mocking')
     // we are connected to a physical machine
     // either i) docket-mocker app is running on home dev comp
     // or ii) have real-world use scenario, connected to kitchen printer
@@ -100,5 +102,5 @@ const startListeningToSerialPort = (conn) => {
       .catch(err => {
         if (err) throw err
       })
-    }
+  }
 }

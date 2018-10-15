@@ -53,6 +53,8 @@ works fine with node 10.6.0.
 
 5. everytime you add a native dependency and rebuild, npos library tweeks (see 1. above) need to be redone!!!
 
+6. you have to 'force compare' process.env.VARIABLE. correct way `if (process.env.MOCK_ORDERS === true) {...}`. incorrect way `if (process.env.MOCK_ORDERS) {...}`=> this will give weird unexpected results. (??)
+
 ## RUN
 
 ### For dev and printer attach that sends order

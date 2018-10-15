@@ -20,14 +20,14 @@ let myBuffer = Buffer.alloc(0)
 // POS systems => need to get a hexdump of their bytes
 // to see exactly what escpos op they're using.
 //
-// this creates a buffer containing [0x1d, 0x56, 0x00]
+// this creates a buffer containing [0x1d, 0x56, 0x0]
 // TODO: multiply different paper cut ops could be in use.
 // for now, assume there's only one. implement full case later
 const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])  
 let store
 let port
 
-const areMockingOrders = process.env.MOCK_ORDERS
+const areMockingOrders = process.env.MOCK_ORDERS === 'yes' ? true : false
 const MOCK_SERIAL_PORT_COM_NAME = '/dev/blah'
 
 const startMockingOrders = () => {
@@ -43,31 +43,19 @@ const startMockingOrders = () => {
   MockBinding.createPort(MOCK_SERIAL_PORT_COM_NAME, { echo:true, record:true })
   port = new _SerialPort(MOCK_SERIAL_PORT_COM_NAME)
   
-  // make mock orders and write then to fs
-  // const mockOrderHandler = (data) => {
-  //   fs.writeFileSync(MOCK_ORDER_FILENAME, data)
-  // }
-  // const device = new escpos.Console(mockOrderHandler)
-  // const printer = new escpos.Printer(device, {})
-  // const mockOrder = () => {
-  //   device.open(() => {
-  //     printer
-  //     .font('a')
-  //     .align('ct')
-  //     .style('bu')
-  //     .size(1,1)
-  //     .text('blah')
-  //     .close()
-  //   })
-  // }
-  
   const writeMockOrderToSerialPort = () => {
-    const mockOrder = fs.readFileSync(MOCK_ORDER_FILENAME)
-    // const filePath = path.join(
-    //   __dirname,
-    //   'scr/main-process/knuckle-dragger/mock-orders-manual/order_10.bin'
-    // ) 
-    // const mockOrder = fs.readFileSync('src/order_10.bin')
+    // we have (atm) 51 dockets, each in separate files in mock-orders-manual/
+    const randInt = Math.floor(Math.random() * 50 + 1)
+    const mockOrderFileName = `order_${randInt}.bin`
+    const filePath = path.join(
+      __dirname,
+      '../src',
+      'main-process',
+      'knuckle-dragger',
+      'mock-orders',
+      mockOrderFileName
+    )
+    const mockOrder = fs.readFileSync(filePath)
     port.write(mockOrder, err => {
       if (err) throw err
     })
@@ -75,7 +63,7 @@ const startMockingOrders = () => {
 
   setInterval(() => {
     writeMockOrderToSerialPort()
-  }, 4000)
+  }, 5000)
 }
 
 export default (_store, { mocking=false }) => {
@@ -83,8 +71,10 @@ export default (_store, { mocking=false }) => {
 
   if (mocking) {
     // make fake orders without a printer
+    console.log('listen/mocking')
     startMockingOrders()
   } else {
+    console.log('listen/not mocking')
     // have printer attached and getting 'real' orders
     port = new SerialPort(SERIAL_PORT_COM_NAME)
   }
@@ -269,18 +259,19 @@ export default (_store, { mocking=false }) => {
         // parser.parseSingleOrderOfBytes(singleOrder)
         parseSingleOrder(singleOrder, store)
 
-        // REVISIT LATER... cant find file error
-        // just generate some 
-        // const randInt = Math.floor(Math.random() * 1000)
-        // const filePath = path.join(
-        //   __dirname,
-        //   'src',
-        //   'main-process',
-        //   'knuckle-dragger',
-        //   'mock-orders')
-        // console.log('writing single file')
-        // console.log(`${filePath}/order_${randInt}.bin`)
-        // fs.writeFileSync(`order_${randInt}.bin`, singleOrder)
+        const randInt = Math.floor(Math.random() * 1000)
+        const orderFileName = `order_${randInt}.bin`
+        const filePath = path.join(
+          __dirname,
+          '../src',
+          'main-process',
+          'knuckle-dragger',
+          'mock-orders',
+          orderFileName
+        )
+        fs.writeFileSync(filePath, singleOrder)
+        console.log('cwd:', process.cwd())
+        console.log('__dirname', __dirname) 
        
         // make a KEEPSAFE of all single orders
         // write the completed order to the data log
