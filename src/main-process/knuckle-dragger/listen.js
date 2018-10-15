@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import globalConfig from './global-config'
 import SerialPort from 'serialport'
 import parseSingleOrder from './parserV2'
@@ -23,13 +24,75 @@ let myBuffer = Buffer.alloc(0)
 // TODO: multiply different paper cut ops could be in use.
 // for now, assume there's only one. implement full case later
 const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])  
-
-
 let store
+let port
 
-export default (_store) => {
+const areMockingOrders = process.env.MOCK_ORDERS
+const MOCK_SERIAL_PORT_COM_NAME = '/dev/blah'
+
+const startMockingOrders = () => {
+  // START THE MOCKING
+  // create mock serialport
+  // start sending automatic order to port
+  const escpos = require('escpos')
+  const _SerialPort = require('@serialport/stream')
+  const MockBinding = require('@serialport/binding-mock')
+  const MOCK_ORDER_FILENAME = 'order_466.bin'
+  
+  _SerialPort.Binding = MockBinding
+  MockBinding.createPort(MOCK_SERIAL_PORT_COM_NAME, { echo:true, record:true })
+  port = new _SerialPort(MOCK_SERIAL_PORT_COM_NAME)
+  
+  // make mock orders and write then to fs
+  // const mockOrderHandler = (data) => {
+  //   fs.writeFileSync(MOCK_ORDER_FILENAME, data)
+  // }
+  // const device = new escpos.Console(mockOrderHandler)
+  // const printer = new escpos.Printer(device, {})
+  // const mockOrder = () => {
+  //   device.open(() => {
+  //     printer
+  //     .font('a')
+  //     .align('ct')
+  //     .style('bu')
+  //     .size(1,1)
+  //     .text('blah')
+  //     .close()
+  //   })
+  // }
+  
+  const writeMockOrderToSerialPort = () => {
+    const mockOrder = fs.readFileSync(MOCK_ORDER_FILENAME)
+    // const filePath = path.join(
+    //   __dirname,
+    //   'scr/main-process/knuckle-dragger/mock-orders-manual/order_10.bin'
+    // ) 
+    // const mockOrder = fs.readFileSync('src/order_10.bin')
+    port.write(mockOrder, err => {
+      if (err) throw err
+    })
+  }
+
+  setInterval(() => {
+    writeMockOrderToSerialPort()
+  }, 4000)
+}
+
+export default (_store, { mocking=false }) => {
   store = _store
-  const port = new SerialPort(SERIAL_PORT_COM_NAME)
+
+  if (mocking) {
+    // make fake orders without a printer
+    startMockingOrders()
+  } else {
+    // have printer attached and getting 'real' orders
+    port = new SerialPort(SERIAL_PORT_COM_NAME)
+  }
+
+  port.on('ready', (err) => {
+    if (err) throw err
+    console.log('port is ready')
+  })
 
   port.on('error', (err) => {
     console.log('ERROR: serialport error: ', err.message)
@@ -39,18 +102,26 @@ export default (_store) => {
     if (err) {
       console.log('ERROR: opening port: ', err.message)
     }
-    console.log('SUCCESS: opened port to device ', SERIAL_PORT_COM_NAME)
+    console.log(
+      'SUCCESS: opened port to device:',
+      areMockingOrders? MOCK_SERIAL_PORT_COM_NAME : SERIAL_PORT_COM_NAME)
   })
 
   port.on('close', (err) => {
     if (err) {
       console.log('ERROR: on closing port: ', err.message)
     }
-    console.log('SUCCESS: closed the port: ', SERIAL_PORT)
+    console.log('SUCCESS: closed port')
   })
 
   // switches the port into 'flowing mode'
   port.on('data', (data) => {
+
+    // when we are mocking orders during development without a printer
+    // serialport sends a 'READY' data payload which mucks up our
+    // order parsing. ignore it
+    if (areMockingOrders && data.toString() === 'READY') return
+
     myBuffer = Buffer.concat([myBuffer, data])
 
     if (myBuffer.length >= MAX_BUFFER_SIZE) {
@@ -188,8 +259,6 @@ export default (_store) => {
         //afterwhich the order should be complete
         fs.appendFileSync(ESCPOS_SINGLE_ORDER, buff)
 
-        // parser.parseOrder(ESCPOS_SINGLE_ORDER)
-
         //read in the completed single order
         const singleOrder = fs.readFileSync(ESCPOS_SINGLE_ORDER)
 
@@ -198,14 +267,24 @@ export default (_store) => {
         //--------------------------------------------------
         // to hand a single order's worth of bytes to our parser
         // parser.parseSingleOrderOfBytes(singleOrder)
-
-        // demo this
         parseSingleOrder(singleOrder, store)
+
+        // REVISIT LATER... cant find file error
+        // just generate some 
+        // const randInt = Math.floor(Math.random() * 1000)
+        // const filePath = path.join(
+        //   __dirname,
+        //   'src',
+        //   'main-process',
+        //   'knuckle-dragger',
+        //   'mock-orders')
+        // console.log('writing single file')
+        // console.log(`${filePath}/order_${randInt}.bin`)
+        // fs.writeFileSync(`order_${randInt}.bin`, singleOrder)
        
         // make a KEEPSAFE of all single orders
         // write the completed order to the data log
         fs.appendFileSync(ESCPOS_DATA_LOG, singleOrder)
-
 
         //clear single file for it to be ready for next stream of bytes from escpos
         fs.truncateSync(ESCPOS_SINGLE_ORDER)

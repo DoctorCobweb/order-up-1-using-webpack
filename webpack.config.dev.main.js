@@ -7,6 +7,7 @@
 
 import path from 'path'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
+import webpack from 'webpack'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -14,6 +15,12 @@ import CleanWebpackPlugin from 'clean-webpack-plugin'
 // exist in the ./app/node_modules folder, and just reference them.
 // NOTE: for this to work, the libraryTarget: 'commonjs2' entry in 'output' was necessary. see below
 import { dependencies as externalDeps } from './app/package'
+
+if (process.env.NODE_ENV === 'developmentMock') {
+  require('dotenv').config({ path: '.env.dev.mock'})
+} else if (process.env.NODE_ENV === 'developmentPrinter') {
+  require('dotenv').config({ path: '.env.dev.printer'})
+} 
 
 module.exports = {
   mode: 'development',
@@ -61,7 +68,10 @@ module.exports = {
           'node_modules'
         ]
       }
-    )
+    ),
+    new webpack.DefinePlugin({
+      'process.env.MOCK_ORDERS': JSON.stringify(process.env.MOCK_ORDERS)
+    })
   ]
   // ?? uncomment later when writing ./app related code and failure to load modules ??
   // Tell webpack what directories should be searched when resolving modules.

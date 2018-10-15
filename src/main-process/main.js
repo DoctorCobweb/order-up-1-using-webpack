@@ -22,7 +22,7 @@ console.log('store.getState():', store.getState())
 knuckleDragger(store)
 
 setInterval(() => {
-    console.log(store.getState())
+    // console.log('store.getState(): ', store.getState())
 }, 2000)
 
 // To avoid being garbage collected

@@ -83,15 +83,22 @@ const createOrderUpTable =  (conn) => {
 }
 
 const startListeningToSerialPort = (conn) => {
-  SerialPort.list()
-    .then(ports => {
-      console.log('PORTS AVAILABLE: ', ports)
-      const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
-      if (port) {
-        listen(store)
-      }
-    })
-    .catch(err => {
-      if (err) throw err
-    })
+  if (process.env.MOCK_ORDERS) {
+    listen(store, { mocking: true })
+  } else {
+    // we are connected to a physical machine
+    // either i) docket-mocker app is running on home dev comp
+    // or ii) have real-world use scenario, connected to kitchen printer
+    SerialPort.list()
+      .then(ports => {
+        console.log('PORTS AVAILABLE: ', ports)
+        const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
+        if (port) {
+          listen(store, { mocking: false })
+        }
+      })
+      .catch(err => {
+        if (err) throw err
+      })
+    }
 }

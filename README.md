@@ -51,11 +51,20 @@ works fine with node 10.6.0.
 
 4. `electron-redux`: by nature of the library using IPC to communicate over main and renderer processes, actions are now all *asynchronous*. if that's a problem then you will have to remove it, install `redux-electron-store` because that keeps actions *synchronous*
 
+5. everytime you add a native dependency and rebuild, npos library tweeks (see 1. above) need to be redone!!!
+
 ## RUN
 
+### For dev and printer attach that sends order
 in ./ run in this order, each in separate terminal windows:
   `yarn run dev:renderer`
-  `yarn run dev:main`
+  `yarn run dev:main:printer`
+  `yarn run dev:electron`
+
+### For dev and no printer => use mock orders using SerialPorts MockBinding feature 
+in ./ run in this order, each in separate terminal windows:
+  `yarn run dev:renderer`
+  `yarn run dev:main:mock`
   `yarn run dev:electron`
 
 
