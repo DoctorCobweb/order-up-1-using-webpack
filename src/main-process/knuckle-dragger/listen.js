@@ -2,6 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import globalConfig from './global-config'
 import SerialPort from 'serialport'
+import SerialPortStream from '@serialport/stream'
+import MockBinding from '@serialport/binding-mock'
 import parseSingleOrder from './parserV2'
 import colors from 'colors'
 
@@ -34,14 +36,10 @@ const startMockingOrders = () => {
   // START THE MOCKING
   // create mock serialport
   // start sending automatic order to port
-  const escpos = require('escpos')
-  const _SerialPort = require('@serialport/stream')
-  const MockBinding = require('@serialport/binding-mock')
-  const MOCK_ORDER_FILENAME = 'order_466.bin'
   
-  _SerialPort.Binding = MockBinding
+  SerialPortStream.Binding = MockBinding
   MockBinding.createPort(MOCK_SERIAL_PORT_COM_NAME, { echo:true, record:true })
-  port = new _SerialPort(MOCK_SERIAL_PORT_COM_NAME)
+  port = new SerialPortStream(MOCK_SERIAL_PORT_COM_NAME)
   
   const writeMockOrderToSerialPort = () => {
     // we have (atm) 51 dockets, each in separate files in mock-orders-manual/
@@ -63,7 +61,7 @@ const startMockingOrders = () => {
 
   setInterval(() => {
     writeMockOrderToSerialPort()
-  }, 5000)
+  }, 2000)
 }
 
 export default (_store, { mocking=false }) => {
@@ -259,20 +257,25 @@ export default (_store, { mocking=false }) => {
         // parser.parseSingleOrderOfBytes(singleOrder)
         parseSingleOrder(singleOrder, store)
 
-        const randInt = Math.floor(Math.random() * 1000)
-        const orderFileName = `order_${randInt}.bin`
-        const filePath = path.join(
-          __dirname,
-          '../src',
-          'main-process',
-          'knuckle-dragger',
-          'mock-orders',
-          orderFileName
-        )
-        fs.writeFileSync(filePath, singleOrder)
+
+        // // UNCOMMENT TO GENERATE MOCK SINGLE ORDER DATA
+        // const randInt = Math.floor(Math.random() * 1000)
+        // const orderFileName = `order_${randInt}.bin`
+        // const filePath = path.join(
+        //   __dirname,
+        //   '../src',
+        //   'main-process',
+        //   'knuckle-dragger',
+        //   'mock-orders',
+        //   orderFileName
+        // )
+        // fs.writeFileSync(filePath, singleOrder)
         console.log('cwd:', process.cwd())
         console.log('__dirname', __dirname) 
        
+        // TODO: is this really necessary now? because rethinkdb is saving
+        // the parsed orders now also.
+        //
         // make a KEEPSAFE of all single orders
         // write the completed order to the data log
         fs.appendFileSync(ESCPOS_DATA_LOG, singleOrder)

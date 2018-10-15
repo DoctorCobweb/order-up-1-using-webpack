@@ -8,6 +8,7 @@
 import path from 'path'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import webpack from 'webpack'
+import dotenv from 'dotenv'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -17,9 +18,9 @@ import webpack from 'webpack'
 import { dependencies as externalDeps } from './app/package'
 
 if (process.env.NODE_ENV === 'developmentMock') {
-  require('dotenv').config({ path: '.env.dev.mock'})
+  dotenv.config({ path: '.env.dev.mock'})
 } else if (process.env.NODE_ENV === 'developmentPrinter') {
-  require('dotenv').config({ path: '.env.dev.printer'})
+  dotenv.config({ path: '.env.dev.printer'})
 } 
 
 module.exports = {
