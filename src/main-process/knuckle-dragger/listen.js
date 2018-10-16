@@ -61,7 +61,7 @@ const startMockingOrders = () => {
 
   setInterval(() => {
     writeMockOrderToSerialPort()
-  }, 2000)
+  }, 30000)
 }
 
 export default (_store, { mocking=false }) => {

@@ -23,7 +23,7 @@ knuckleDragger(store)
 
 setInterval(() => {
     // console.log('store.getState(): ', store.getState())
-}, 2000)
+}, 5000)
 
 // To avoid being garbage collected
 let winMain
@@ -57,7 +57,6 @@ app.on('ready', () => {
           protocol: 'file:',
           slashes: true
     });
-    // log.info('__dirname: ',__dirname)
     console.log(startUrlAppMain)
     console.log(startUrlAppOne)
 

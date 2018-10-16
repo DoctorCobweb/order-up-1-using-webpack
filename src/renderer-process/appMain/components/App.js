@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { hot } from 'react-hot-loader'
 import { addOrder } from '../../../shared/actions/orders'
 import logo from './../assets/logo.svg'
 import './App.css'
@@ -31,7 +32,7 @@ export class App extends Component {
         </p>
         <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
-        <p>renderer store: {this.props.orders.length}</p>
+        <p>Renderer store: {this.props.orders.length}</p>
         <OrderList/>
       </div>
     );
@@ -44,4 +45,5 @@ const mapDispatchToProps = (dispatch) => ({
   addOrder: (order) => dispatch(addOrder(order))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
+export default hot(module)(ConnectedApp) 

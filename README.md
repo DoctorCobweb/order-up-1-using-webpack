@@ -58,16 +58,15 @@ works fine with node 10.6.0.
 ## RUN
 
 ### For dev and printer attach that sends order
+(main process is spun up before webpack-dev-server. see webpack.config.dev.renderer.js)
 in ./ run in this order, each in separate terminal windows:
   `yarn run dev:renderer`
   `yarn run dev:main:printer`
-  `yarn run dev:electron`
 
 ### For dev and no printer => use mock orders using SerialPorts MockBinding feature 
 in ./ run in this order, each in separate terminal windows:
   `yarn run dev:renderer`
   `yarn run dev:main:mock`
-  `yarn run dev:electron`
 
 
 ## DOCKET HEADINGS FOR EACH AREA  

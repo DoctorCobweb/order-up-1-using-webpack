@@ -9,6 +9,7 @@ import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import webpack from 'webpack'
+import { spawn } from 'child_process'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -22,6 +23,20 @@ const APP_ONE = 'appOne'
 let entries = {}
 entries[APP_MAIN] = './src/renderer-process/appMain/index.js'
 entries[APP_ONE] = './src/renderer-process/appOne/index.js'
+let entriesBlah = {
+  appMain: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    './src/renderer-process/appMain/index.js' // the acutal app's entry point
+  ],
+  appOne: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    './src/renderer-process/appOne/index.js'
+  ]
+}
 
 module.exports = {
   mode: 'development',
@@ -29,10 +44,11 @@ module.exports = {
   externals: [
     ...Object.keys(externalDeps || {})
   ],
-  entry: entries,
+  entry: entriesBlah,
   output: {
     filename: '[name]/dev.index.js',
-    path: path.join(__dirname, 'app'),
+    // path: path.join(__dirname, 'app'),
+    publicPath: 'http://localhost:8181/',
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
   module: {
@@ -65,7 +81,19 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'app'),
     port: 8181,
-    hot: true
+    hot: true,
+    before() {
+      if (process.env.START_HOT === 'yes') {
+        console.log('starting Main Process...')
+        spawn('npm', ['run', 'dev:electron'], {
+          shell: true,
+          env: process.env,
+          stdio: 'inherit'
+        })
+        .on('close', code => process.exit(code))
+        .on('error', spawnError => console.error(spawnError))
+      }
+    }
   },
   plugins: [
     new CleanWebpackPlugin([
