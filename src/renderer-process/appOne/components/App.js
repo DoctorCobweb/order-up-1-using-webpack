@@ -10,10 +10,6 @@ export class App extends Component {
   constructor(props) {
     super(props)
   }
-  onClick = () => {
-    this.props.addOrder('yadda')
-    console.log(this.props.orders)
-  }
   onClickLog = () => {
     console.log(this.props.orders)
   }
@@ -27,7 +23,6 @@ export class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/renderer-process/AppOne/index.js</code> and save to reload.
         </p>
-        <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
         <p>Renderer store: {this.props.orders.length}</p>
         <OrderList/>

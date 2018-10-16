@@ -4,6 +4,7 @@ import path from 'path'
 import url from 'url'
 import log from 'electron-log'
 import configureStore from '../shared/store/configureStore'
+import startServer from '../server/server'
 
 log.transports.file.level = 'info'
 
@@ -20,6 +21,10 @@ console.log('store.getState():', store.getState())
 //
 // 3. insert order into redux store
 knuckleDragger(store)
+
+// start the api server
+startServer()
+
 
 setInterval(() => {
     // console.log('store.getState(): ', store.getState())

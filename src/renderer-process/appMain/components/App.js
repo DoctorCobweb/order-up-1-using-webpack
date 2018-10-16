@@ -7,13 +7,12 @@ import './App.css'
 import OrderList from './OrderList'
 
 export class App extends Component {
-  constructor(props) {
-    super(props)
+  state = {
+    counter: 0
   }
 
-  onClick = () => {
-    this.props.addOrder('yadda')
-    console.log(this.props.orders)
+  constructor(props) {
+    super(props)
   }
 
   onClickLog = () => {
@@ -30,8 +29,15 @@ export class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
         </p>
-        <button onClick={this.onClick}>click me</button>
         <button onClick={this.onClickLog}>log orders</button>
+        <h2>COUNTER: {this.state.counter}</h2>
+        <button onClick={() => {
+          this.setState((prevState) => ({
+            counter: prevState.counter + 1
+          }))
+        }}>
+          inc counter
+        </button>
         <p>Renderer store: {this.props.orders.length}</p>
         <OrderList/>
       </div>

@@ -27,7 +27,8 @@ module.exports = {
   mode: 'development',
   target: 'electron-main',
   externals: [
-    ...Object.keys(externalDeps || {})
+    ...Object.keys(externalDeps || {}),
+    'express' // dont include express in webpack: get critical dependency warning
   ],
   entry: {
     main: './src/main-process/main.js'
