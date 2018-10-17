@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { addOrder } from '../../../shared/actions/orders'
 import logo from './../assets/logo.svg'
-import './App.css'
 import OrderList from './OrderList'
 
 export class App extends Component {
@@ -26,19 +25,8 @@ export class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">OrderUp: AppMain</h1>
         </header>
-        <p className="App-intro">
-          Tooooo GET started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
-        </p>
-        <button onClick={this.onClickLog}>log orders</button>
-        <h2>COUNTER: {this.state.counter}</h2>
-        <button onClick={() => {
-          this.setState((prevState) => ({
-            counter: prevState.counter + 1
-          }))
-        }}>
-          inc counter
-        </button>
-        <p>Renderer store: {this.props.orders.length}</p>
+        <button className="button" onClick={this.onClickLog}>log orders</button>
+        <p>electron-redux store has {this.props.orders.length} items</p>
         <OrderList/>
       </div>
     );

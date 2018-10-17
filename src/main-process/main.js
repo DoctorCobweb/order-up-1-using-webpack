@@ -39,16 +39,16 @@ const APP_ONE = 'appOne'
 app.on('ready', () => {
 
     let winMain = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 600,
+        height: 700,
         x: 0,
         y: 0
     })
     let win1 = new BrowserWindow({
-        width: 700,
-        height: 500,
-        x: 600,
-        y: 250
+        width: 600,
+        height: 700,
+        x: 550,
+        y: 80
     })
 
     const startUrlAppMain = process.env.ELECTRON_APP_MAIN_URL || url.format({

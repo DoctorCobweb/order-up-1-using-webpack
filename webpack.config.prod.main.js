@@ -69,7 +69,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(
       [
-        'app'
+        'app',
+        'release'
       ],
       {
         exclude: [

@@ -8,6 +8,7 @@
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import webpack from 'webpack'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
@@ -50,10 +51,23 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.s?css$/,
         use: [
-          'style-loader',
-          'css-loader'
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+            }
+          }
         ]
       },{
         test: /\.(png|svg|jpg|gif)$/,
@@ -74,6 +88,7 @@ module.exports = {
         // TODO: add more folders here once more react apps are made
         'app/appMain',
         'app/appOne',
+        'release'
     ]),
     new HtmlWebpackPlugin({
       inject: true,
@@ -91,6 +106,9 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css'
     })
   ],
 

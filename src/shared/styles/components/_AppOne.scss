@@ -1,28 +1,31 @@
-.App {
+
+.AppOne {
   text-align: center;
+  background: #00e673;
 }
 
-.App-logo {
+.AppOne-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.App-header {
+.AppOne-header {
   background-color: #222;
-  height: 150px;
+  height: 200px;
   padding: 20px;
   color: white;
+  margin-bottom: 20px;
 }
 
-.App-title {
+.AppOne-title {
   font-size: 1.5em;
 }
 
-.App-intro {
+.AppOne-intro {
   font-size: large;
 }
 
-@keyframes App-logo-spin {
+@keyframes AppOne-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }

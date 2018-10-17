@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "postinstall": "yarn run electron-rebuild --module-dir ."
+    "postinstall": "../node_modules/.bin/electron-rebuild --module-dir ."
   },
   "dependencies": {
     "@serialport/binding-mock": "^2.0.1",
@@ -11,8 +11,5 @@
     "escpos": "^2.4.9",
     "npos": "^0.1.19",
     "serialport": "^7.0.2"
-  },
-  "devDependencies": {
-    "electron-rebuild": "^1.8.2"
   }
 }

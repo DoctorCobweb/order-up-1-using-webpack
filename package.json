@@ -13,11 +13,11 @@
     "build:main": "cross-env NODE_ENV=production node --trace-warnings -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.prod.main.js --colors",
     "build:both": "concurrently \"yarn build:renderer\" \"yarn build:main\"",
     "build:electron": "electron-builder build",
-    "yadda": "yarn build:both && electron-builder build",
-    "postinstall": "electron-builder install-app-deps"
+    "build": "yarn build:both && electron-builder build",
+    "postinstall": "./node_modules/.bin/electron-builder install-app-deps package.json"
   },
   "build": {
-    "productName": "OrderUpUp",
+    "productName": "OrderUp",
     "appId": "au.com.andretrosky.orderup",
     "extraMetadata": {
       "main": "./prod.main.js"
@@ -49,6 +49,9 @@
     "electron-reload": "^1.2.5",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.4",
+    "node-sass": "^4.9.4",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.20.2",
