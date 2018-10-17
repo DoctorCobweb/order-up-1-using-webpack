@@ -8,10 +8,11 @@
   "dependencies": {
     "@serialport/binding-mock": "^2.0.1",
     "@serialport/stream": "^2.0.1",
-    "electron-rebuild": "^1.8.2",
-    "electron-reload": "^1.2.5",
     "escpos": "^2.4.9",
     "npos": "^0.1.19",
     "serialport": "^7.0.2"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.2"
   }
 }

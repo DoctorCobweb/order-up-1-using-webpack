@@ -4,7 +4,7 @@ import path from 'path'
 import url from 'url'
 import log from 'electron-log'
 import configureStore from '../shared/store/configureStore'
-import startServer from '../server/server'
+// import startServer from '../server/server'
 
 log.transports.file.level = 'info'
 
@@ -23,8 +23,7 @@ console.log('store.getState():', store.getState())
 knuckleDragger(store)
 
 // start the api server
-startServer()
-
+// startServer()
 
 setInterval(() => {
     // console.log('store.getState(): ', store.getState())

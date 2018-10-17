@@ -20,10 +20,7 @@ import { dependencies as externalDeps } from './app/package'
 
 const APP_MAIN = 'appMain'
 const APP_ONE = 'appOne'
-let entries = {}
-entries[APP_MAIN] = './src/renderer-process/appMain/index.js'
-entries[APP_ONE] = './src/renderer-process/appOne/index.js'
-let entriesBlah = {
+let entries = {
   appMain: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8181/',
@@ -44,7 +41,7 @@ module.exports = {
   externals: [
     ...Object.keys(externalDeps || {})
   ],
-  entry: entriesBlah,
+  entry: entries,
   output: {
     filename: '[name]/dev.index.js',
     // path: path.join(__dirname, 'app'),

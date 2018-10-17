@@ -1,7 +1,7 @@
 export default {
   "ESCPOS_SINGLE_ORDER": "escpos-single-order.bin",
   "ESCPOS_DATA_LOG": "escpos-data-log.bin",
-  "MAX_BUFFER_SIZE": 5096,
+  "MAX_BUFFER_SIZE": 32768,
   "SERIAL_PORT_COM_NAME": "/dev/tty.usbserial",
   "SERIAL_MANUFACTURER" : "Prolific Technology Inc. ",
   "DB_HOST": "localhost",

@@ -1,13 +1,16 @@
 import globalConfig from './global-config'
 import SerialPort from 'serialport'
 import r from 'rethinkdb'
-import listen from './listen'
+import log from 'electron-log'
+import listen from './listenV2'
 
 const dbHost = globalConfig['DB_HOST'] 
 const dbPort = globalConfig['DB_PORT']
 const dbName = globalConfig['DB_NAME']
 const dbTableName = globalConfig['DB_TABLE_NAME']
 const serialManufacturer = globalConfig['SERIAL_MANUFACTURER']
+
+log.transports.file.level = 'info'
 
 let store
 
@@ -85,15 +88,18 @@ const createOrderUpTable =  (conn) => {
 const startListeningToSerialPort = (conn) => {
   if (process.env.MOCK_ORDERS === 'yes') {
     console.log('mocking')
+    log.info('mocking')
     listen(store, { mocking: true })
   } else {
     console.log('not mocking')
+    log.info('not mocking')
     // we are connected to a physical machine
     // either i) docket-mocker app is running on home dev comp
     // or ii) have real-world use scenario, connected to kitchen printer
     SerialPort.list()
       .then(ports => {
         console.log('PORTS AVAILABLE: ', ports)
+        log.info('PORTS AVAILABLE: ', ports)
         const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
         if (port) {
           listen(store, { mocking: false })

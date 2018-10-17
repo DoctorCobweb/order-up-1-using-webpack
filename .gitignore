@@ -6,4 +6,4 @@ app/dev.main.js
 app/*.svg
 yarn-error.log*
 rethinkdb_data
-escpos-*
+release

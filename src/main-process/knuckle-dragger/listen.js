@@ -4,8 +4,10 @@ import globalConfig from './global-config'
 import SerialPort from 'serialport'
 import SerialPortStream from '@serialport/stream'
 import MockBinding from '@serialport/binding-mock'
+import log from 'electron-log'
 import parseSingleOrder from './parserV2'
 import colors from 'colors'
+
 
 const SERIAL_PORT_COM_NAME = globalConfig['SERIAL_PORT_COM_NAME']
 const MAX_BUFFER_SIZE = globalConfig['MAX_BUFFER_SIZE']
@@ -28,6 +30,8 @@ let myBuffer = Buffer.alloc(0)
 const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])  
 let store
 let port
+
+log.transports.file.level = 'info'
 
 const areMockingOrders = process.env.MOCK_ORDERS === 'yes' ? true : false
 const MOCK_SERIAL_PORT_COM_NAME = '/dev/blah'
@@ -70,9 +74,11 @@ export default (_store, { mocking=false }) => {
   if (mocking) {
     // make fake orders without a printer
     console.log('listen/mocking')
+    log.info('list/mocking')
     startMockingOrders()
   } else {
     console.log('listen/not mocking')
+    log.info('listen/not mocking')
     // have printer attached and getting 'real' orders
     port = new SerialPort(SERIAL_PORT_COM_NAME)
   }
@@ -84,13 +90,18 @@ export default (_store, { mocking=false }) => {
 
   port.on('error', (err) => {
     console.log('ERROR: serialport error: ', err.message)
+    log.info('ERROR: serialport error: ', err.message)
   })
 
   port.on('open', (err) => {
     if (err) {
       console.log('ERROR: opening port: ', err.message)
+      log.info('ERROR: opening port: ', err.message)
     }
     console.log(
+      'SUCCESS: opened port to device:',
+      areMockingOrders? MOCK_SERIAL_PORT_COM_NAME : SERIAL_PORT_COM_NAME)
+    log.info(
       'SUCCESS: opened port to device:',
       areMockingOrders? MOCK_SERIAL_PORT_COM_NAME : SERIAL_PORT_COM_NAME)
   })
@@ -104,6 +115,7 @@ export default (_store, { mocking=false }) => {
 
   // switches the port into 'flowing mode'
   port.on('data', (data) => {
+    // log.info(data)
 
     // when we are mocking orders during development without a printer
     // serialport sends a 'READY' data payload which mucks up our
@@ -245,16 +257,23 @@ export default (_store, { mocking=false }) => {
 
         //append buff contents to the running single order
         //afterwhich the order should be complete
-        fs.appendFileSync(ESCPOS_SINGLE_ORDER, buff)
+        const filePathSingleOrder = path.join(__dirname, ESCPOS_SINGLE_ORDER)
+        log.info(`1. filePathSingleOrder: ${filePathSingleOrder}`)
+        fs.appendFileSync(filePathSingleOrder, buff)
+        // fs.appendFileSync(ESCPOS_SINGLE_ORDER, buff)
 
         //read in the completed single order
-        const singleOrder = fs.readFileSync(ESCPOS_SINGLE_ORDER)
+        log.info(`2. filePathSingleOrder: ${filePathSingleOrder}`)
+        const singleOrder = fs.readFileSync(filePathSingleOrder)
+        // const singleOrder = fs.readFileSync(ESCPOS_SINGLE_ORDER)
 
         //--------------------------------------------------
         // HANDOFF TIME: this is the major task of listen.js
         //--------------------------------------------------
         // to hand a single order's worth of bytes to our parser
         // parser.parseSingleOrderOfBytes(singleOrder)
+        log.info('calling parseSingleOrder with data: ')
+        log.info(singleOrder)
         parseSingleOrder(singleOrder, store)
 
 
@@ -278,12 +297,21 @@ export default (_store, { mocking=false }) => {
         //
         // make a KEEPSAFE of all single orders
         // write the completed order to the data log
-        fs.appendFileSync(ESCPOS_DATA_LOG, singleOrder)
+        const dataLog = path.join(__dirname, ESCPOS_DATA_LOG)
+        log.info(`3. dataLog: ${dataLog}`)
+        fs.appendFileSync(dataLog, singleOrder)
+        // fs.appendFileSync(ESCPOS_DATA_LOG, singleOrder)
 
         //clear single file for it to be ready for next stream of bytes from escpos
-        fs.truncateSync(ESCPOS_SINGLE_ORDER)
+        log.info(`4. filePathSingleOrder: ${filePathSingleOrder}`)
+        fs.truncateSync(filePathSingleOrder)
+        // fs.truncateSync(ESCPOS_SINGLE_ORDER)
       } catch (e) {
         console.log('haveCutOp: ', 
+          haveCutOp,
+          ', ERROR appending buff to a file',
+          e.message)
+        log.info('haveCutOp: ', 
           haveCutOp,
           ', ERROR appending buff to a file',
           e.message)
@@ -295,7 +323,10 @@ export default (_store, { mocking=false }) => {
           haveCutOp,
           ', BUFFER FULL: appending entire buffer to single order file')
 
-        fs.appendFileSync(ESCPOS_SINGLE_ORDER, buff)
+        const filePathSingleOrder = path.join(__dirname, ESCPOS_SINGLE_ORDER)
+        log.info(`5. filePathSingleOrder: ${filePathSingleOrder}`)
+        fs.appendFileSync(filePathSingleOrder, buff)
+        // fs.appendFileSync(ESCPOS_SINGLE_ORDER, buff)
         /*
         const appendFile = util.promisify(fs.appendFile)
         appendFile(ESCPOS_SINGLE_ORDER, buff)
@@ -304,6 +335,10 @@ export default (_store, { mocking=false }) => {
         */
       } catch (e) {
         console.log('haveCutOp: ', 
+          haveCutOp,
+          ', ERROR appending buff to a file',
+          e.message)
+        log.info('haveCutOp: ', 
           haveCutOp,
           ', ERROR appending buff to a file',
           e.message)

@@ -54,6 +54,19 @@ works fine with node 10.6.0.
 5. everytime you add a native dependency and rebuild, npos library tweeks (see 1. above) need to be redone!!!
 
 6. you have to 'force compare' process.env.VARIABLE. correct way `if (process.env.MOCK_ORDERS === true) {...}`. incorrect way `if (process.env.MOCK_ORDERS) {...}`=> this will give weird unexpected results. (??)
+7. when building electron using electron-builder. get error: 
+    Error: Application entry file "index.js" in the "/Users/dre/projects/grovedale/order_up/apps/order-up-1-using-webpack/release/mac/OrderUp.app/Contents/Resources/app.asar" does not exist. Seems like a wrong configuration.
+
+    => it's because in ./package.json there is no "main":"index.js" entry which tells builder where to start.
+    FIX: put this in the "build" entry of ./package.json:
+    "build": {
+      ...
+      "extraMetadata": {
+      "main": "./build/main.js"
+      },
+      ...
+    }
+8. ...?
 
 ## RUN
 
@@ -114,8 +127,8 @@ BAR MEALS
 ## IMPLEMENTATION THOUGHTS & CONCERNS  
 
 0. a new connection is made to rethinkdb *everytime* a new order comes in. should there be only one?
-1. what happens if app is start during an order happens to be being sent? will receive the cut operator but the previous bytes wont parse to a correct order. need to notify user that an order was sent in but not converted ==> send it again.  
+1. **what happens if app is start during an order happens to be being sent?** will receive the cut operator but the previous bytes wont parse to a correct order. need to notify user that an order was sent in but not converted ==> send it again.  
 2. currently sending the `store` all the way down from main-process `main.js` to `dbHandler.js` (where every new order gets inserted to db). maybe refactor code to avoid unecessarily passing `store` though modules.
-3.
-
+3. `express` server is working in dev but not production mode. not even 100% sure that it should be bundled with the app? (it's purpose is to listen for incoming requests from ipads to change the rethinkdb table. then via changefeeds, OrderUp receives this info and updates its redux store, then react updates its UI)
+4. done away with writing to the fs in docker-mocker's listen.js file. just have a buffer in memory, with no max limit size, which resets back to zero-size everytime a 'cut-op' is found aka after each order comes through successfully. has issues with writing to fs in production and ASAR format (electron-builder issue...couldn't find file! there was a work around in github issues but it was hacky, and this way seems to kill 2 birds with one stone)
 

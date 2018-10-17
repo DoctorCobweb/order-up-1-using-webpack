@@ -1,6 +1,7 @@
 import colors from 'colors'
 import _ from 'lodash'
 import npos from 'npos'
+import log from 'electron-log'
 import {
   docketTemplate,
   metaContentKeys,
@@ -27,6 +28,8 @@ const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']
 
 let store
 
+log.transports.file.level = 'info'
+
 export default (buffer, _store) => {
   store = _store
   nposParser.parse(buffer)
@@ -37,15 +40,18 @@ export default (buffer, _store) => {
           let data = sanitize(results)
           const zippedData = tokenizeData(data)
           console.log(colors.blue(zippedData))
+          log.info(zippedData)
           const order = buildOrder(zippedData)
           insertSingleOrder(order, store)
         })
         .catch(err => {
           console.log('ERROR PARSER (textualize): '.red, err.message)
+          log.info('ERROR PARSER (textualize): '.red, err.message)
         })
     })
     .catch(err => {
       console.log('ERROR PARSER (parser): '.red, err.message)
+      log.info('ERROR PARSER (parser): '.red, err.message)
     })
 }
 
