@@ -6,7 +6,10 @@
     "dev:renderer": "cross-env START_HOT=yes node -r @babel/register ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack.config.dev.renderer.js",
     "dev:main:mock": "cross-env NODE_ENV=developmentMock node -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.dev.main.js --colors",
     "dev:main:printer": "cross-env NODE_ENV=developmentPrinter node -r @babel/register ./node_modules/webpack/bin/webpack.js --config ./webpack.config.dev.main.js --colors",
-    "dev:electron": "cross-env ELECTRON_APP_MAIN_URL=http://localhost:8181/appMain/index.html ELECTRON_APP_ONE_URL=http://localhost:8181/appOne/index.html electron ./app/dev.main.js"
+    "dev:electron": "cross-env ELECTRON_APP_MAIN_URL=http://localhost:8181/appMain/index.html ELECTRON_APP_ONE_URL=http://localhost:8181/appOne/index.html electron ./app/dev.main.js",
+    "dev:mock": "yarn dev:main:mock && yarn dev:renderer",
+    "dev:printer": "yarn dev:main:printer && yarn dev:renderer"
+
   },
   "devDependencies": {
     "@babel/register": "^7.0.0",
@@ -41,6 +44,7 @@
     "react-dom": "^16.5.2",
     "react-hot-loader": "^4.3.11",
     "react-redux": "^5.0.7",
-    "rethinkdb": "^2.3.3"
+    "rethinkdb": "^2.3.3",
+    "wait-on": "^3.1.0"
   }
 }

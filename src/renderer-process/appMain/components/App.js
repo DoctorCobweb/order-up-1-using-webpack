@@ -27,7 +27,7 @@ export class App extends Component {
           <h1 className="App-title">OrderUp: AppMain</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
+          Tooooo GET started, edit <code>src/renderer-process/AppMain/index.js</code> and save to reload.
         </p>
         <button onClick={this.onClickLog}>log orders</button>
         <h2>COUNTER: {this.state.counter}</h2>

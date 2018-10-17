@@ -57,16 +57,22 @@ works fine with node 10.6.0.
 
 ## RUN
 
-### For dev and printer attach that sends order
-(main process is spun up before webpack-dev-server. see webpack.config.dev.renderer.js)
-in ./ run in this order, each in separate terminal windows:
-  `yarn run dev:renderer`
-  `yarn run dev:main:printer`
+### For dev with a printer attached
+electron (main)process is spun up before webpack-dev-server. see webpack.config.dev.renderer.js
+#### in one tab only:
+  1.  `yarn dev:printer`
+#### renderer and main processes in separate console tabs:
+  run each in separate terminal windows:
+  1. `yarn run dev:main:printer` => build the electron app/file dev.main.js
+  2. `yarn run dev:renderer` => compile renderer files, then webpack-dev-server (but start electron up before wds)
 
 ### For dev and no printer => use mock orders using SerialPorts MockBinding feature 
-in ./ run in this order, each in separate terminal windows:
-  `yarn run dev:renderer`
-  `yarn run dev:main:mock`
+#### in one tab only:
+  1.  `yarn dev:mock`
+#### renderer and main processes in separate console tabs:
+run in this order, each in separate terminal windows:
+  1. `yarn run dev:main:mock`
+  2. `yarn run dev:renderer`
 
 
 ## DOCKET HEADINGS FOR EACH AREA  
