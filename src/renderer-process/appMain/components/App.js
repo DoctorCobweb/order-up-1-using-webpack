@@ -4,10 +4,12 @@ import { hot } from 'react-hot-loader'
 import { addOrder } from '../../../shared/actions/orders'
 import logo from './../assets/logo.svg'
 import OrderList from './OrderList'
+import OrderModal from './OrderModal'
 
 export class App extends Component {
   state = {
-    counter: 0
+    counter: 0,
+    selectedOrder: undefined
   }
 
   constructor(props) {
@@ -18,6 +20,17 @@ export class App extends Component {
     console.log(this.props.orders)
   }
 
+  handleOrderClick = (orderId) => {
+    console.log(`in App/handleOrderClick() called with id: ${orderId}`)
+    this.setState(() => ({
+      selectedOrder: orderId
+    }))
+  }
+
+  handleClearSelectedOrder = () => {
+    this.setState({ selectedOrder: undefined })
+  }
+
   render() {
     return (
       <div className="App">
@@ -25,9 +38,10 @@ export class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">OrderUp: AppMain</h1>
         </header>
-        <button className="button" onClick={this.onClickLog}>log orders</button>
+        <button className="button" onClick={this.onClickLog}>console.log orders</button>
         <p>electron-redux store has {this.props.orders.length} items</p>
-        <OrderList/>
+        <OrderList handleOrderClick={this.handleOrderClick}/>
+        <OrderModal selectedOrder={this.state.selectedOrder} handleClearSelectedOrder={this.handleClearSelectedOrder}/>
       </div>
     );
   }
