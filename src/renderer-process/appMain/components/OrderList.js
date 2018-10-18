@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import OrderListItem from './OrderListItem'
 
 export class OrderList extends React.Component {
-  handleOrderClick = (orderId) => {
-    console.log(`in OrderList/handleOrderClick() called with order id: ${orderId}`)
-    console.log(this.props)
-    this.props.handleOrderClick(orderId)
+  handleOrderClick = (order) => {
+    // console.log(`in OrderList/handleOrderClick() called with order: ${order}`)
+    // console.log(this.props)
+    this.props.handleOrderClick(order)
   }
 
   render() {
@@ -17,7 +17,13 @@ export class OrderList extends React.Component {
           this.props.orders.length === 0 ? (
             <p>no orders</p>
           ) : (
-            this.props.orders.map(order => <OrderListItem key={order.id} {...order} handleOrderClick={this.handleOrderClick} />)
+            this.props.orders.map(order => 
+              <OrderListItem
+                key={order.id} 
+                order={order}
+                handleOrderClick={this.handleOrderClick}
+              />
+            )
           )
         }
       </div>

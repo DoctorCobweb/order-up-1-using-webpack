@@ -8,22 +8,17 @@ import OrderModal from './OrderModal'
 
 export class App extends Component {
   state = {
-    counter: 0,
     selectedOrder: undefined
-  }
-
-  constructor(props) {
-    super(props)
   }
 
   onClickLog = () => {
     console.log(this.props.orders)
   }
 
-  handleOrderClick = (orderId) => {
-    console.log(`in App/handleOrderClick() called with id: ${orderId}`)
+  handleOrderClick = (order) => {
+    // console.log(`in App/handleOrderClick() called with order ${order}`)
     this.setState(() => ({
-      selectedOrder: orderId
+      selectedOrder: order
     }))
   }
 
@@ -41,7 +36,10 @@ export class App extends Component {
         <button className="button" onClick={this.onClickLog}>console.log orders</button>
         <p>electron-redux store has {this.props.orders.length} items</p>
         <OrderList handleOrderClick={this.handleOrderClick}/>
-        <OrderModal selectedOrder={this.state.selectedOrder} handleClearSelectedOrder={this.handleClearSelectedOrder}/>
+        <OrderModal
+          selectedOrder={this.state.selectedOrder}
+          handleClearSelectedOrder={this.handleClearSelectedOrder}
+        />
       </div>
     );
   }
