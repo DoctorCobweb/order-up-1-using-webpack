@@ -8,7 +8,7 @@ const makeASingleInfoLine = (info) => (
 )
 
 const CourseItemInfo = (props) => (
-    <div key={uuidv1()} className="item-info">
+    <div className="item-info">
       { props.itemInfo.itemInfo.map(makeASingleInfoLine) } 
       <div>------------</div>
     </div>

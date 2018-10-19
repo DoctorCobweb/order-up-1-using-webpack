@@ -7,7 +7,7 @@ const CourseItem = (props) => (
     <h4 className="course-item">{ props.courseItem.quantity } { props.courseItem.name }</h4>
     { props.courseItem.info.length !== 0
       &&
-      props.courseItem.info.map(itemInfo => <CourseItemInfo itemInfo={itemInfo}/>)
+      props.courseItem.info.map(itemInfo => <CourseItemInfo key={uuidv1()} itemInfo={itemInfo}/>)
     }
   </div>
 )
