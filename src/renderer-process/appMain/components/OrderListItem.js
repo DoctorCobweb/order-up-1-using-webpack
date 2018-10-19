@@ -3,12 +3,10 @@ import React from 'react'
 export default class OrderListItem extends React.Component {
 
   handleOrderClick = () => {
-    // console.log(`in OrderListItem/handleOrderClick() called with order id: ${this.props.id}`)
     this.props.handleOrderClick(this.props.order)
   }
 
   render() {
-    console.log(typeof this.props.handleOrderClick)
     return (
       <div className="list-item">
         <button className="button" onClick={this.handleOrderClick}>

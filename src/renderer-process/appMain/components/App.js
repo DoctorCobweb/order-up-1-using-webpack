@@ -16,7 +16,6 @@ export class App extends Component {
   }
 
   handleOrderClick = (order) => {
-    // console.log(`in App/handleOrderClick() called with order ${order}`)
     this.setState(() => ({
       selectedOrder: order
     }))

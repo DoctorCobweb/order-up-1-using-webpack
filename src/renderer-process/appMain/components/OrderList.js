@@ -4,8 +4,6 @@ import OrderListItem from './OrderListItem'
 
 export class OrderList extends React.Component {
   handleOrderClick = (order) => {
-    // console.log(`in OrderList/handleOrderClick() called with order: ${order}`)
-    // console.log(this.props)
     this.props.handleOrderClick(order)
   }
 

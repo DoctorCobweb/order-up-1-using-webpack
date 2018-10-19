@@ -39,7 +39,7 @@ const APP_ONE = 'appOne'
 app.on('ready', () => {
 
     let winMain = new BrowserWindow({
-        width: 600,
+        width: 1000,
         height: 700,
         x: 0,
         y: 0

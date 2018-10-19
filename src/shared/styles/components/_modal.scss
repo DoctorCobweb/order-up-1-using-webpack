@@ -1,0 +1,17 @@
+.modal {
+  background: $off-white;
+  color: $dark-blue;
+  max-width: 50rem;
+  outline: none;
+  padding: $l-size;
+  text-align: left;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.ReactModal__Overlay {
+  // make the Modal scrollable 
+  overflow-y: auto !important;
+}

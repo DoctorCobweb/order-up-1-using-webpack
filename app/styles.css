@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  color: #333333;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  background: #99e6ff; }
+
+button {
+  cursor: pointer; }
+
+button:disabled {
+  cursor: default; }
+
+.is-active {
+  font-weight: bold; }
+
+.App {
+  text-align: center;
+  background: #ffff66; }
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px; }
+
+.App-header {
+  background-color: #222;
+  height: 200px;
+  padding: 20px;
+  color: white;
+  margin-bottom: 20px; }
+
+.App-title {
+  font-size: 1.5em; }
+
+.App-intro {
+  font-size: large; }
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+.AppOne {
+  text-align: center;
+  background: #00e673; }
+
+.AppOne-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px; }
+
+.AppOne-header {
+  background-color: #222;
+  height: 200px;
+  padding: 20px;
+  color: white;
+  margin-bottom: 20px; }
+
+.AppOne-title {
+  font-size: 1.5em; }
+
+.AppOne-intro {
+  font-size: large; }
+
+@keyframes AppOne-logo-spin {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+.button {
+  background: #1c88bf;
+  border: none;
+  color: white;
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1;
+  padding: 1.2rem;
+  text-decoration: none; }
+
+.button--link {
+  background: none; }
+
+.button--secondary {
+  background: #888888; }
+
+.list-item {
+  background: #f7f7f7;
+  padding: 1em;
+  margin: 1em; }
+
+.modal {
+  background: #f7f7f7;
+  color: #364051;
+  max-width: 50rem;
+  outline: none;
+  padding: 3.2rem;
+  text-align: left; }
+
+.ReactModal__Body--open {
+  overflow: hidden; }
+
+.ReactModal__Overlay {
+  overflow-y: auto !important; }
+
+
+/*# sourceMappingURL=styles.css.map*/
