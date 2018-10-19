@@ -45,7 +45,7 @@ app.on('ready', () => {
         y: 0
     })
     let win1 = new BrowserWindow({
-        width: 600,
+        width: 900,
         height: 700,
         x: 550,
         y: 80

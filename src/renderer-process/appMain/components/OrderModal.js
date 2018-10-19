@@ -20,7 +20,6 @@ const OrderModal = (props) => (
     { !!props.selectedOrder && <Order order={ props.selectedOrder }/> }
     </div>
   </Modal>
-
 ) 
 
 // USE SELECTOR to get the order corresponding to selectedOption

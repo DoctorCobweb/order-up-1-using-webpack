@@ -1,6 +1,7 @@
 /node_modules
 app/*/
 app/dev.main.js
+app/prod.*
 .DS_Store
 .env.*
 app/*.svg

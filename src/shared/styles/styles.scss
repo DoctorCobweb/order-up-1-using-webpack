@@ -1,7 +1,9 @@
 @import './base/settings'; // has to come first because it defines settings used in other .scss files
 @import './base/base';
-@import './components/App';
-@import './components/AppOne';
+@import './components/app';
+@import './components/app-one';
 @import './components/button';
 @import './components/list';
 @import './components/modal';
+@import './components/item-info';
+@import './components/course-item';

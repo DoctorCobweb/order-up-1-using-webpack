@@ -14,10 +14,10 @@ export class App extends Component {
   }
   render() {
     return (
-      <div className="AppOne">
-        <header className="AppOne-header">
-          <img src={logo} className="AppOne-logo" alt="logo" />
-          <h1 className="AppOne-title">OrderUp: AppOne</h1>
+      <div className="app-one">
+        <header className="app-one-header">
+          <img src={logo} className="app-one-logo" alt="logo" />
+          <h1 className="app-one-title">OrderUp: AppOne</h1>
         </header>
         <button className="button" onClick={this.onClickLog}>log orders</button>
         <p>electron-redux store has {this.props.orders.length} items</p>

@@ -1,14 +1,14 @@
-.app {
+.app-one {
   text-align: center;
-  background: $yellow;
+  background: $green;
 }
 
-.app-logo {
-  animation: app-logo-spin infinite 20s linear;
+.app-one-logo {
+  animation: app-one-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.app-header {
+.app-one-header {
   background-color: $dark-grey;
   height: 200px;
   padding: 20px;
@@ -16,15 +16,15 @@
   margin-bottom: 20px;
 }
 
-.app-title {
+.app-one-title {
   font-size: 1.5em;
 }
 
-.app-intro {
+.app-one-intro {
   font-size: large;
 }
 
-@keyframes app-logo-spin {
+@keyframes app-one-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
