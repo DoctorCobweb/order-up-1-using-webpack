@@ -9,6 +9,11 @@ export default (state=ordersReducerDefaultState, action) => {
         ...state,
         action.payload
       ]
+    case 'UPDATE_ORDER':
+      return [
+        ...state,
+        action.payload
+      ]
     default:
       return state
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Course from './Course'
 
 const Order = (props) => (
-  <div className="box-layout">
+  <div>
     <h2>{ props.order.metaData.location} /// Table: { props.order.metaData.tableNumber}</h2>
     <div className="order-meta-details">
       <div>{ props.order.metaData.orderTakenUsing}</div>
@@ -14,6 +14,7 @@ const Order = (props) => (
         .map(courseName => (
           <Course
             key={ courseName }
+            orderId= { props.order.id }
             courseName={ courseName }
             courseItems={ props.order.meals[courseName] }
           />

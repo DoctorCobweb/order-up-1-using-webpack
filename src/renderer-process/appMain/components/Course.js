@@ -5,7 +5,15 @@ import CourseItem from './CourseItem'
 const Course = (props) => (
   <div>
     <h2>{ props.courseName }</h2>
-    { props.courseItems.map(courseItem => <CourseItem key={uuidv1()} courseItem={courseItem}/>) }
+    { props.courseItems
+      .map(courseItem => (
+        <CourseItem
+          key={uuidv1()}
+          orderId={ props.orderId }
+          courseItem={courseItem}
+        />
+      ))
+    }
   </div>
 )
 

@@ -16,8 +16,8 @@ const OrderModal = (props) => (
     className="modal"
   >
     <div>
-    <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>
-    { !!props.selectedOrder && <Order order={ props.selectedOrder }/> }
+      <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>
+      { !!props.selectedOrder && <Order order={ props.selectedOrder }/> }
     </div>
   </Modal>
 ) 

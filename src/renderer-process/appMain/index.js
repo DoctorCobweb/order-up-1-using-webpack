@@ -4,14 +4,16 @@ import { Provider } from 'react-redux'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
 
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
 import reducer from '../../shared/reducers/reducer'
 import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux'
 const initialState = getInitialStateRenderer()
 const store = createStore(
   reducer,
   initialState,
-  applyMiddleware(forwardToMain)
+  compose(applyMiddleware(forwardToMain, thunk))
+  // applyMiddleware(forwardToMain)
 )
 replayActionRenderer(store)
 
