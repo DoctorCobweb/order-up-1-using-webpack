@@ -18,9 +18,8 @@ console.log('store.getState():', store.getState())
 // 0. rethinkdb
 // 1. serialport to listen
 // 2. parse escpos data to make orders
-//
-// 3. insert order into redux store
-knuckleDragger(store)
+// 3. inserts order into rethinkdb
+knuckleDragger()
 
 // start the api server
 // startServer()

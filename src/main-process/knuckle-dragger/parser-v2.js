@@ -26,12 +26,9 @@ const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']
 //     RC = Random Content                                                   //
 // ------------------------------------------------------------------------- //
 
-let store
-
 log.transports.file.level = 'info'
 
-export default (buffer, _store) => {
-  store = _store
+export default (buffer) => {
   nposParser.parse(buffer)
     .then(ast => {
       npos.textualize(ast)
@@ -42,7 +39,7 @@ export default (buffer, _store) => {
           console.log(colors.blue(zippedData))
           log.info(zippedData)
           const order = buildOrder(zippedData)
-          insertSingleOrder(order, store)
+          insertSingleOrder(order)
         })
         .catch(err => {
           console.log('ERROR PARSER (textualize): '.red, err.message)

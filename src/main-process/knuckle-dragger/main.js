@@ -2,6 +2,7 @@ import config from './knuckle-dragger-config'
 import SerialPort from 'serialport'
 import r from 'rethinkdb'
 import log from 'electron-log'
+import { setupDb } from './setup-db'
 import listen from './listen-v2'
 
 const dbHost = config['DB_HOST'] 
@@ -12,36 +13,40 @@ const serialManufacturer = config['SERIAL_MANUFACTURER']
 
 log.transports.file.level = 'info'
 
-let store
-
-export default (_store) => {
-  store = _store
-  r.connect({
-    host: dbHost,
-    port:dbPort
-    })
-    .then(conn => {
-      //check to see if the 'orderUp' db already exists.
-      //if so, skip creating it
-      r.dbList().run(conn)
-        .then(results => {
-          const dbMatches = results.filter(result => result === dbName)
-          if (dbMatches.length > 0) {
-            console.log(dbName, 'db already exists. skip creating it')
-            createOrderUpTableMaybe(conn)
-          } else {
-            //need to create the db
-            console.log(dbName, 'db does NOT exist ===> going to create it now...')
-            createOrderUpDb(conn)
-          }
-        })
-        .catch(err => {
-          if (err) throw err
-        })
+export default () => {
+  setupDb()
+    .then(res => {
+      startListeningToSerialPort({})
     })
     .catch(err => {
       if (err) throw err
     })
+  // r.connect({
+  //   host: dbHost,
+  //   port:dbPort
+  //   })
+  //   .then(conn => {
+  //     //check to see if the 'orderUp' db already exists.
+  //     //if so, skip creating it
+  //     r.dbList().run(conn)
+  //       .then(results => {
+  //         const dbMatches = results.filter(result => result === dbName)
+  //         if (dbMatches.length > 0) {
+  //           console.log(dbName, 'db already exists. skip creating it')
+  //           createOrderUpTableMaybe(conn)
+  //         } else {
+  //           //need to create the db
+  //           console.log(dbName, 'db does NOT exist ===> going to create it now...')
+  //           createOrderUpDb(conn)
+  //         }
+  //       })
+  //       .catch(err => {
+  //         if (err) throw err
+  //       })
+  //   })
+  //   .catch(err => {
+  //     if (err) throw err
+  //   })
 }
 
 const createOrderUpDb = (conn) => {
@@ -89,7 +94,7 @@ const startListeningToSerialPort = (conn) => {
   if (process.env.MOCK_ORDERS === 'yes') {
     console.log('mocking')
     log.info('mocking')
-    listen(store, { mocking: true })
+    listen({ mocking: true })
   } else {
     console.log('not mocking')
     log.info('not mocking')
@@ -102,7 +107,7 @@ const startListeningToSerialPort = (conn) => {
         log.info('PORTS AVAILABLE: ', ports)
         const port = ports.filter(port => port.manufacturer === serialManufacturer)[0]
         if (port) {
-          listen(store, { mocking: false })
+          listen({ mocking: false })
         }
       })
       .catch(err => {

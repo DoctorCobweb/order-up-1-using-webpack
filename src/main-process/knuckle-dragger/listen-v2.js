@@ -35,7 +35,6 @@ const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])
 const SERIAL_PORT_COM_NAME = config['SERIAL_PORT_COM_NAME']
 const areMockingOrders = process.env.MOCK_ORDERS === 'yes' ? true : false
 const MOCK_SERIAL_PORT_COM_NAME = '/dev/blah'
-let store
 let port
 let myBuffer = Buffer.alloc(0)
 
@@ -73,9 +72,7 @@ const startMockingOrders = () => {
   }, 15000)
 }
 
-export default (_store, { mocking=false }) => {
-  store = _store
-
+export default ({ mocking=false }) => {
   if (mocking) {
     // make fake orders without a printer
     console.log('listen/mocking')
@@ -162,7 +159,7 @@ export default (_store, { mocking=false }) => {
     readjustBuffer(opEndpoint)
 
     log.info('calling parseSingleOrder')
-    parseSingleOrder(orderBuff, store)
+    parseSingleOrder(orderBuff)
   }
 
   const readjustBuffer = opEndpoint => {
