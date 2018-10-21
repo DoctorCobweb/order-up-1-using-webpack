@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import url from 'url'
 import log from 'electron-log'
-import configureStore from '../shared/store/configureStore'
+import configureStore from '../shared/store/configure-store'
 // import startServer from '../server/server'
 
 log.transports.file.level = 'info'
@@ -24,10 +24,6 @@ knuckleDragger(store)
 
 // start the api server
 // startServer()
-
-setInterval(() => {
-    // console.log('store.getState(): ', store.getState())
-}, 5000)
 
 // To avoid being garbage collected
 let winMain

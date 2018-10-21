@@ -4,8 +4,8 @@
 // DEPRECATED in favour of parserV2.js //
 
 
-const globalConfig = require('./global-config');
-const menuConstants = require('./menuConstants');
+const config = require('./knuckle-dragger-config');
+const menuConstants = require('./menu-constants');
 const MENU_ITEMS = menuConstants.menuItems;
 const DOCKET_COURSE_FIELDS = menuConstants.courseFields;
 const DOCKET_START_FIELDS = menuConstants.docketStartFields;
@@ -16,7 +16,7 @@ const _ = require('lodash');
 const npos = require('npos');
 const nposParser = npos.parser();
 const colors = require('colors');
-const dbHandler = require('./dbHandler');
+const dbHandler = require('./db-handler');
 
 // ------------------------------------------------------------
 exports.parseSingleOrderOfBytes = parseSingleOrderOfBytes;

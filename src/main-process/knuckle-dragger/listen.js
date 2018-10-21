@@ -1,18 +1,18 @@
 import fs from 'fs'
 import path from 'path'
-import globalConfig from './global-config'
+import config from './knuckle-dragger-config'
 import SerialPort from 'serialport'
 import SerialPortStream from '@serialport/stream'
 import MockBinding from '@serialport/binding-mock'
 import log from 'electron-log'
-import parseSingleOrder from './parserV2'
+import parseSingleOrder from './parser-v2'
 import colors from 'colors'
 
 
-const SERIAL_PORT_COM_NAME = globalConfig['SERIAL_PORT_COM_NAME']
-const MAX_BUFFER_SIZE = globalConfig['MAX_BUFFER_SIZE']
-const ESCPOS_DATA_LOG = globalConfig['ESCPOS_DATA_LOG']
-const ESCPOS_SINGLE_ORDER = globalConfig['ESCPOS_SINGLE_ORDER']
+const SERIAL_PORT_COM_NAME = config['SERIAL_PORT_COM_NAME']
+const MAX_BUFFER_SIZE = config['MAX_BUFFER_SIZE']
+const ESCPOS_DATA_LOG = config['ESCPOS_DATA_LOG']
+const ESCPOS_SINGLE_ORDER = config['ESCPOS_SINGLE_ORDER']
 
 let myBuffer = Buffer.alloc(0)
 

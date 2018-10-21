@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
-import globalConfig from './global-config'
+import config from './knuckle-dragger-config'
 import SerialPort from 'serialport'
 import SerialPortStream from '@serialport/stream'
 import MockBinding from '@serialport/binding-mock'
 import log from 'electron-log'
-import parseSingleOrder from './parserV2'
+import parseSingleOrder from './parser-v2'
 import colors from 'colors'
 
 ////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ import colors from 'colors'
 // TODO: multiply different paper cut ops could be in use.
 // for now, assume there's only one. implement full case later
 const PAPER_CUT_OP_BUFFER = Buffer.from([29,86,0])  
-const SERIAL_PORT_COM_NAME = globalConfig['SERIAL_PORT_COM_NAME']
+const SERIAL_PORT_COM_NAME = config['SERIAL_PORT_COM_NAME']
 const areMockingOrders = process.env.MOCK_ORDERS === 'yes' ? true : false
 const MOCK_SERIAL_PORT_COM_NAME = '/dev/blah'
 let store

@@ -9,8 +9,8 @@ import {
   courseFields,
   docketStartFields,
   variableContentKeys
-} from './menuConstants'
-import { insertSingleOrder } from './dbHandler'
+} from './menu-constants'
+import { insertSingleOrder } from './db-handler'
 
 const nposParser = npos.parser()
 const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']

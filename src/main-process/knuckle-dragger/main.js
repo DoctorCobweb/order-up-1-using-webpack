@@ -1,14 +1,14 @@
-import globalConfig from './global-config'
+import config from './knuckle-dragger-config'
 import SerialPort from 'serialport'
 import r from 'rethinkdb'
 import log from 'electron-log'
-import listen from './listenV2'
+import listen from './listen-v2'
 
-const dbHost = globalConfig['DB_HOST'] 
-const dbPort = globalConfig['DB_PORT']
-const dbName = globalConfig['DB_NAME']
-const dbTableName = globalConfig['DB_TABLE_NAME']
-const serialManufacturer = globalConfig['SERIAL_MANUFACTURER']
+const dbHost = config['DB_HOST'] 
+const dbPort = config['DB_PORT']
+const dbName = config['DB_NAME']
+const dbTableName = config['DB_TABLE_NAME']
+const serialManufacturer = config['SERIAL_MANUFACTURER']
 
 log.transports.file.level = 'info'
 
