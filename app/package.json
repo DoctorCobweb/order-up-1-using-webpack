@@ -9,6 +9,7 @@
     "@serialport/binding-mock": "^2.0.1",
     "@serialport/stream": "^2.0.1",
     "escpos": "^2.4.9",
+    "mongoose": "^5.3.5",
     "npos": "^0.1.19",
     "serialport": "^7.0.2"
   }

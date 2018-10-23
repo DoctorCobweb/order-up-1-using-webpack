@@ -28,7 +28,7 @@ const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']
 
 log.transports.file.level = 'info'
 
-export default (buffer) => {
+export default (db, buffer) => {
   nposParser.parse(buffer)
     .then(ast => {
       npos.textualize(ast)
@@ -36,10 +36,9 @@ export default (buffer) => {
           //do somethine with the array of strings
           let data = sanitize(results)
           const zippedData = tokenizeData(data)
-          console.log(colors.blue(zippedData))
           log.info(zippedData)
           const order = buildOrder(zippedData)
-          insertSingleOrder(order)
+          insertSingleOrder(db, order)
         })
         .catch(err => {
           console.log('ERROR PARSER (textualize): '.red, err.message)
@@ -280,6 +279,7 @@ const handleMenuItemsAndItemInfo = (data, idxs) => {
     order['RANDOM CONTENT'] = rc
   }
   order = removeAllIndicesInOrder(order)
+  order = flattenInfos(order)
   console.log(JSON.stringify(order, null, 2))
   return order
 }
@@ -296,6 +296,27 @@ const removeAllIndicesInOrder = (order) => {
           delete info.startIdx
           delete info.endIdx
         }
+      }
+    }
+  }
+  return orderClone
+}
+
+const flattenInfos = (order) => {
+  // do away with the unnecessary 'infoItem' structure:
+  // from: item.info = [{itemInfo: [{quantity, info}}, itemInfo: [{quantity, info}]]
+  // to: item.info = [[{quantity, info}], [{quantity, info}]]
+  // each subarray of item.info now corresponds to one of the meal's free text.
+  // free text can contain more than 1 line so that's why we have [{quantity, info}],
+  // an array of free text lines.
+  const orderClone = _.cloneDeep(order)
+  for (let course of _.keys(orderClone)) {
+    let items = orderClone[course]
+    for (let item of items) {
+      if (!_.isEmpty(item.info)) {
+        item.info = item.info.map(itemInfo => {
+          return itemInfo.itemInfo
+        })
       }
     }
   }

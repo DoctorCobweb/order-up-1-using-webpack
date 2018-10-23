@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux'
 import thunk from 'redux-thunk'
-import r from 'rethinkdb'
+// import r from 'rethinkdb'
 import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
@@ -35,17 +35,17 @@ const jsx = (
 ReactDOM.render( jsx, document.getElementById('root'))
 
 // play around with rethinkdb stuff in renderer process
-r.connect({ host: dbHost, port: dbPort})
-  .then(conn => {
-    return r.db(dbName).table(dbTableName).run(conn)
-  })
-  .then(results => {
-    // results is a cursor
-    return results.toArray()
-  })
-  .then(arrayResults => {
-    console.log(arrayResults)
-  })
-  .catch(err => {
-    if (err) throw err
-})
+// r.connect({ host: dbHost, port: dbPort})
+//   .then(conn => {
+//     return r.db(dbName).table(dbTableName).run(conn)
+//   })
+//   .then(results => {
+//     // results is a cursor
+//     return results.toArray()
+//   })
+//   .then(arrayResults => {
+//     console.log(arrayResults)
+//   })
+//   .catch(err => {
+//     if (err) throw err
+// })

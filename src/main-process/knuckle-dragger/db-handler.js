@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import config from './knuckle-dragger-config'
-import r from 'rethinkdb'
+// import r from 'rethinkdb'
 import log from 'electron-log'
 import { addOrder } from '../../shared/actions/orders'
+import { mongooseOrders } from './mongoose-orders'
 
 const dbHost= config['DB_HOST']
 const dbPort = config['DB_PORT']
@@ -11,12 +12,13 @@ const dbTableName= config['DB_TABLE_NAME']
 
 log.transports.file.level = 'info'
 
-export const insertSingleOrder = (order) => {
-  // rethinkdb expects an Object to insert
+export const insertSingleOrder = (db, order) => {
+  console.log(order)
+  mongooseOrders(db, order)
+}
 
-  // console.log('in insertSingleOrder... order is:')
-  // console.log(order)
-
+/*
+const yaddaOldStuff = (order) => {
   let conn
 
   log.info('in insertSingleOrder... order is:')
@@ -126,25 +128,4 @@ export const insertSingleOrder = (order) => {
       if (err) throw err
     })
 }
-
-
-//   r.connect({ host: dbHost, port: dbPort})
-//     .then(conn => {
-//       return r.db(dbName).table(dbTableName).insert(order).run(conn)
-//     })
-//     .then(results => {
-//       console.log('SUCCESS: inserted a single order')
-//       console.log(results)
-//       log.info('SUCCESS: inserted a single order')
-//       log.info(results)
-//       // const orderWithDbKey = {
-//       //   ...order,
-//       //   id: results.generated_keys[0]
-//       // }
-//       // store.dispatch(addOrder(orderWithDbKey))
-//       // console.log(store)
-//     })
-//     .catch(err => {
-//       if (err) throw err
-//     })
-// }
+*/

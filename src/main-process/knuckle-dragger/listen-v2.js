@@ -72,7 +72,7 @@ const startMockingOrders = () => {
   }, 15000)
 }
 
-export default ({ mocking=false }) => {
+export default (db, { mocking=false }) => {
   if (mocking) {
     // make fake orders without a printer
     console.log('listen/mocking')
@@ -159,7 +159,7 @@ export default ({ mocking=false }) => {
     readjustBuffer(opEndpoint)
 
     log.info('calling parseSingleOrder')
-    parseSingleOrder(orderBuff)
+    parseSingleOrder(db, orderBuff)
   }
 
   const readjustBuffer = opEndpoint => {

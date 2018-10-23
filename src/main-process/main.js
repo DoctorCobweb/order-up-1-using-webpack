@@ -1,8 +1,9 @@
-import knuckleDragger from './knuckle-dragger/main'
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import url from 'url'
 import log from 'electron-log'
+import mongoose from 'mongoose'
+import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
 // import startServer from '../server/server'
 
@@ -12,14 +13,52 @@ log.transports.file.level = 'info'
 // => the store on the main process becomes the single source of truth
 const store = configureStore()
 // store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
-console.log('store.getState():', store.getState())
+// console.log('store.getState():', store.getState())
 
-// this setups
-// 0. rethinkdb
-// 1. serialport to listen
-// 2. parse escpos data to make orders
-// 3. inserts order into rethinkdb
-knuckleDragger()
+
+
+mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true })
+const db = mongoose.connection
+
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', () => {
+    // this setups
+    // 0. mongodb
+    // 1. serialport to listen
+    // 2. parse escpos data to make orders
+    // 3. inserts order into mongodb
+
+    // start fresh, clear out collections of orders. dev only.
+    db.collections.items.drop()
+      .then(() => {
+          return db.collections.courses.drop()
+      })
+      .then(() => {
+          return db.collections.orders.drop()
+      })
+      .then(() => {
+          console.log('dropped items, courses, then orders, calling knuckleDragger')
+          knuckleDragger(db)
+      })
+      .catch((err) => {
+          console.log(err)
+          console.log('error: calling knuckleDragger anyway')
+          knuckleDragger(db)
+      })
+
+    // put change stream stuff here
+    // const blahCollection = db.collenction('blahs')
+    // const changeStream = blahCollection.watch()
+    // changeStream.on('change', change => {
+    //     if (change.operationType === 'insert') {
+    //         //...
+    //     }
+    //     if (change.operationType === 'delete') {
+    //         // ...
+    //     }
+    // })
+})
+
 
 // start the api server
 // startServer()
