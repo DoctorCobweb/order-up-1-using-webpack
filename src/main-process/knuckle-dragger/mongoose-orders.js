@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import stringify from 'json-stringify-pretty-compact'
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
@@ -43,9 +44,36 @@ const InfoLine = mongoose.model('InfoLine', infoLineSchema)
 
 export const mongooseOrders = (db, order) => {
 
+  // order is a deeply nested object. at each 'level' of the order
+  // we define a model, and link them up via subdocuments in the 
+  // model's schema.
+  // in other words, we use the concept of subdocuments in Mongoose
+  // to allow for defining the following relationships in our order:
+  // 1. an 'Order' model points to many 'Course' models
+  // 2. each 'Course' model points to many 'Item' models
+  // 3. each 'Item' model can point to many 'Info' models
+  // 4. finally, each 'Info' points to many 'InfoLine' models
+  //
+  // linking these all up creates our order in a normalized form.
+  // then, to recreate the order we query for an 'Order' document and 
+  // call populate() yadda yadda yadda.
+
+  // we use a Map here because we will be iterating over our order
+  // many times whilst saving our documents to the db. since objects
+  // and iteration of its keys have non-dependent ordering we choose to 
+  // use a Map version of the order.
+  // the map will we updated with _ids as we go through saving models to the db.
+  // when all our models have been saved to the db, the map will hold not only
+  // the order content, but all the _ids of each inserted doc.
   const orderMap = createOrderMap(order)
 
-  // insert infoLine 
+  // start adding InfoLines to the db, then Info, then Item, ....
+  // ie. from the leaves of the tree (InfoLines) to the trunk (Order).
+  // doing this allows us to get the _ids needed for each Model's subdocument 
+  // array of _ids. see above, the schema definitions to see how each model
+  // links up with its 'children'
+
+  // insert infoline 
   const infoLines = _.map(orderMap.get('itemInfos'), (info) => {
     return _.map(info, (itemInfo) => {
       return _.map(itemInfo, infoLine => {
@@ -54,90 +82,70 @@ export const mongooseOrders = (db, order) => {
       })
     })
   })
-  // console.log(JSON.stringify(_.flattenDepth(infoLines, 2)))
 
   InfoLine.insertMany(_.flattenDepth(infoLines,2) , {ordered: true})
     .then(infoLinesResults => {
-      console.log(infoLinesResults)
-      const updatedMap = updateOrderMap(orderMap, infoLinesResults)
+      // console.log(infoLinesResults)
+      const updatedMap = updateOrderMapWithItemInfoIds(orderMap, infoLinesResults)
+      // console.log('updatedMap.get(\'itemInfos\')')
+      // console.log(stringify(updatedMap.get('itemInfos')))
+
+      // now go onto inserting the 'Info' models
+      insertInfos(updatedMap)
     })
     .catch(err => {
       throw err
     })
-
-  // const courseNames = _.keys(pOrder.meals)
-
-  // courseNames.map(course => {
-  //   const itemsInCourse = _.values(pOrder.meals[course])
-  //   const itemDocs = itemsInCourse.map(item => {
-  //     return new Item ({
-  //       name: item.name,
-  //       quantity: item.quantity
-  //     })
-  //   })
-
-  //   db.collections.items.insertMany(itemDocs, {ordered: true})
-  //     .then(itemResults => {
-  //       const itemIds = _.values(itemResults)
-  //       const course = new Course ({
-  //         name: course,
-  //         items: itemIds
-  //       })
-  //       return db.collections.courses.save()
-  //     })
-  //     .then(_course => {
-  //       console.log('_course')
-  //       console.log(course)
-
-  //     })
-  //     .catch(err => {
-  //       if (err) throw err
-  //     })
-  // })
-
-
-
-  // const courses = courseNames.map(course => {
-  //   return new Course ({
-  //     name: course
-  //   })
-  // }) 
-  //
-  // db.collections.courses.insertMany(courses, {ordered: true})
-  //   .then(docs => {
-  //     console.log('inserted Many docs:')
-  //     console.log(docs)
-  //     const coursesIds = _.values(docs.insertedIds)
-
-  //     const order = new Order({
-  //       clerk: pOrder.metaData.clerk,
-  //       cover: pOrder.metaData.covers,
-  //       customerName: pOrder.metaData.customerName,
-  //       location: pOrder.metaData.location,
-  //       orderSentAt: pOrder.metaData.orderSentAt,
-  //       orderTakenUsing: pOrder.metaData.orderTakenUsing,
-  //       tableNumber: pOrder.metaData.tableNumber,
-  //       variableContent: pOrder.metaData.variableContent,
-  //       courses: coursesIds
-  //     })
-
-  //     return order.save()
-  //   })
-  //   .then(order => {
-  //     // find all order documents in db
-  //     // Order.find() is a Query, calling .exec() makes it a Promise
-  //     return Order.find().populate('courses').exec()
-  //   })
-  //   .then(orders => {
-  //     console.log('orders')
-  //     console.log(JSON.stringify(orders, null, 2))
-  //   })
-  //   .catch(err => {
-  //     if (err) throw err
-  //   })
 }
 
-const updateOrderMap = (map, vals) => {
+const insertInfos = (orderMap) => {
+  const infos = _.map(orderMap.get('itemInfos'), (info) => {
+    return _.map(info, itemInfo => {
+      const infoLinesIds = _.map(itemInfo, infoLine => {
+          const [ id ] = infoLine 
+          return id
+      })
+      return new Info({
+        infoLines: infoLinesIds
+      })
+    })
+  })
+  // console.log('stringify(infos)')
+  // console.log(stringify(infos))
+
+  Info.insertMany(_.flattenDepth(infos, 1), {ordered: true})
+    .then(results => {
+      console.log(results)
+      const updatedMap = updateOrderMapWithItemIds(orderMap, results)
+      console.log('updatedMap Info.insertMany then()')
+      console.log(stringify(updatedMap.get('items')))
+
+      // now go onto inserting the 'Item' models
+      // TODO
+    })
+}
+
+const updateOrderMapWithItemIds = (map, vals) => {
+  const ids = _.map(vals, info => info._id)
+  let i = 0
+  const items = map.get('items')
+  const updatedItems = _.map(items, course => {
+    return _.map(course, item => {
+      const [ name, quantity, info] = item
+      if (_.isEmpty(info)) return [ name, quantity, [] ] 
+      const yadda = _.map(info, anInfo => {
+        const anId = ids[i]
+        i++
+        return anId
+      })
+      return [ name, quantity, yadda ]
+    })
+  })
+  map.set('items', updatedItems)
+  return map
+}
+
+const updateOrderMapWithItemInfoIds = (map, vals) => {
   const ids = _.map(vals, line => line._id )
   let i = 0
   const itemInfos = map.get('itemInfos')
@@ -152,8 +160,6 @@ const updateOrderMap = (map, vals) => {
       })
     })
   })
-  console.log('updatedItemInfos')
-  console.log(JSON.stringify(updatedItemInfos))
   map.set('itemInfos', updatedItemInfos)
   return map
 }
@@ -164,7 +170,7 @@ const createOrderMap = (order) => {
   const courseItems = _.map(sortedCourseNames, (course) => {
     const items = order.meals[course]
     return _.map(items, (item) => {
-      return [item.name, item.quantity]
+      return [item.name, item.quantity, item.info]
     })
   })
 
@@ -183,10 +189,10 @@ const createOrderMap = (order) => {
   map.set('courses',sortedCourseNames)
   map.set('items', courseItems)
   map.set('itemInfos', itemInfos)
-  console.log('map')
-  console.log(map)
-  console.log('map.get(itemInfos)')
-  console.log(JSON.stringify(map.get('itemInfos'), null, 2))
+  console.log('map.get(\'items\')')
+  console.log(stringify(map.get('items')))
+  // console.log('map.get(\'itemInfos\'):')
+  // console.log(stringify(map.get('itemInfos')))
 
   // 1. add itemInfos to db. put their _ids into corresponding spot in map. after success, call next insert:
   // 2. add iems to db. ditto. ditto, then call next insert:

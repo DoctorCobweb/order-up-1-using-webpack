@@ -1,4 +1,5 @@
 import colors from 'colors'
+import stringify from 'json-stringify-pretty-compact'
 import _ from 'lodash'
 import npos from 'npos'
 import log from 'electron-log'
@@ -280,7 +281,8 @@ const handleMenuItemsAndItemInfo = (data, idxs) => {
   }
   order = removeAllIndicesInOrder(order)
   order = flattenInfos(order)
-  console.log(JSON.stringify(order, null, 2))
+  console.log('parser-v2 // order:')
+  console.log(stringify(order))
   return order
 }
 
