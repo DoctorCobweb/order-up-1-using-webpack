@@ -115,14 +115,116 @@ const insertInfos = (orderMap) => {
 
   Info.insertMany(_.flattenDepth(infos, 1), {ordered: true})
     .then(results => {
-      console.log(results)
+      // console.log(results)
       const updatedMap = updateOrderMapWithItemIds(orderMap, results)
-      console.log('updatedMap Info.insertMany then()')
-      console.log(stringify(updatedMap.get('items')))
+      // console.log('updatedMap Info.insertMany then()')
+      // console.log(stringify(updatedMap.get('items')))
 
       // now go onto inserting the 'Item' models
-      // TODO
+      insertItems(updatedMap)
     })
+    .catch(err => {
+      throw err
+    })
+}
+
+const insertItems = (orderMap) => {
+  const items = _.flattenDepth(orderMap.get('items'), 1)
+  const itemsDocs = _.map(items, item => {
+    const [ name, quantity, infos ] = item
+    return new Item({
+      name,
+      quantity,
+      infos
+    })
+  })
+
+  Item.insertMany(itemsDocs, {ordered: true})
+    .then(results => {
+      // console.log('results:')
+      // console.log(results)
+      const updatedMap = updateOrderMapWithCourseIds(orderMap, results)
+      console.log('updatedMap.get(\'updatedCourses\')')
+      console.log(stringify(updatedMap.get('updatedCourses')))
+
+      //insert the courses
+      insertCourses(updatedMap)
+    })
+    .catch(err => {
+      throw err
+    })
+}
+
+const insertCourses = (orderMap) => {
+  const courses = orderMap.get('updatedCourses')
+  const courseDocs = _.map(courses, course => {
+    const [ courseName, items ] = course 
+    return new Course({
+      name: courseName,
+      items
+    })
+  })
+
+  Course.insertMany(courseDocs, {order: true})
+    .then(results => {
+      console.log('Course.insertMany results')
+      console.log(results)
+
+      //finally create the order doc
+      createOrderAndSave(orderMap, results)
+      // const updatedMap = updateOrderMapWithOrderIds(orderMap, results)
+    })
+    .catch(err => {
+      throw err
+    })
+}
+
+const createOrderAndSave = (map, vals) => {
+  const courseIds = _.map(vals, course => course._id)
+  const courseMetaData = map.get('order').metaData
+  const orderDoc = new Order({
+    clerk: courseMetaData.clerk,
+    covers: courseMetaData.covers,
+    customerName: courseMetaData.customerName,
+    location: courseMetaData.location,
+    orderSentAt: courseMetaData.orderSentAt,
+    orderTakenUsing: courseMetaData.orderTakenUsing,
+    tableNumber: courseMetaData.tableNumber,
+    variableContent: courseMetaData.variableContent,
+    courses: courseIds
+  })
+
+  Order.create(orderDoc)
+    .then(results => {
+      console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
+      console.log(results)
+    })
+    .catch(err => {
+      throw err
+    })
+}
+
+const updateOrderMapWithCourseIds = (map, vals) => {
+  const ids = _.map(vals, item => item._id)
+  let i = 0
+  const order = map.get('order')
+  const courses = map.get('courses')
+  const updatedCourses = _.map(courses, course => {
+    const courseItems = order.meals[course]
+    // console.log('courseItems')
+    // console.log(courseItems)
+    const courseItemIds = _.map(courseItems, item => {
+      const anItemId = ids[i]
+      i++
+      return anItemId
+    })
+    return [ course, courseItemIds ]
+  })
+  // make an new key/val entry in map. the 'courses' key
+  // is used so pivotly to determine correct orderering 
+  // that it's prudent to make a new entry.
+  map.set('updatedCourses', updatedCourses)
+  return map 
 }
 
 const updateOrderMapWithItemIds = (map, vals) => {
@@ -186,11 +288,12 @@ const createOrderMap = (order) => {
   }))
 
   // console.log(JSON.stringify(itemInfos))
+  map.set('order', order)
   map.set('courses',sortedCourseNames)
   map.set('items', courseItems)
   map.set('itemInfos', itemInfos)
-  console.log('map.get(\'items\')')
-  console.log(stringify(map.get('items')))
+  // console.log('map.get(\'items\')')
+  // console.log(stringify(map.get('items')))
   // console.log('map.get(\'itemInfos\'):')
   // console.log(stringify(map.get('itemInfos')))
 
