@@ -23,7 +23,6 @@ const itemSchema = new Schema({
   name: String,
   quantity: String,
   infos: [{type: Schema.Types.ObjectId, ref: 'Info'}]
-
 })
 
 const infoSchema = new Schema({
@@ -45,6 +44,26 @@ const InfoLine = mongoose.model('InfoLine', infoLineSchema)
 export const mongooseOrders = (db, order) => {
 
   const orderMap = createOrderMap(order)
+
+  // insert infoLine 
+  const infoLines = _.map(orderMap.get('itemInfos'), (info) => {
+    return _.map(info, (itemInfo) => {
+      return _.map(itemInfo, infoLine => {
+        const [ name, quantity ] = infoLine
+        return new InfoLine({ name, quantity })
+      })
+    })
+  })
+  // console.log(JSON.stringify(_.flattenDepth(infoLines, 2)))
+
+  InfoLine.insertMany(_.flattenDepth(infoLines,2) , {ordered: true})
+    .then(infoLinesResults => {
+      console.log(infoLinesResults)
+      const updatedMap = updateOrderMap(orderMap, infoLinesResults)
+    })
+    .catch(err => {
+      throw err
+    })
 
   // const courseNames = _.keys(pOrder.meals)
 
@@ -118,6 +137,27 @@ export const mongooseOrders = (db, order) => {
   //   })
 }
 
+const updateOrderMap = (map, vals) => {
+  const ids = _.map(vals, line => line._id )
+  let i = 0
+  const itemInfos = map.get('itemInfos')
+  const updatedItemInfos = _.map(itemInfos, item => {
+    if (_.isEmpty(item)) return item
+    return _.map(item, itemInfo => {
+      return _.map(itemInfo, line => {
+        const [ name, quantity ] = line
+        const newItemInfo = [ ids[i], name, quantity ]
+        i++
+        return newItemInfo
+      })
+    })
+  })
+  console.log('updatedItemInfos')
+  console.log(JSON.stringify(updatedItemInfos))
+  map.set('itemInfos', updatedItemInfos)
+  return map
+}
+
 const createOrderMap = (order) => {
   const map = new Map()
   const sortedCourseNames = _.sortBy(_.keys(order.meals))
@@ -128,17 +168,16 @@ const createOrderMap = (order) => {
     })
   })
 
-  const itemInfos = _.map(sortedCourseNames, (course) => {
+  const itemInfos = _.flatten(_.map(sortedCourseNames, (course) => {
     const items = order.meals[course]
     return _.map(items, (item) => {
       return _.map(item.info, info => {
         return _.map(info, (infoItem) => {
-          // console.log(infoItem)
           return [infoItem.info, infoItem.quantity]
         })
       })
     })
-  })
+  }))
 
   // console.log(JSON.stringify(itemInfos))
   map.set('courses',sortedCourseNames)
@@ -148,4 +187,10 @@ const createOrderMap = (order) => {
   console.log(map)
   console.log('map.get(itemInfos)')
   console.log(JSON.stringify(map.get('itemInfos'), null, 2))
+
+  // 1. add itemInfos to db. put their _ids into corresponding spot in map. after success, call next insert:
+  // 2. add iems to db. ditto. ditto, then call next insert:
+  // 3. add courses to db. ditto. ditto. then call next insert:
+  // 4. add order to db
+  return map
 }
