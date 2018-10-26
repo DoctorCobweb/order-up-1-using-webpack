@@ -8,7 +8,7 @@ const MongoClient = mongodb.MongoClient
 import colors from 'colors'
 import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
-import { Order } from './knuckle-dragger/models/models'
+import { Order } from '../shared/models/models'
 import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
 

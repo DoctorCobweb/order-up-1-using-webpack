@@ -281,7 +281,7 @@ const handleMenuItemsAndItemInfo = (data, idxs) => {
   }
   order = removeAllIndicesInOrder(order)
   order = flattenInfos(order)
-  console.log('parser-v2 // order:')
+  console.log('parser // order:')
   console.log(stringify(order))
   return order
 }

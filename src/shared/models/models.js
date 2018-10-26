@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
+  done: { type: Boolean, default: false},
   clerk: String,
   covers: String,
   customerName: String,
@@ -14,21 +15,25 @@ const orderSchema = new Schema({
 })
 
 const courseSchema = new Schema({
+  done: { type: Boolean, default: false},
   name: String,
   items: [{type: Schema.Types.ObjectId, ref: 'Item'}]
 })
 
 const itemSchema = new Schema({
+  done: { type: Boolean, default: false},
   name: String,
   quantity: String,
   infos: [{type: Schema.Types.ObjectId, ref: 'Info'}]
 })
 
 const infoSchema = new Schema({
+  done: { type: Boolean, default: false},
   infoLines: [{type: Schema.Types.ObjectId, ref:'InfoLine'}]
 })
 
 const infoLineSchema = new Schema({
+  done: { type: Boolean, default: false},
   name: String,
   quantity: String
 })

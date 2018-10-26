@@ -1,9 +1,7 @@
 import config from './knuckle-dragger-config'
 import SerialPort from 'serialport'
 import log from 'electron-log'
-import { setupDb } from './setup-db'
-import listen from './listen-v2'
-import { Order } from './models/models'
+import listen from './listen'
 
 const serialManufacturer = config['SERIAL_MANUFACTURER']
 log.transports.file.level = 'info'

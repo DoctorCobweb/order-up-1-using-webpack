@@ -5,7 +5,7 @@ import SerialPort from 'serialport'
 import SerialPortStream from '@serialport/stream'
 import MockBinding from '@serialport/binding-mock'
 import log from 'electron-log'
-import parseSingleOrder from './parser-v2'
+import parseSingleOrder from './parser'
 import colors from 'colors'
 
 ////////////////////////////////////////////////////////////

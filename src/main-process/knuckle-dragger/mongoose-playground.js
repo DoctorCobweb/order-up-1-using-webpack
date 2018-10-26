@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
-import { Order, Course, Item, Info, InfoLine } from './models/models'
+import { Order, Course, Item, Info, InfoLine } from '../../shared/models/models'
 import mongoose from 'mongoose'
 import { normalize, schema } from 'normalizr'
 mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true })
