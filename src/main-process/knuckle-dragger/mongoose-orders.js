@@ -1,9 +1,12 @@
 import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
 import { Order, Course, Item, Info, InfoLine } from './models/models'
-import { populateAllOrders } from './mongoose-playground'
+import { populateAllOrders, streamDemo } from './mongoose-playground'
 
-export const mongooseOrders = (db, order) => {
+export const addToMongoDB = (db, order) => {
+  
+
+  // streamDemo()
 
   // order is a deeply nested object. at each 'level' of the order
   // we define a model, and link them up via subdocuments in the 
@@ -159,7 +162,6 @@ const createOrderAndSave = (map, vals) => {
     .then(results => {
       console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
       console.log(results)
-
       // try populate the order
       populateAllOrders()
     })

@@ -3,11 +3,92 @@ import path from 'path'
 import url from 'url'
 import log from 'electron-log'
 import mongoose from 'mongoose'
+import mongodb from 'mongodb'
+const MongoClient = mongodb.MongoClient
+import colors from 'colors'
 import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
+import { Order } from './knuckle-dragger/models/models'
+import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
 
 log.transports.file.level = 'info'
+
+// ------------------------- CHANGE STREAMS (important) -------------------------
+// we use the mongodb driver (instead of Mongoose .watch()) for change streams.
+// had two issues with Mongoose .watch() which were:
+// 
+// 1. .watch() depended on where in the project it was written.
+//   it didn't work putting it directly inside the db.once('open', cb) cb,
+//   which is what the docs recommended. but it works (albeit see pt 2 below) 
+//   when put in db-handler.js file, mongoose-orders.js file, or mongoose-playground.js
+//   tried to disable buffering of commands in mongoose as so as to not allow useage of models
+//   , and thus change streams, until there actually was a db connection, but this didn't help.
+//
+// 2. .watch() is triggered multiple times. the first order that is inserted triggers
+//    it once, the second order inserted triggers .watch() twice, the third order inserted
+//    triggers it three times, etc etc. 
+//
+// i dont understand nor trust .watch() enough to use it in production. so at the 
+// expense of some extra code and an additional mongo connection, we prefer the MongoClient
+// methods instead.      
+// so using the mongodb driver of js instead of Mongoose .watch()
+// functionality.
+//
+const urlMongo = 'mongodb://localhost/?replicaSet=rs'
+MongoClient.connect(urlMongo, (err,client) => {
+    if (err) throw err
+    const db = client.db('orderUpDb')
+    const collection = db.collection('orders')
+    const changeStream = collection.watch()
+
+    console.log(colors.blue('connected to server via MongoClient'))
+    // console.log(colors.blue(db.collection('orders')))
+
+    pollStream(changeStream)
+})
+
+const pollStream = (cursor) => {
+    cursor.next()
+      .then(results => {
+          populateOrderChangeStream(results)
+          pollStream(cursor)
+      })
+      .catch(err => {
+          throw err
+      })
+}
+
+const populateOrderChangeStream = (results) => {
+    console.log(colors.blue(results))
+    Order.find({_id: results.fullDocument._id})
+    .populate({
+        path: 'courses',
+        model: 'Course',
+        populate: {
+            path: 'items',
+            model: 'Item',
+            populate: {
+                path: 'infos',
+                model: 'Info',
+                populate: {
+                    path: 'infoLines',
+                    model: 'InfoLine'
+                    }
+            }
+        }
+    })
+    .exec() 
+    .then(order => {
+        // console.log('stringify(order)')
+        console.log(colors.blue(stringify(order)))
+    })
+    .catch(err => {
+        throw err
+    }) 
+}
+
+
 
 // setup our shared electron-redux store.
 // => the store on the main process becomes the single source of truth
@@ -17,7 +98,8 @@ const store = configureStore()
 
 
 
-mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true })
+mongoose.set('bufferCommands', false)
+mongoose.connect('mongodb://localhost/orderUpDb?replicaSet=rs', { useNewUrlParser: true })
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
@@ -29,34 +111,29 @@ db.once('open', () => {
     // 3. inserts order into mongodb
 
     // start fresh, clear out collections of orders. dev only.
-    db.collections.items.drop()
-      .then(() => {
-          return db.collections.courses.drop()
-      })
-      .then(() => {
-          return db.collections.orders.drop()
-      })
-      .then(() => {
-          console.log('dropped items, courses, then orders, calling knuckleDragger')
-          knuckleDragger(db)
-      })
-      .catch((err) => {
-          console.log(err)
-          console.log('error: calling knuckleDragger anyway')
-          knuckleDragger(db)
-      })
+    // db.collections.items.drop()
+    //   .then(() => {
+    //       return db.collections.courses.drop()
+    //   })
+    //   .then(() => {
+    //       return db.collections.orders.drop()
+    //   })
+    //   .then(() => {
+    //       console.log('dropped items, courses, then orders, calling knuckleDragger')
+    //       knuckleDragger(db)
+    //   })
+    //   .catch((err) => {
+    //       console.log(err)
+    //       console.log('error: calling knuckleDragger anyway')
+    //       knuckleDragger(db)
+    //   })
+    knuckleDragger()
 
-    // put change stream stuff here
-    // const blahCollection = db.collenction('blahs')
-    // const changeStream = blahCollection.watch()
-    // changeStream.on('change', change => {
-    //     if (change.operationType === 'insert') {
-    //         //...
-    //     }
-    //     if (change.operationType === 'delete') {
-    //         // ...
-    //     }
-    // })
+    // put change stream stuff here for now
+    // const orderCollection = db.collection('orders')
+    // const changeStream = orderCollection.watch()
+    // console.log(colors.blue(changeStream))
+    // const changeStream = Order.watch().on('change', change => console.log(change))
 })
 
 
