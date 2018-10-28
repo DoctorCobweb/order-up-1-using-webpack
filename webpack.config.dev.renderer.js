@@ -18,20 +18,30 @@ import { spawn } from 'child_process'
 // NOTE: for this to work, the libraryTarget: 'commonjs2' entry in 'output' was necessary. see below
 import { dependencies as externalDeps } from './app/package'
 
+console.log('externalDeps')
+console.log(externalDeps)
+console.log(...Object.keys(externalDeps))
+console.log('webpack renderer __dirname')
+console.log(__dirname)
+
 const APP_MAIN = 'appMain'
 const APP_ONE = 'appOne'
+const APP_MAIN_TEST = 'appMainTest'
 let entries = {
   appMain: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8181/',
-    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
-    './src/renderer-process/appMain/index.js' // the acutal app's entry point
+    // 'react-hot-loader/patch',
+    // 'webpack-dev-server/client?http://localhost:8181/',
+    // 'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./src/renderer-process/appMain/index.js') // the acutal app's entry point
   ],
   appOne: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8181/',
-    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
-    './src/renderer-process/appOne/index.js'
+    // 'react-hot-loader/patch',
+    // 'webpack-dev-server/client?http://localhost:8181/',
+    // 'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./src/renderer-process/appOne/index.js')
+  ],
+  appMainTest: [
+    require.resolve('./app/appMainTest/index.js')
   ]
 }
 
@@ -43,9 +53,11 @@ module.exports = {
   ],
   entry: entries,
   output: {
-    filename: '[name]/dev.index.js',
-    // path: path.join(__dirname, 'app'),
-    publicPath: 'http://localhost:8181/',
+    filename: '[name]/bundle.js',
+    // filename: '[name]/dev.index.js',
+    path: path.join(__dirname, 'app'), 
+    // publicPath: 'http://localhost:8181/app/', // for HMR 
+    // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
   module: {
@@ -91,8 +103,10 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'app'),
+    // publicPath: 'blah',
+    // publicPath: 'http://localhost:8181/app/',
     port: 8181,
-    hot: true,
+    // hot: true,
     before() {
       if (process.env.START_HOT === 'yes') {
         console.log('starting Main Process...')
@@ -108,7 +122,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin([
-        // TODO: add more folders here once more react apps are made
         'app/appMain',
         'app/appOne',
     ]),
@@ -125,8 +138,15 @@ module.exports = {
       title: 'OrderUp appOne',
       filename: `${APP_ONE}/index.html`,
       template: './indexTemplate.ejs'
-    }),
-    new webpack.HotModuleReplacementPlugin()
+    })
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: [APP_MAIN_TEST],
+    //   title: 'OrderUp appOne',
+    //   filename: `${APP_MAIN_TEST}.index.html`,
+    //   template: './indexTemplate.ejs'
+    // })
+    // new webpack.HotModuleReplacementPlugin()
   ],
 
   /**
@@ -137,12 +157,17 @@ module.exports = {
   node: {
     __dirname: false,
     __filename: false
-  }
+  },
   // ?? uncomment later when writing ./app related code and failure to load modules ??
   // Tell webpack what directories should be searched when resolving modules.
   // Absolute and relative paths can both be used, but be aware that they will behave a bit differently.
   // https://webpack.js.org/configuration/resolve/
-  // resolve: {
-  //   modules: [path.join(__dirname, 'app'), 'node_modules']
-  // }
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'app'), 'node_modules']
+    // alias: {
+    //   mongodb: path.resolve(__dirname, 'app/node_modules/mongodb'),
+    //   mongoose: path.resolve(__dirname, 'app/node_modules/mongoose')
+    // }
+  }
 }

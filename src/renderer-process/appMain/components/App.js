@@ -30,7 +30,7 @@ export class App extends Component {
       <div className="app">
         <header className="app-header">
           <img src={logo} className="app-logo" alt="logo" />
-          <h1 className="app-title">OrderUp: AppMain</h1>
+          <h1 className="app-title">OrderrrUp: AppMain</h1>
         </header>
         <button className="button" onClick={this.onClickLog}>console.log orders</button>
         <p>electron-redux store has {this.props.orders.length} items</p>

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
-
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from '../../shared/reducers/reducer'
 import thunk from 'redux-thunk'

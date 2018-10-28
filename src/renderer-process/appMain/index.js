@@ -1,10 +1,15 @@
+console.log('hello from index.js appMain')
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux'
 import thunk from 'redux-thunk'
-// import r from 'rethinkdb'
+// import log from 'electron-log'
+import mongoose from '../../../app/node_modules/mongoose'
+import mongodb from '../../../app/node_modules/mongodb'
+const MongoClient = mongodb.MongoClient
+import { Order } from '../../shared/models/models'
 import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
@@ -24,6 +29,70 @@ const store = createStore(
 )
 replayActionRenderer(store)
 
+
+// log.transports.file.level = 'info'
+
+// ----------- MONGODB CHANGE STREAM ----------------
+const urlMongo = 'mongodb://localhost/?replicaSet=rs'
+MongoClient.connect(urlMongo, { useNewUrlParser: true }, (err,client) => {
+    if (err) throw err
+    const db = client.db('orderUpDb')
+    const collection = db.collection('orders')
+    const changeStream = collection.watch()
+
+    console.log('AppMain: connected to server via MongoClient')
+    pollStream(changeStream)
+})
+
+const pollStream = (cursor) => {
+    cursor.next()
+      .then(results => {
+          populateOrderChangeStream(results)
+          pollStream(cursor)
+      })
+      .catch(err => {
+          throw err
+      })
+}
+
+const populateOrderChangeStream = (results) => {
+    // console.log(results)
+    Order.find({_id: results.fullDocument._id})
+    .populate({
+        path: 'courses',
+        model: 'Course',
+        populate: {
+            path: 'items',
+            model: 'Item',
+            populate: {
+                path: 'infos',
+                model: 'Info',
+                populate: {
+                    path: 'infoLines',
+                    model: 'InfoLine'
+                    }
+            }
+        }
+    })
+    .exec() 
+    .then(order => {
+        // console.log(order)
+        // TODO: send order to redux
+    })
+    .catch(err => {
+        throw err
+    }) 
+}
+
+
+mongoose.connect('mongodb://localhost/orderUpDb?replicaSet=rs', { useNewUrlParser: true })
+const db = mongoose.connection
+
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', () => {
+  console.log('db mongoose opened event')
+})
+
 // Provider will provide the redux store to 
 // all components in the app
 const jsx = (
@@ -33,19 +102,3 @@ const jsx = (
 )
 
 ReactDOM.render( jsx, document.getElementById('root'))
-
-// play around with rethinkdb stuff in renderer process
-// r.connect({ host: dbHost, port: dbPort})
-//   .then(conn => {
-//     return r.db(dbName).table(dbTableName).run(conn)
-//   })
-//   .then(results => {
-//     // results is a cursor
-//     return results.toArray()
-//   })
-//   .then(arrayResults => {
-//     console.log(arrayResults)
-//   })
-//   .catch(err => {
-//     if (err) throw err
-// })

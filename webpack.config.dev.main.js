@@ -61,7 +61,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(
       [
-        'app'
+        // 'app'
       ],
       {
         exclude: [
@@ -74,12 +74,12 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.MOCK_ORDERS': JSON.stringify(process.env.MOCK_ORDERS)
     })
-  ]
+  ],
   // ?? uncomment later when writing ./app related code and failure to load modules ??
   // Tell webpack what directories should be searched when resolving modules.
   // Absolute and relative paths can both be used, but be aware that they will behave a bit differently.
   // https://webpack.js.org/configuration/resolve/
-  // resolve: {
-  //   modules: [path.join(__dirname, 'app'), 'node_modules']
-  // }
+  resolve: {
+    modules: [path.join(__dirname, 'app'), 'node_modules']
+  }
 }
