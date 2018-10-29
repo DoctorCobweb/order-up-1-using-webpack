@@ -1,5 +1,5 @@
 /node_modules
-app/*/
+app/node_modules/
 app/dev.main.js
 app/prod.*
 .DS_Store

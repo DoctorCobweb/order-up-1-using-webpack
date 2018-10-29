@@ -1,0 +1,30 @@
+.app-one {
+  text-align: center;
+  background: $green;
+}
+
+.app-one-logo {
+  animation: app-one-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.app-one-header {
+  background-color: $dark-grey;
+  height: 200px;
+  padding: 20px;
+  color: $off-white;
+  margin-bottom: 20px;
+}
+
+.app-one-title {
+  font-size: 1.5em;
+}
+
+.app-one-intro {
+  font-size: large;
+}
+
+@keyframes app-one-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
