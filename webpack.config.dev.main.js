@@ -9,6 +9,7 @@ import path from 'path'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import webpack from 'webpack'
 import dotenv from 'dotenv'
+import colors from 'colors'
 
 // all native deps get installed to the './app' dir => ./app/package.json 
 // => externalDeps are the native deps which we to put as 'externals' for webpack
@@ -17,9 +18,11 @@ import dotenv from 'dotenv'
 // NOTE: for this to work, the libraryTarget: 'commonjs2' entry in 'output' was necessary. see below
 import { dependencies as externalDeps } from './app/package'
 
-if (process.env.NODE_ENV === 'developmentMock') {
+if (process.env.MOCKING_ORDERS === 'yes') {
+  console.log(colors.blue('we are mocking orders'))
   dotenv.config({ path: '.env.dev.mock'})
-} else if (process.env.NODE_ENV === 'developmentPrinter') {
+} else if (process.env.MOCKING_ORDERS === 'no') {
+  console.log(colors.blue('we are NOT mocking orders'))
   dotenv.config({ path: '.env.dev.printer'})
 } 
 
@@ -31,7 +34,7 @@ module.exports = {
     'express' // dont include express in webpack: get critical dependency warning
   ],
   entry: {
-    main: './src/main-process/main.js'
+    main: './app/main-process/main.js'
   },
   output: {
     filename: 'dev.main.js',
@@ -79,7 +82,11 @@ module.exports = {
   // Tell webpack what directories should be searched when resolving modules.
   // Absolute and relative paths can both be used, but be aware that they will behave a bit differently.
   // https://webpack.js.org/configuration/resolve/
-  resolve: {
-    modules: [path.join(__dirname, 'app'), 'node_modules']
-  }
+  // resolve: {
+  //   extensions: ['.js', '.jsx', '.json'],
+  //   modules: [path.join(__dirname, 'app'), 'node_modules'],
+  //   alias: {
+  //     npos : path.join(__dirname, './app/node_modules/npos'),
+  //   }
+  // }
 }

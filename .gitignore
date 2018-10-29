@@ -6,5 +6,4 @@ app/prod.*
 .env.*
 app/*.svg
 yarn-error.log*
-rethinkdb_data
 release

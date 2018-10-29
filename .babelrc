@@ -1,15 +1,15 @@
 {
   "presets": [
-    ["@babel/preset-env",
-      {
-        "targets": { "electron": "3"}
+    [
+      "env",
+      { 
+        "targets": {"electron": 3}
       }
-    ],
-    "@babel/preset-react"
+     ],
+     "react"
   ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-object-rest-spread",
-    "react-hot-loader/babel"
+  "plugins": [ 
+      "transform-class-properties",
+      "transform-object-rest-spread"
   ]
 }

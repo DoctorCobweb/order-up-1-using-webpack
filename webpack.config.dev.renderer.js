@@ -24,24 +24,18 @@ console.log(...Object.keys(externalDeps))
 console.log('webpack renderer __dirname')
 console.log(__dirname)
 
-const APP_MAIN = 'appMain'
-const APP_ONE = 'appOne'
-const APP_MAIN_TEST = 'appMainTest'
 let entries = {
   appMain: [
-    // 'react-hot-loader/patch',
-    // 'webpack-dev-server/client?http://localhost:8181/',
-    // 'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
-    require.resolve('./src/renderer-process/appMain/index.js') // the acutal app's entry point
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./app/renderer-process/appMain/index.js')
   ],
   appOne: [
-    // 'react-hot-loader/patch',
-    // 'webpack-dev-server/client?http://localhost:8181/',
-    // 'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
-    require.resolve('./src/renderer-process/appOne/index.js')
-  ],
-  appMainTest: [
-    require.resolve('./app/appMainTest/index.js')
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./app/renderer-process/appOne/index.js')
   ]
 }
 
@@ -53,17 +47,16 @@ module.exports = {
   ],
   entry: entries,
   output: {
-    filename: '[name]/bundle.js',
-    // filename: '[name]/dev.index.js',
-    path: path.join(__dirname, 'app'), 
-    // publicPath: 'http://localhost:8181/app/', // for HMR 
+    filename: '[name].bundle.js',
+    path: path.join(__dirname, 'dist'), 
+    publicPath: `http://localhost:8181/dist/`,
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: '/node_modules/',
         loader: 'babel-loader'
       },
@@ -93,7 +86,9 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              publicPath: '../' // the svg files get moved to './app'
+              // TODO: need to change this to include logic for 'production' resource
+              //       location
+              publicPath: 'http://localhost:8181/dist/' // the svg files get moved to here for 'development'
             }
           }
         ]
@@ -102,11 +97,10 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'app'),
-    // publicPath: 'blah',
-    // publicPath: 'http://localhost:8181/app/',
+    contentBase: path.join(__dirname, 'dist'),
+    publicPath: 'http://localhost:8181/dist',
     port: 8181,
-    // hot: true,
+    hot: true,
     before() {
       if (process.env.START_HOT === 'yes') {
         console.log('starting Main Process...')
@@ -122,31 +116,8 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin([
-        'app/appMain',
-        'app/appOne',
     ]),
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: [APP_MAIN],
-      title: 'OrderUp appMain',
-      filename: `${APP_MAIN}/index.html`,
-      template: './indexTemplate.ejs'
-    }),
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: [APP_ONE],
-      title: 'OrderUp appOne',
-      filename: `${APP_ONE}/index.html`,
-      template: './indexTemplate.ejs'
-    })
-    // new HtmlWebpackPlugin({
-    //   inject: true,
-    //   chunks: [APP_MAIN_TEST],
-    //   title: 'OrderUp appOne',
-    //   filename: `${APP_MAIN_TEST}.index.html`,
-    //   template: './indexTemplate.ejs'
-    // })
-    // new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ],
 
   /**
@@ -162,12 +133,9 @@ module.exports = {
   // Tell webpack what directories should be searched when resolving modules.
   // Absolute and relative paths can both be used, but be aware that they will behave a bit differently.
   // https://webpack.js.org/configuration/resolve/
-  resolve: {
-    extensions: ['.js', '.jsx', '.json'],
-    modules: [path.join(__dirname, 'app'), 'node_modules']
-    // alias: {
-    //   mongodb: path.resolve(__dirname, 'app/node_modules/mongodb'),
-    //   mongoose: path.resolve(__dirname, 'app/node_modules/mongoose')
-    // }
-  }
+  // resolve: {
+  //   extensions: ['.js', '.jsx', '.json'],
+  //   modules: [path.join(__dirname, '..', 'app'), 'node_modules']
+  //   }
+  // }
 }
