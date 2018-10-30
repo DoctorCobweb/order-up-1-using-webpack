@@ -33,6 +33,7 @@ replayActionRenderer(store)
 
 // log.transports.file.level = 'info'
 
+/*
 // ----------- MONGODB CHANGE STREAM ----------------
 const urlMongo = 'mongodb://localhost/?replicaSet=rs'
 MongoClient.connect(urlMongo, { useNewUrlParser: true }, (err,client) => {
@@ -48,7 +49,7 @@ MongoClient.connect(urlMongo, { useNewUrlParser: true }, (err,client) => {
 const pollStream = (cursor) => {
     cursor.next()
       .then(results => {
-          populateOrderChangeStream(results)
+        //   populateOrderChangeStream(results)
           pollStream(cursor)
       })
       .catch(err => {
@@ -84,6 +85,7 @@ const populateOrderChangeStream = (results) => {
         throw err
     }) 
 }
+*/
 
 
 mongoose.connect('mongodb://localhost/orderUpDb?replicaSet=rs', { useNewUrlParser: true })

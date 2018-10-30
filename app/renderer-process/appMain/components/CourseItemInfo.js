@@ -1,15 +1,15 @@
 import React from 'react'
 import uuidv1 from 'uuid/v1'
 
-const makeASingleInfoLine = (info) => (
-  <div key={ uuidv1() }>
-    <div>{ info.quantity } { info.info }</div>
+const makeASingleInfoLine = (line) => (
+  <div key={ line._id }>
+    <div>{ line.quantity } { line.name }</div>
   </div>
 )
 
 const CourseItemInfo = (props) => (
-    <div className="item-info">
-      { props.itemInfo.itemInfo.map(makeASingleInfoLine) } 
+    <div key={props.infoId} className="item-info">
+      { props.info.infoLines.map(makeASingleInfoLine) } 
       <div>------------</div>
     </div>
 )

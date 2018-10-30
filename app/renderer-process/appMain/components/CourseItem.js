@@ -14,13 +14,13 @@ export class CourseItem extends React.Component {
     this.props.updateOrder(this.props.orderId, {blah: 'yadda'} )
   }
   render = () => (
-    <div key={uuidv1()} className="course-item">
+    <div key={this.props.itemId} className="course-item">
       <button onClick={ () => { this.updateCourseItem(1) } }>+</button>
       <button onClick={ () => { this.updateCourseItem(-1) } }>-</button>
       <h4>{ this.props.courseItem.quantity } { this.props.courseItem.name }</h4>
-      { this.props.courseItem.info.length !== 0
+      { this.props.courseItem.infos.length !== 0
         &&
-        this.props.courseItem.info.map(itemInfo => <CourseItemInfo key={uuidv1()} itemInfo={itemInfo}/>)
+        this.props.courseItem.infos.map(info => <CourseItemInfo infoId={info._id} info={info}/>)
       }
     </div>
   )

@@ -4,19 +4,19 @@ import Course from './Course'
 
 const Order = (props) => (
   <div>
-    <h2>{ props.order.metaData.location} /// Table: { props.order.metaData.tableNumber}</h2>
+    <h2>{ props.order.location} /// Table: { props.order.tableNumber}</h2>
     <div className="order-meta-details">
-      <div>{ props.order.metaData.orderTakenUsing}</div>
-      <div>Clerk: { props.order.metaData.clerk}</div>
-      <div>{ props.order.metaData.orderSentAt}</div>
+      <div>{ props.order.orderTakenUsing}</div>
+      <div>Clerk: { props.order.clerk}</div>
+      <div>{ props.order.orderSentAt}</div>
     </div>
-    { Object.keys(props.order.meals)
-        .map(courseName => (
+    { props.order.courses
+        .map(course => (
           <Course
-            key={ courseName }
-            orderId= { props.order.id }
-            courseName={ courseName }
-            courseItems={ props.order.meals[courseName] }
+            courseId={ course._id }
+            orderId= { props.order._id }
+            courseName={ course.name}
+            courseItems={ course.items }
           />
         )
       )

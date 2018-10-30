@@ -22,10 +22,10 @@ const APP_MAIN = 'appMain'
 const APP_ONE = 'appOne'
 let entries = {
   appMain: [
-    './src/renderer-process/appMain/index.js' // the acutal app's entry point
+    './app/renderer-process/appMain/index.js' // the acutal app's entry point
   ],
   appOne: [
-    './src/renderer-process/appOne/index.js' // the acutal app's entry point
+    './app/renderer-process/appOne/index.js' // the acutal app's entry point
 
   ]
 }
@@ -38,9 +38,9 @@ module.exports = {
   ],
   entry: entries,
   output: {
-    filename: '[name]/prod.index.js',
-    path: path.join(__dirname, 'app'),
-    // publicPath: './dist',
+    filename: '[name].prod.bundle.js',
+    path: path.join(__dirname, 'app', 'dist'),
+    publicPath: './dist/', // CHCK WHAT THIS DOES
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
   module: {
@@ -86,24 +86,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin([
         // TODO: add more folders here once more react apps are made
-        'app/appMain',
-        'app/appOne',
+        // 'app/appMain',
+        // 'app/appOne',
         'release'
     ]),
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: [APP_MAIN],
-      title: 'OrderUp appMain',
-      filename: `${APP_MAIN}/index.html`,
-      template: './indexTemplate.ejs'
-    }),
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: [APP_ONE],
-      title: 'OrderUp appOne',
-      filename: `${APP_ONE}/index.html`,
-      template: './indexTemplate.ejs'
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),

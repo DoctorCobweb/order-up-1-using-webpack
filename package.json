@@ -20,18 +20,21 @@
     "productName": "OrderUp",
     "appId": "au.com.andretrosky.orderup",
     "extraMetadata": {
-      "main": "./prod.main.js"
+      "main": "./main.prod.js"
     },
     "files": [
-      "./**/*",
-      "package.json",
+      "dist/",
+      "renderer-process/appMain/index.html",
+      "renderer-process/appOne/index.html",
       "node_modules/",
-      "prod.main.js",
-      "prod.main.js.map"
+      "main.prod.js",
+      "main.prod.js.map",
+      "package.json"
     ],
     "directories": {
       "output": "release",
-      "buildResources": "."
+      "buildResources": "resources",
+      "app": "app"
     }
   },
   "devDependencies": {

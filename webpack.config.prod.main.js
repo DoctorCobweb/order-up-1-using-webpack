@@ -30,10 +30,10 @@ module.exports = {
     'express' // dont include express in webpack: get critical dependency warning
   ],
   entry: {
-    main: './src/main-process/main.js'
+    main: './app/main-process/main.js'
   },
   output: {
-    filename: 'prod.main.js',
+    filename: 'main.prod.js',
     path: path.join(__dirname, 'app'),
     libraryTarget: 'commonjs2' // otherwise get referrence error for native modules require'd
   },
@@ -69,7 +69,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(
       [
-        'app',
         'release'
       ],
       {

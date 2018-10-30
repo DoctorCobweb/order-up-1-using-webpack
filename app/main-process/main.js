@@ -21,6 +21,11 @@ log.transports.file.level = 'info'
 //     require('module').globalPaths.push(p)
 // }
 
+// -------------------------- ELECTRON-REDUX STORE ------------------------------
+// setup our shared electron-redux store.
+// => the store on the main process becomes the single source of truth
+const store = configureStore()
+
 
 // ------------------------- CHANGE STREAMS (important) -------------------------
 // we use the mongodb driver (instead of Mongoose .watch()) for change streams.
@@ -68,7 +73,7 @@ const pollStream = (cursor) => {
 }
 
 const populateOrderChangeStream = (results) => {
-    console.log(colors.blue(results))
+    // console.log(colors.blue(results))
     Order.find({_id: results.fullDocument._id})
     .populate({
         path: 'courses',
@@ -82,14 +87,15 @@ const populateOrderChangeStream = (results) => {
                 populate: {
                     path: 'infoLines',
                     model: 'InfoLine'
-                    }
+                }
             }
         }
     })
     .exec() 
     .then(order => {
-        // console.log('stringify(order)')
-        console.log(colors.green(stringify(order)))
+        // console.log(colors.green(stringify(order)))
+        store.dispatch({ type:'ADD_ORDER', payload: order["0"]._doc})
+        console.log('store.getState():', store.getState())
     })
     .catch(err => {
         throw err
@@ -98,11 +104,6 @@ const populateOrderChangeStream = (results) => {
 
 
 
-// setup our shared electron-redux store.
-// => the store on the main process becomes the single source of truth
-const store = configureStore()
-// store.dispatch({ type:'ADD_ORDER', order:'yadda order'})
-// console.log('store.getState():', store.getState())
 
 
 
@@ -112,7 +113,7 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
-    // this setups
+    // this sets up:
     // 0. mongodb
     // 1. serialport to listen
     // 2. parse escpos data to make orders
@@ -136,12 +137,6 @@ db.once('open', () => {
     //       knuckleDragger(db)
     //   })
     knuckleDragger()
-
-    // put change stream stuff here for now
-    // const orderCollection = db.collection('orders')
-    // const changeStream = orderCollection.watch()
-    // console.log(colors.blue(changeStream))
-    // const changeStream = Order.watch().on('change', change => console.log(change))
 })
 
 
@@ -167,33 +162,16 @@ app.on('ready', () => {
         y: 80
     })
 
-    // const startUrlAppMain = process.env.ELECTRON_APP_MAIN_URL || url.format({
-    //       pathname: path.join(__dirname, `${APP_MAIN}/index.html`),
-    //       protocol: 'file:',
-    //       slashes: true
-    // })
-    // const startUrlAppOne = process.env.ELECTRON_APP_ONE_URL || url.format({
-    //       pathname: path.join(__dirname, `${APP_ONE}/index.html`),
-    //       protocol: 'file:',
-    //       slashes: true
-    // })
-
-    let appMainUrl
-    let appOneUrl
-    if (process.env.NODE_ENV === 'development') {
-        appMainUrl = url.format({
-          pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
-          protocol: 'file:',
-          slashes: true
-        })
-        appOneUrl = url.format({
-          pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
-          protocol: 'file:',
-          slashes: true
-        })
-    } else {
-        console.log('TODO: make urls for windows in production/testing')
-    }
+    let appMainUrl = url.format({
+        pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
+        protocol: 'file:',
+        slashes: true
+    })
+    let appOneUrl = url.format({
+        pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
+        protocol: 'file:',
+        slashes: true
+    })
 
     winMain.loadURL(appMainUrl)
     winOne.loadURL(appOneUrl)

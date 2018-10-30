@@ -52,7 +52,6 @@ const startMockingOrders = () => {
     // we have (atm) 51 dockets, each in separate files in mock-orders-manual/
     const randInt = Math.floor(Math.random() * 50 + 1)
     const mockOrderFileName = `order_${randInt}.bin`
-    console.log('HEY HYE')
     const filePath = path.join(
       __dirname,
       '../app',
@@ -61,9 +60,11 @@ const startMockingOrders = () => {
       'mock-orders',
       mockOrderFileName
     )
-    const mockOrder = fs.readFileSync(filePath)
-    port.write(mockOrder, err => {
+    fs.readFile(filePath, (err, data) => {
       if (err) throw err
+      port.write(data, err => {
+        if (err) throw err
+      })
     })
   }
 

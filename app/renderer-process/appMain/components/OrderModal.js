@@ -17,7 +17,7 @@ const OrderModal = (props) => (
   >
     <div>
       <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>
-      { !!props.selectedOrder && <Order order={ props.selectedOrder }/> }
+      { !!props.selectedOrder && <Order key={props.selectedOrder._id} order={ props.selectedOrder }/> }
     </div>
   </Modal>
 ) 
