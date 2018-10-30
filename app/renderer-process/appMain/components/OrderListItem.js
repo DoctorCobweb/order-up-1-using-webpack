@@ -8,7 +8,7 @@ export default class OrderListItem extends React.Component {
 
   render() {
     return (
-      <div key={this.props.order._id} className="list-item">
+      <div className="list-item">
         <button className="button" onClick={this.handleOrderClick}>
           <p>{this.props.order.location} Table: {this.props.order.tableNumber}</p>
           <p>Time: {this.props.order.orderSentAt}</p>

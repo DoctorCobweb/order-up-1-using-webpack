@@ -32,23 +32,18 @@ log.transports.file.level = 'info'
 export default (db, buffer) => {
   nposParser.parse(buffer)
     .then(ast => {
-      npos.textualize(ast)
-        .then(results => {
-          //do somethine with the array of strings
-          let data = sanitize(results)
-          const zippedData = tokenizeData(data)
-          log.info(zippedData)
-          const order = buildOrder(zippedData)
-          insertSingleOrder(db, order)
-        })
-        .catch(err => {
-          console.log('ERROR PARSER (textualize): '.red, err.message)
-          log.info('ERROR PARSER (textualize): '.red, err.message)
-        })
+      return npos.textualize(ast)
+    })
+    .then(results => {
+      //do somethine with the array of strings
+      let data = sanitize(results)
+      const zippedData = tokenizeData(data)
+      // log.info(zippedData)
+      const order = buildOrder(zippedData)
+      insertSingleOrder(db, order)
     })
     .catch(err => {
-      console.log('ERROR PARSER (parser): '.red, err.message)
-      log.info('ERROR PARSER (parser): '.red, err.message)
+      log.info('ERROR PARSER (textualize / parser ): '.red, err.message)
     })
 }
 
@@ -281,8 +276,9 @@ const handleMenuItemsAndItemInfo = (data, idxs) => {
   }
   order = removeAllIndicesInOrder(order)
   order = flattenInfos(order)
-  console.log('parser // order:')
-  console.log(stringify(order))
+  // this is GOOD logging info:
+  // console.log('parser // order:')
+  // console.log(stringify(order))
   return order
 }
 

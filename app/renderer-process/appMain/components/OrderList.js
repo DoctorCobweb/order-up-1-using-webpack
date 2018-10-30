@@ -7,17 +7,22 @@ export class OrderList extends React.Component {
     this.props.handleOrderClick(order)
   }
 
+  yadda = {blah: 1}
+
   render() {
+    console.log('OrderList this.props.orders:')
+    console.log(this.props.orders)
     return (
       <div>
         {
           this.props.orders.length === 0 ? (
-            ""
+            "no orders"
           ) : (
             this.props.orders.map(order => 
               <OrderListItem
-                order={order}
-                handleOrderClick={this.handleOrderClick}
+                key={ order._id }
+                order={ order }
+                handleOrderClick={ this.handleOrderClick }
               />
             )
           )

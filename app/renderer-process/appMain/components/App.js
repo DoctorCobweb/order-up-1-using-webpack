@@ -26,6 +26,8 @@ export class App extends Component {
   }
 
   render() {
+    // console.log('App.js this.props.orders:')
+    // console.log(this.props.orders)
     return (
       <div className="app">
         <header className="app-header">
@@ -47,7 +49,7 @@ export class App extends Component {
 const mapStateToProps = (state) => ({ orders: state })
 
 const mapDispatchToProps = (dispatch) => ({
-  addOrder: (order) => dispatch(addOrder(order))
+  addOrder: (order) => dispatch(addOrder(order)) // TODO: fix/implement
 })
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)

@@ -3,12 +3,12 @@ import uuidv1 from 'uuid/v1'
 import CourseItem from './CourseItem'
 
 const Course = (props) => (
-  <div key={props.courseId}>
+  <div>
     <h2>{ props.courseName }</h2>
     { props.courseItems
       .map(courseItem => (
         <CourseItem
-          ItemId={courseItem._id}
+          key= { courseItem._id }
           orderId={ props.orderId }
           courseItem={courseItem}
         />

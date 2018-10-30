@@ -2,6 +2,8 @@ import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
 import { Order, Course, Item, Info, InfoLine } from '../../shared/models/models'
 import { populateAllOrders, streamDemo } from './mongoose-playground'
+import uuidv1 from 'uuid/v1' // random version of uuid
+
 
 export const addToMongoDB = (db, order) => {
   
@@ -42,7 +44,11 @@ export const addToMongoDB = (db, order) => {
     return _.map(info, (itemInfo) => {
       return _.map(itemInfo, infoLine => {
         const [ name, quantity ] = infoLine
-        return new InfoLine({ name, quantity })
+        return new InfoLine({
+          _id: uuidv1(),
+          name,
+          quantity
+        })
       })
     })
   })
@@ -70,6 +76,7 @@ const insertInfos = (orderMap) => {
           return id
       })
       return new Info({
+        _id: uuidv1(),
         infoLines: infoLinesIds
       })
     })
@@ -97,6 +104,7 @@ const insertItems = (orderMap) => {
   const itemsDocs = _.map(items, item => {
     const [ name, quantity, infos ] = item
     return new Item({
+      _id: uuidv1(),
       name,
       quantity,
       infos
@@ -108,8 +116,8 @@ const insertItems = (orderMap) => {
       // console.log('results:')
       // console.log(results)
       const updatedMap = updateOrderMapWithCourseIds(orderMap, results)
-      console.log('updatedMap.get(\'updatedCourses\')')
-      console.log(stringify(updatedMap.get('updatedCourses')))
+      // console.log('updatedMap.get(\'updatedCourses\')')
+      // console.log(stringify(updatedMap.get('updatedCourses')))
 
       //insert the courses
       insertCourses(updatedMap)
@@ -124,6 +132,7 @@ const insertCourses = (orderMap) => {
   const courseDocs = _.map(courses, course => {
     const [ courseName, items ] = course 
     return new Course({
+      _id: uuidv1(),
       name: courseName,
       items
     })
@@ -131,8 +140,8 @@ const insertCourses = (orderMap) => {
 
   Course.insertMany(courseDocs, {order: true})
     .then(results => {
-      console.log('Course.insertMany results')
-      console.log(results)
+      // console.log('Course.insertMany results')
+      // console.log(results)
 
       //finally create the order doc
       createOrderAndSave(orderMap, results)
@@ -147,6 +156,7 @@ const createOrderAndSave = (map, vals) => {
   const courseIds = _.map(vals, course => course._id)
   const courseMetaData = map.get('order').metaData
   const orderDoc = new Order({
+    _id: uuidv1(),
     clerk: courseMetaData.clerk,
     covers: courseMetaData.covers,
     customerName: courseMetaData.customerName,
@@ -160,10 +170,11 @@ const createOrderAndSave = (map, vals) => {
 
   Order.create(orderDoc)
     .then(results => {
-      console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
-      console.log(results)
+      // FINISH PROCESS OF ADDING THE ORDER TO MONGODB
+      // console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
+      // console.log(results)
       // try populate the order
-      populateAllOrders()
+      // populateAllOrders()
     })
     .catch(err => {
       throw err

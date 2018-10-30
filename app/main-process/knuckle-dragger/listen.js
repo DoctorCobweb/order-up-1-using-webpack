@@ -155,7 +155,6 @@ export default (db) => {
     // adjust the buffer to begin at the start of the next order
     readjustBuffer(opEndpoint)
 
-    log.info('calling parseSingleOrder')
     parseSingleOrder(db, orderBuff)
   }
 

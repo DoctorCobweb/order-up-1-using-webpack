@@ -10,6 +10,7 @@ import colors from 'colors'
 import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
 import { Order } from '../shared/models/models'
+import { startAddOrder } from '../shared/actions/orders'
 import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
 
@@ -64,42 +65,50 @@ MongoClient.connect(urlMongo, (err,client) => {
 const pollStream = (cursor) => {
     cursor.next()
       .then(results => {
-          populateOrderChangeStream(results)
-          pollStream(cursor)
+        populateOrderChangeStream(results)
+        pollStream(cursor)
       })
       .catch(err => {
-          throw err
+        throw err
       })
 }
 
 const populateOrderChangeStream = (results) => {
-    // console.log(colors.blue(results))
-    Order.find({_id: results.fullDocument._id})
-    .populate({
-        path: 'courses',
-        model: 'Course',
-        populate: {
-            path: 'items',
-            model: 'Item',
-            populate: {
-                path: 'infos',
-                model: 'Info',
-                populate: {
-                    path: 'infoLines',
-                    model: 'InfoLine'
-                }
-            }
-        }
-    })
-    .exec() 
-    .then(order => {
-        // console.log(colors.green(stringify(order)))
-        store.dispatch({ type:'ADD_ORDER', payload: order["0"]._doc})
-        console.log('store.getState():', store.getState())
-    })
-    .catch(err => {
-        throw err
-    }) 
+
+    const newOrderId = results.fullDocument._id
+    store.dispatch(startAddOrder(newOrderId))
+    
+    // Order.findById(results.fullDocument._id)
+    // .populate({
+    //     path: 'courses',
+    //     model: 'Course',
+    //     populate: {
+    //         path: 'items',
+    //         model: 'Item',
+    //         populate: {
+    //             path: 'infos',
+    //             model: 'Info',
+    //             populate: {
+    //                 path: 'infoLines',
+    //                 model: 'InfoLine'
+    //             }
+    //         }
+    //     }
+    // })
+    // .exec() 
+    // .then(order => {
+    //     // console.log(colors.green(stringify(order)))
+    //     // store.dispatch({ type:'ADD_ORDER', payload: order["0"]._doc})
+    //     const orderCopy = _.cloneDeep(order)
+    //     console.log(colors.blue(stringify(orderCopy)))
+    //     store.dispatch(startAddOrder({ type:'ADD_ORDER', payload: orderCopy }))
+    //     // store.dispatch({ type:'ADD_ORDER', payload: orderCopy })
+    //     // console.log(colors.green('ELECTRON-REDUX STORE'))
+    //     // console.log(colors.blue(store.getState()))
+    // })
+    // .catch(err => {
+    //     throw err
+    // }) 
 }
 
 
@@ -151,33 +160,33 @@ app.on('ready', () => {
 
     let winMain = new BrowserWindow({
         width: 800,
-        height: 700,
-        x: 0,
-        y: 0
+        height: 900,
+        x: 800,
+        y: 100
     })
-    let winOne = new BrowserWindow({
-        width: 700,
-        height: 700,
-        x: 200,
-        y: 80
-    })
+    // let winOne = new BrowserWindow({
+    //     width: 700,
+    //     height: 700,
+    //     x: 200,
+    //     y: 80
+    // })
 
     let appMainUrl = url.format({
         pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
         protocol: 'file:',
         slashes: true
     })
-    let appOneUrl = url.format({
-        pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    })
+    // let appOneUrl = url.format({
+    //     pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    // })
 
     winMain.loadURL(appMainUrl)
-    winOne.loadURL(appOneUrl)
+    // winOne.loadURL(appOneUrl)
 
     winMain.webContents.openDevTools()
-    winOne.webContents.openDevTools()
+    // winOne.webContents.openDevTools()
 
     winMain.on('closed', () => {
         // Dereference the window object, usually you would store windows
@@ -185,12 +194,12 @@ app.on('ready', () => {
         // when you should delete the corresponding element.
         winMain = null
     })
-    winOne.on('closed', () => {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        winOne= null
-    })
+    // winOne.on('closed', () => {
+    //     // Dereference the window object, usually you would store windows
+    //     // in an array if your app supports multi windows, this is the time
+    //     // when you should delete the corresponding element.
+    //     winOne= null
+    // })
 })
 
 // Quit when all windows are closed.
@@ -200,7 +209,7 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
     }
-});
+})
 
 app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
@@ -208,7 +217,7 @@ app.on('activate', () => {
     if (winMain === null) {
         createWindow()
     }
-    if (winOne === null) {
-        createWindow()
-    }
-});
+    // if (winOne === null) {
+    //     createWindow()
+    // }
+})
