@@ -31,7 +31,8 @@ export const startAddOrder = (orderId = undefined) => {
     .populate(orderPopulation)
     .exec() 
     .then(order => {
-        console.log(colors.blue(stringify(order)))
+        // console.log(colors.blue(stringify(order)))
+        console.log(colors.blue('ACTION: startAddOrder() => populated the order, adding to store'))
         dispatch(addOrder(order._doc))
         // console.log(colors.green('ELECTRON-REDUX STORE'))
         // console.log(colors.blue(store.getState()))

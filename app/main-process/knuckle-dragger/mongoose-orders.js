@@ -2,12 +2,10 @@ import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
 import { Order, Course, Item, Info, InfoLine } from '../../shared/models/models'
 import { populateAllOrders, streamDemo } from './mongoose-playground'
-import uuidv1 from 'uuid/v1' // random version of uuid
+import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 
 
 export const addToMongoDB = (db, order) => {
-  
-
   // streamDemo()
 
   // order is a deeply nested object. at each 'level' of the order

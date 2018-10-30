@@ -10,6 +10,8 @@ export class CourseItem extends React.Component {
 
   updateCourseItem = (increment) => {
     console.log(`updateCourseItem: increment ${increment} for orderId: ${this.props.orderId}`)
+
+    // TODO: handle the updating
     // dispatch the increment to update the order using orderId
     this.props.updateOrder(this.props.orderId, {blah: 'yadda'} )
   }
@@ -20,7 +22,7 @@ export class CourseItem extends React.Component {
       <h4>{ this.props.courseItem.quantity } { this.props.courseItem.name }</h4>
       { this.props.courseItem.infos.length !== 0
         &&
-        this.props.courseItem.infos.map(info => <CourseItemInfo key={ info._id } info={info}/>)
+        this.props.courseItem.infos.map(info => <CourseItemInfo key={ info._doc._id } info={info._doc}/>)
       }
     </div>
   )

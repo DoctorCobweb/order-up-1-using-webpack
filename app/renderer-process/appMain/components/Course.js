@@ -8,9 +8,9 @@ const Course = (props) => (
     { props.courseItems
       .map(courseItem => (
         <CourseItem
-          key= { courseItem._id }
+          key={ courseItem._doc._id }
           orderId={ props.orderId }
-          courseItem={courseItem}
+          courseItem={courseItem._doc}
         />
       ))
     }

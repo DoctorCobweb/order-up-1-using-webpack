@@ -1,5 +1,5 @@
 import React from 'react'
-import InfoLine from './InfoLine'
+import CourseInfoLine from './CourseInfoLine'
 
 const makeASingleInfoLine = (line) => (
   <div key={ line._id }>
@@ -11,7 +11,7 @@ const CourseItemInfo = (props) => (
     <div className="item-info">
       { props.info.infoLines.length !==0 
           && 
-        props.info.infoLines.map(line => <InfoLine key={ line._id } line={line}/>)
+        props.info.infoLines.map(line => <CourseInfoLine key={ line._doc._id } line={line._doc}/>)
       } 
       <div>------------</div>
     </div>
