@@ -3,7 +3,7 @@ import CourseItemInfoLine from './CourseItemInfoLine'
 
 const CourseItemInfo = (props) => (
     <div className="item-info">
-      <div>calc'd quantity: { props.calculatedItemInfoQuantity }</div>
+      <div>calc'd info quantity: { props.calculatedItemInfoQuantity }</div>
       { props.info.infoLines.length !==0 
           && 
         props.info.infoLines.map(line => <CourseItemInfoLine key={ line._id } line={line}/>)

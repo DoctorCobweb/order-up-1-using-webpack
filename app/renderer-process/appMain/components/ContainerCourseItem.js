@@ -7,11 +7,16 @@ import CourseItemInfo from './CourseItemInfo'
 export class ContainerCourseItem extends React.Component {
   handleCourseItemClick = (val) => {
     console.log(`handleCourseItemClick: item _id: ${this.props.courseItem._id} /// value: ${val}`)
+    // TODO
+    // call async action creator here
   }
 
   handleCourseItemInfoClick = ({ _id, val}) => {
     console.log(`handleCourseItemInfoClick: info _id is: ${_id} /// value: ${val}`)
+    // TODO
+    // call async action creator here
   }
+
   calculateItemInfoQuantity = (info) => {
     const eachLinesQuantity = info.infoLines.map(infoLine => infoLine.quantity)
     // IMPORTANT ASSUMPTION on how to calc the quantity of an info section:
@@ -34,7 +39,7 @@ export class ContainerCourseItem extends React.Component {
   }
 
   render = () => (
-    <div>
+    <div className="container-course">
       <CourseItem
         name={ this.props.courseItem.name }
         quantity={ this.props.courseItem.quantity }

@@ -1,4 +1,3 @@
-console.log('hello from index.js appMain')
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
