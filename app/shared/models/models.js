@@ -6,7 +6,7 @@ const orderSchema = new Schema({
   completed: { type: Boolean, default: false },
   assignedToBoard: { type: Boolean, default: false },
   clerk: String,
-  covers: String,
+  covers: Number,
   customerName: String,
   location: String,
   orderSentAt: String,
@@ -27,7 +27,7 @@ const itemSchema = new Schema({
   _id: String,
   completed: { type: Boolean, default: false},
   name: String,
-  quantity: String,
+  quantity: Number,
   infos: [{type: String, ref: 'Info'}]
 })
 
@@ -40,7 +40,7 @@ const infoSchema = new Schema({
 const infoLineSchema = new Schema({
   _id: String,
   name: String,
-  quantity: String
+  quantity: Number 
 })
 
 const Order = mongoose.model('Order', orderSchema)

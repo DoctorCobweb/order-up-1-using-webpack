@@ -9,8 +9,8 @@ const CourseItemInfo = (props) => (
         props.info.infoLines.map(line => <CourseItemInfoLine key={ line._id } line={line}/>)
       } 
       <div>
-        <button onClick={ () => props.handleCourseItemInfoClick({_id: props.info._id, val:1}) }>+</button>
-        <button onClick={ () => props.handleCourseItemInfoClick({_id: props.info._id, val:-1}) }>-</button>
+        <button onClick={ () => props.handleItemInfoQuantityClick({_id: props.info._id, val:1}) }>+</button>
+        <button onClick={ () => props.handleItemInfoQuantityClick({_id: props.info._id, val:-1}) }>-</button>
       </div>
     </div>
 )

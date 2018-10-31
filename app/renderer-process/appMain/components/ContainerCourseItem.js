@@ -1,18 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { startUpdateInfo } from '../../../shared/actions/orders'
+import { startUpdateItemQuantity } from '../../../shared/actions/orders'
 import CourseItem from './CourseItem'
 import CourseItemInfo from './CourseItemInfo'
 
+
 export class ContainerCourseItem extends React.Component {
-  handleCourseItemClick = (val) => {
-    console.log(`handleCourseItemClick: item _id: ${this.props.courseItem._id} /// value: ${val}`)
-    // TODO
-    // call async action creator here
+
+  handleItemQuantityClick = (amount) => {
+    console.log(`handleItemQuantityClick: item _id: ${this.props.courseItem._id} /// amount: ${amount}`)
+    const data = {
+      orderId: this.props.orderId,
+      itemId: this.props.courseItem._id,
+      amount
+    }
+    this.props.startUpdateItemQuantity(data)
   }
 
-  handleCourseItemInfoClick = ({ _id, val}) => {
-    console.log(`handleCourseItemInfoClick: info _id is: ${_id} /// value: ${val}`)
+  handleItemInfoQuantityClick = ({ _id, val}) => {
+    console.log(`handleItemInfoQuantityClick: info _id is: ${_id} /// value: ${val}`)
     // TODO
     // call async action creator here
   }
@@ -43,13 +49,13 @@ export class ContainerCourseItem extends React.Component {
       <CourseItem
         name={ this.props.courseItem.name }
         quantity={ this.props.courseItem.quantity }
-        handleCourseItemClick={ this.handleCourseItemClick }
+        handleItemQuantityClick={ this.handleItemQuantityClick }
       />
       { this.props.courseItem.infos.map(info => 
           <CourseItemInfo
             key={ info._id }
             info={ info }
-            handleCourseItemInfoClick={ this.handleCourseItemInfoClick }
+            handleItemInfoQuantityClick={ this.handleItemInfoQuantityClick }
             calculatedItemInfoQuantity={ this.calculateItemInfoQuantity(info) }
           />
         )
@@ -63,7 +69,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  blah: (yadda) => dispatch(startUpdateInfo(yadda))
+  startUpdateItemQuantity: (_id, amount) => dispatch(startUpdateItemQuantity(_id, amount)),
+  // startUpdateItemInfo: (_id, ) => dispatch(startUpdateInfo(yadda))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerCourseItem)

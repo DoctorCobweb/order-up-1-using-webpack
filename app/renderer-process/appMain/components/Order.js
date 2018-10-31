@@ -25,7 +25,6 @@ export const Order = (props) => (
   </div>
 )
 
-
 const mapStateToProps = (state) => ({
   orders: state
 })

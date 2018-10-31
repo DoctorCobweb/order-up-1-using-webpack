@@ -1,4 +1,4 @@
-import { Order } from '../models/models'
+import { Order, Item } from '../models/models'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 
@@ -62,16 +62,62 @@ export const startAddOrder = (orderId = undefined) => {
 
 
 // UPDATE_ORDER
-export const updateOrder = (id, updatedOrder) => ({
-  type: 'UPDATE_ORDER',
-  payload: updatedOrder
-})
+// export const updateOrder = (_id, updatedOrder) => ({
+//   type: 'UPDATE_ORDER',
+//   payload: updatedOrder
+// })
 
 // async UPDATE_ORDER
 // because electron-redux turns all actions into async actions
 // we must use appropriate middleware to handle async, eg redux-thunk
-export const startUpdateOrder = (id, updatedOrder) => {
+// export const startUpdateOrder = (_id, updatedOrder) => {
+//   return (dispatch, getState) => {
+//     return dispatch(updateOrder(_id, updatedOrder))
+//   }
+// }
+
+export const updateItemQuantity = (orderId, itemId, amount) => ({
+  type: 'UPDATE_ITEM_QUANTITY',
+  payload: {
+    orderId,
+    itemId,
+    amount
+  }
+})
+
+export const startUpdateItemQuantity = ({orderId, itemId, amount} = {}) => {
+  console.log('startUpdateItemQuantity called. updating mongodb')
   return (dispatch, getState) => {
-    return dispatch(updateOrder(id, updatedOrder))
+    return Item.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true})
+      .exec()
+      .then(item => {
+        console.log('updated document is:')
+        console.log(item)
+        console.log('updated item quantity. calling updateItemQuantity')
+        dispatch(updateItemQuantity(orderId, itemId, amount))
+      })
+      .catch(err => {
+        throw err
+      })
   }
 }
+
+// export const updateItemInfo = (_id, updates) => ({
+//   type: 'UPDATE_ITEM_INFO',
+//   payload: updates
+// })
+
+// export const startUpdateItemInfo = (_id, updates) => {
+//   return (dispatch, getState) => {
+//     // update mongo Item corresponding to _id val pass in
+//     Item.findByIdAndUpdate(_id, updates)
+//       .exec()
+//       .then(item => {
+//         //call dispatch now 
+//         dispatch(updateItemInfo(_id, updates))
+//       })
+//       .catch(e => {
+//         throw e
+//       })
+//   }
+// }
