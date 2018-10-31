@@ -33,9 +33,25 @@ export const startAddOrder = (orderId = undefined) => {
     .then(order => {
         // console.log(colors.blue(stringify(order)))
         console.log(colors.blue('ACTION: startAddOrder() => populated the order, adding to store'))
-        dispatch(addOrder(order._doc))
-        // console.log(colors.green('ELECTRON-REDUX STORE'))
-        // console.log(colors.blue(store.getState()))
+
+        // IMPORTANT: must call .toJSON() on the document. 
+        // https://github.com/Automattic/mongoose/issues/516
+        // if you don't then order object will contain many extra
+        // properties, and look like
+        // { '_doc':... ,
+        //   '_activePaths': ... ,
+        //   '_saveError': ... ,
+        //   '_validationError: ... ,
+        //   'isNew': ... ,
+        //   '_pres': ... ,
+        //   '_posts': ... ,
+        //   'save': ... ,
+        //   'errors': ... ,
+        //   '_events': ...
+        // }
+        // you get the picture! the actual data we want resides in _doc field
+        // and calling .toJSON() will give us just that.
+        dispatch(addOrder(order.toJSON()))
     })
     .catch(err => {
       throw err

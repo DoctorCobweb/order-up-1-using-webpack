@@ -62,9 +62,7 @@ MongoClient.connect(urlMongo, (err, client) => {
   const changeStream = collection.watch()
 
   console.log(colors.blue('main-process: connected to server via MongoClient'))
-
   // console.log(colors.blue(db.collection('orders')))
-
   pollStream(changeStream)
 })
 

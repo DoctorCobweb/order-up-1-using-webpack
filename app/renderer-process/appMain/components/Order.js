@@ -17,10 +17,10 @@ const Order = (props) => {
       { props.order.courses
           .map(course => (
             <Course
-              key= { course._doc._id }
+              key= { course._id }
               orderId= { props.order._id }
-              courseName={ course._doc.name}
-              courseItems={ course._doc.items }
+              courseName={ course.name}
+              courseItems={ course.items }
             />
           )
         )

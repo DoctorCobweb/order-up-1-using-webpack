@@ -22,7 +22,7 @@ export class CourseItem extends React.Component {
       <h4>{ this.props.courseItem.quantity } { this.props.courseItem.name }</h4>
       { this.props.courseItem.infos.length !== 0
         &&
-        this.props.courseItem.infos.map(info => <CourseItemInfo key={ info._doc._id } info={info._doc}/>)
+        this.props.courseItem.infos.map(info => <CourseItemInfo key={ info._id } info={info}/>)
       }
     </div>
   )
