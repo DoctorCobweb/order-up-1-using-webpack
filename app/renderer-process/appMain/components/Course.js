@@ -1,16 +1,14 @@
 import React from 'react'
-import uuidv1 from 'uuid/v1'
-import CourseItem from './CourseItem'
+import ContainerCourseItem from './ContainerCourseItem'
 
 const Course = (props) => (
   <div>
     <h2>{ props.courseName }</h2>
-    { props.courseItems
-      .map(courseItem => (
-        <CourseItem
+    { props.courseItems.map(courseItem => (
+        <ContainerCourseItem
           key={ courseItem._id }
           orderId={ props.orderId }
-          courseItem={courseItem}
+          courseItem={ courseItem }
         />
       ))
     }
