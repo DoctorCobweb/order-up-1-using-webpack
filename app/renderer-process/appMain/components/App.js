@@ -25,25 +25,21 @@ export class App extends Component {
     this.setState({ selectedOrder: undefined })
   }
 
-  render() {
-    // console.log('App.js this.props.orders:')
-    // console.log(this.props.orders)
-    return (
-      <div className="app">
-        <header className="app-header">
-          <img src={logo} className="app-logo" alt="logo" />
-          <h1 className="app-title">OrderUp: AppMain</h1>
-        </header>
-        <button className="button" onClick={this.onClickLog}>console.log orders</button>
-        <p>electron-redux store has {this.props.orders.length} items</p>
-        <OrderList handleOrderClick={this.handleOrderClick}/>
-        <OrderModal
-          selectedOrder={this.state.selectedOrder}
-          handleClearSelectedOrder={this.handleClearSelectedOrder}
-        />
-      </div>
-    );
-  }
+  render = () => (
+    <div className="app">
+      <header className="app-header">
+        <img src={logo} className="app-logo" alt="logo" />
+        <h1 className="app-title">OrderUp: AppMain</h1>
+      </header>
+      <button className="button" onClick={this.onClickLog}>console.log orders</button>
+      <p>electron-redux store has {this.props.orders.length} items</p>
+      <OrderList handleOrderClick={this.handleOrderClick}/>
+      <OrderModal
+        selectedOrder={this.state.selectedOrder}
+        handleClearSelectedOrder={this.handleClearSelectedOrder}
+      />
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => ({ orders: state })

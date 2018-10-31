@@ -7,9 +7,6 @@ import Order from './Order'
 Modal.setAppElement('#root')
 
 const OrderModal = (props) => {
-  // console.log('OrderModal props')
-  // console.log(props)
-
   return (
     <Modal
       isOpen={ !!props.selectedOrder }

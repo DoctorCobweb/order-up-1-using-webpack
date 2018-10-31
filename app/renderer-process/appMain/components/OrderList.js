@@ -7,30 +7,23 @@ export class OrderList extends React.Component {
     this.props.handleOrderClick(order)
   }
 
-  yadda = {blah: 1}
-
-  render() {
-    console.log('OrderList this.props.orders:')
-    console.log(this.props.orders)
-    return (
-      <div>
-        {
-          this.props.orders.length === 0 ? (
-            "no orders"
-          ) : (
-            this.props.orders.map(order => 
-              <OrderListItem
-                key={ order._id }
-                order={ order }
-                handleOrderClick={ this.handleOrderClick }
-              />
-            )
+  render = () => (
+    <div>
+      {
+        this.props.orders.length === 0 ? (
+          "no orders"
+        ) : (
+          this.props.orders.map(order => 
+            <OrderListItem
+              key={ order._id }
+              order={ order }
+              handleOrderClick={ this.handleOrderClick }
+            />
           )
-        }
-      </div>
-    )
-  }
-
+        )
+      }
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => ({
