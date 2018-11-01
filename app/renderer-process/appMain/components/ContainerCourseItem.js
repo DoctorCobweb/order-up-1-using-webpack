@@ -11,6 +11,7 @@ export class ContainerCourseItem extends React.Component {
     console.log(`handleItemQuantityClick: item _id: ${this.props.courseItem._id} /// amount: ${amount}`)
     const data = {
       orderId: this.props.orderId,
+      courseId: this.props.courseId,
       itemId: this.props.courseItem._id,
       amount
     }

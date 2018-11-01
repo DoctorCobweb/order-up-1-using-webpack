@@ -76,16 +76,17 @@ export const startAddOrder = (orderId = undefined) => {
 //   }
 // }
 
-export const updateItemQuantity = (orderId, itemId, amount) => ({
+export const updateItemQuantity = (orderId, courseId, itemId, amount) => ({
   type: 'UPDATE_ITEM_QUANTITY',
   payload: {
     orderId,
+    courseId,
     itemId,
     amount
   }
 })
 
-export const startUpdateItemQuantity = ({orderId, itemId, amount} = {}) => {
+export const startUpdateItemQuantity = ({orderId, courseId, itemId, amount} = {}) => {
   console.log('startUpdateItemQuantity called. updating mongodb')
   return (dispatch, getState) => {
     return Item.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true})
@@ -94,7 +95,7 @@ export const startUpdateItemQuantity = ({orderId, itemId, amount} = {}) => {
         console.log('updated document is:')
         console.log(item)
         console.log('updated item quantity. calling updateItemQuantity')
-        dispatch(updateItemQuantity(orderId, itemId, amount))
+        dispatch(updateItemQuantity(orderId, courseId, itemId, amount))
       })
       .catch(err => {
         throw err

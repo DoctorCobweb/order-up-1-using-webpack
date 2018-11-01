@@ -8,45 +8,32 @@ import OrderModal from './OrderModal'
 
 export class App extends Component {
   state = {
-    selectedOrder: undefined
+    selectedOrderId: undefined
   }
 
-  onClickLog = () => {
-    console.log(this.props.orders)
-  }
-
-  handleOrderClick = (order) => {
+  handleOrderClick = (orderId) => {
     this.setState(() => ({
-      selectedOrder: order
+      selectedOrderId: orderId
     }))
   }
 
   handleClearSelectedOrder = () => {
-    this.setState({ selectedOrder: undefined })
+    this.setState({ selectedOrderId: undefined })
   }
 
   render = () => (
     <div className="app">
       <header className="app-header">
-        <img src={logo} className="app-logo" alt="logo" />
+        <img src={ logo } className="app-logo" alt="logo" />
         <h1 className="app-title">OrderUp: AppMain</h1>
       </header>
-      <button className="button" onClick={this.onClickLog}>console.log orders</button>
-      <p>electron-redux store has {this.props.orders.length} items</p>
-      <OrderList handleOrderClick={this.handleOrderClick}/>
+      <OrderList handleOrderClick={ this.handleOrderClick }/>
       <OrderModal
-        selectedOrder={this.state.selectedOrder}
-        handleClearSelectedOrder={this.handleClearSelectedOrder}
+        selectedOrderId={ this.state.selectedOrderId }
+        handleClearSelectedOrder={ this.handleClearSelectedOrder }
       />
     </div>
   )
 }
 
-const mapStateToProps = (state) => ({ orders: state })
-
-const mapDispatchToProps = (dispatch) => ({
-  addOrder: (order) => dispatch(addOrder(order)) // TODO: fix/implement
-})
-
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
-export default hot(module)(ConnectedApp) 
+export default hot(module)(App) 

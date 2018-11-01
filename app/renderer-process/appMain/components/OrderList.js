@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 import OrderListItem from './OrderListItem'
 
 export class OrderList extends React.Component {
-  handleOrderClick = (order) => {
-    this.props.handleOrderClick(order)
+  handleOrderClick = (orderId) => {
+    this.props.handleOrderClick(orderId)
   }
 
   render = () => (
     <div>
       {
         this.props.orders.length === 0 ? (
-          "no orders"
+          "No orders yet. Listening for one ..."
         ) : (
           this.props.orders.map(order => 
             <OrderListItem

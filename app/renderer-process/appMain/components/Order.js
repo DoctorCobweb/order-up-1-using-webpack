@@ -3,30 +3,42 @@ import { connect } from 'react-redux'
 import Course from './Course'
 import { startUpdateInfo } from '../../../shared/actions/orders'
 
-export const Order = (props) => (
-  <div>
-    <h2>{ props.order.location } /// Table: { props.order.tableNumber }</h2>
-    <div className="order-meta-details">
-      <div>{ props.order.orderTakenUsing }</div>
-      <div>Clerk: { props.order.clerk }</div>
-      <div>{ props.order.orderSentAt }</div>
-    </div>
-    { props.order.courses
-        .map(course => (
-          <Course
-            key={ course._id }
-            orderId={ props.order._id }
-            courseName={ course.name}
-            courseItems={ course.items }
-          />
-        )
-      )
-    }
-  </div>
-)
+export class Order extends React.Component { 
 
-const mapStateToProps = (state) => ({
-  orders: state
+  render = () => {
+    // console.log('this.props')
+    // console.log(this.props)
+
+    return (
+      <div>
+        <div className="heading">
+          <h2>{ this.props.order.location }</h2>
+          <h2>Table: { this.props.order.tableNumber }</h2>
+        </div>
+        <div className="order-meta-details">
+          <div>{ this.props.order.orderTakenUsing }</div>
+          <div>Clerk: { this.props.order.clerk }</div>
+          <div>{ this.props.order.orderSentAt }</div>
+        </div>
+        { this.props.order.courses
+            .map(course => (
+              <Course
+                key={ course._id }
+                orderId={ this.props.order._id }
+                courseName={ course.name}
+                courseId={ course._id }
+                courseItems={ course.items }
+              />
+            )
+          )
+        }
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  order: state.filter(order => order._id === ownProps.orderId)[0]
 })
 
 // TODO: add in async action creators

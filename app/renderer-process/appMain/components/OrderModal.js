@@ -1,6 +1,5 @@
 import React from 'react'
 import Modal from 'react-modal'
-import { connect } from 'react-redux'
 import Order from './Order'
 
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
@@ -9,7 +8,7 @@ Modal.setAppElement('#root')
 const OrderModal = (props) => {
   return (
     <Modal
-      isOpen={ !!props.selectedOrder }
+      isOpen={ !!props.selectedOrderId }
       // for when user presses 'esc' or clicks background to close modal:
       onRequestClose={ props.handleClearSelectedOrder }
       contentLabel="Selected Order"
@@ -18,11 +17,11 @@ const OrderModal = (props) => {
     >
       <div>
         <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>
-        { !!props.selectedOrder 
+        { !!props.selectedOrderId
           && 
           <Order 
-            key={ props.selectedOrder._id}
-            order={ props.selectedOrder }
+            key={ props.selectedOrderId }
+            orderId={ props.selectedOrderId }
           /> 
         }
       </div>
@@ -30,10 +29,4 @@ const OrderModal = (props) => {
   )
 }
 
-// USE SELECTOR to get the order corresponding to selectedOption
-// const mapStateToProps = (state) => ({
-//   orders: state
-// })
-
-// export default connect(mapStateToProps, null)(OrderModal)
 export default OrderModal
