@@ -22,3 +22,14 @@
   margin: 0.4rem;
   padding: 0 1rem;
 }
+
+.course-item__name {
+  align-items: center;
+  background: $off-white;
+  border-radius: $radius;
+  color: $dark-blue;
+  display: flex;
+  justify-content: center;
+  margin: 0.4rem;
+  padding: 0.4rem;
+}

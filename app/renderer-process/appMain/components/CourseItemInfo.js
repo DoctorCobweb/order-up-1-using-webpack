@@ -6,7 +6,7 @@ const CourseItemInfo = (props) => (
     <div className="item-info">
       <div className="item-info__container">
         <div className="item-info__quantity">{ props.info.quantity }</div>
-        <div>
+        <div className="item-info__lines">
           { props.info.infoLines.length !==0 
               && 
             props.info.infoLines.map(line => <CourseItemInfoLine key={ line._id } line={ line }/>)
