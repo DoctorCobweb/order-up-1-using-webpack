@@ -51,7 +51,13 @@ export const addToMongoDB = (db, order) => {
     })
   })
 
-  InfoLine.insertMany(_.flattenDepth(infoLines,2) , {ordered: true})
+  // in what follows, flattening arrays allows us to get rid of elements which
+  // are empty arrays, keeping only elements which are non-empty arrays 
+  // (here they're infoLines)
+  //
+  // console.log infoLines before and after calling _.flattenDepth() to see 
+  // whats going on.
+  InfoLine.insertMany(_.flattenDepth(infoLines, 2) , {ordered: true})
     .then(infoLinesResults => {
       // console.log(infoLinesResults)
       const updatedMap = updateOrderMapWithItemInfoIds(orderMap, infoLinesResults)
@@ -66,15 +72,46 @@ export const addToMongoDB = (db, order) => {
     })
 }
 
+
+// WIP VERSION
 const insertInfos = (orderMap) => {
   const infos = _.map(orderMap.get('itemInfos'), (info) => {
     return _.map(info, itemInfo => {
+      // TODO: dont loop through itemInfo twice.
+      // instead, use a reduce func that returns an array like:
+      // const [ infoLinesIds, infoLinesQuantities ] = [ [_ids], [quantities] ]
       const infoLinesIds = _.map(itemInfo, infoLine => {
-          const [ id ] = infoLine 
-          return id
+        // infoLine here is like:
+        // [' the _id string', 'EX SCOOP', 1]
+        const [ _id ] = infoLine 
+        return _id
       })
+      // 
+      const infoLinesQuantities = _.map(itemInfo, infoLine => {
+        // infoLine here is like:
+        // [' the _id string', 'EX SCOOP', 1]
+        const [ , , quantity ] = infoLine 
+        return quantity 
+      })
+
+      // IMPORTANT ASSUMPTION on how to calc the quantity of an info section:
+      // use the minimum val in eachLinesQuantity for 
+      // the info's quantity.
+      // this has consequences for the UI interaction when infoLines array
+      // has variable quantity: 
+      // ["1 tomato sce", "1 ex. lettuce", "2 med rare"]
+      //  => should the quantity be 1 or 2?? 
+      //  => assume that each info pertains to *one* of the meals
+      //     if there is variable quantities.
+      //
+      // if all the infoLines have a quantity of (say) 2 then 
+      // we get quantity of 2:
+      // ["2 med rare", "ex. mush sce"]
+      // => quantity should be 2 even though it's in a single info section
+      const quantity = Math.min(...infoLinesQuantities)
       return new Info({
         _id: uuidv1(),
+        quantity,
         infoLines: infoLinesIds
       })
     })
@@ -96,6 +133,42 @@ const insertInfos = (orderMap) => {
       throw err
     })
 }
+
+// WORKING VERSION
+// const insertInfos = (orderMap) => {
+//   const infos = _.map(orderMap.get('itemInfos'), (info) => {
+//     return _.map(info, itemInfo => {
+//       const infoLinesIds = _.map(itemInfo, infoLine => {
+//         // infoLine here is like:
+//         // [' the _id string', 'EX SCOOP', 1]
+          
+//         console.log(infoLine)
+//         const [ _id ] = infoLine 
+//         return _id
+//       })
+//       return new Info({
+//         _id: uuidv1(),
+//         infoLines: infoLinesIds
+//       })
+//     })
+//   })
+//   console.log('stringify(infos)')
+//   console.log(stringify(infos))
+
+//   Info.insertMany(_.flattenDepth(infos, 1), {ordered: true})
+//     .then(results => {
+//       // console.log(results)
+//       const updatedMap = updateOrderMapWithItemIds(orderMap, results)
+//       // console.log('updatedMap Info.insertMany then()')
+//       // console.log(stringify(updatedMap.get('items')))
+
+//       // now go onto inserting the 'Item' models
+//       insertItems(updatedMap)
+//     })
+//     .catch(err => {
+//       throw err
+//     })
+// }
 
 const insertItems = (orderMap) => {
   const items = _.flattenDepth(orderMap.get('items'), 1)

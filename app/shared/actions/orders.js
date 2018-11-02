@@ -1,4 +1,4 @@
-import { Order, Item } from '../models/models'
+import { Order, Item, Info } from '../models/models'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 
@@ -92,9 +92,9 @@ export const startUpdateItemQuantity = ({orderId, courseId, itemId, amount} = {}
     return Item.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true})
       .exec()
       .then(item => {
-        console.log('updated document is:')
+        console.log('updated Item document is:')
         console.log(item)
-        console.log('updated item quantity. calling updateItemQuantity')
+        console.log('updated item quantity. calling updateItemQuantity action')
         dispatch(updateItemQuantity(orderId, courseId, itemId, amount))
       })
       .catch(err => {
@@ -103,22 +103,37 @@ export const startUpdateItemQuantity = ({orderId, courseId, itemId, amount} = {}
   }
 }
 
-// export const updateItemInfo = (_id, updates) => ({
-//   type: 'UPDATE_ITEM_INFO',
-//   payload: updates
-// })
+export const updateItemAndInfoQuantity = (orderId, courseId, itemId, infoId, amount) => ({
+  type: 'UPDATE_ITEM_AND_INFO_QUANTITY',
+  payload: {
+    orderId,
+    courseId,
+    itemId,
+    infoId,
+    amount
+  }
+})
 
-// export const startUpdateItemInfo = (_id, updates) => {
-//   return (dispatch, getState) => {
-//     // update mongo Item corresponding to _id val pass in
-//     Item.findByIdAndUpdate(_id, updates)
-//       .exec()
-//       .then(item => {
-//         //call dispatch now 
-//         dispatch(updateItemInfo(_id, updates))
-//       })
-//       .catch(e => {
-//         throw e
-//       })
-//   }
-// }
+export const startUpdateItemAndInfoQuantity = ({orderId, courseId, itemId, infoId, amount} = {}) => {
+  console.log('startUpdateItemAndInfoQuantity called. updating mongodb')
+  return (dispatch, getState) => {
+    return Item.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true })
+      .exec()
+      .then(item => {
+        console.log('updated Item document is:')
+        console.log(item)
+        return Info
+          .findByIdAndUpdate(infoId, { $inc: { quantity: amount } }, { new: true })
+          .exec()
+      })
+      .then((itemInfo) => {
+        console.log('updated Info document is:')
+        console.log(itemInfo)
+        console.log('calling updateItemAndInfoQuantity action')
+        dispatch(updateItemAndInfoQuantity(orderId, courseId, itemId, infoId, amount))
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}

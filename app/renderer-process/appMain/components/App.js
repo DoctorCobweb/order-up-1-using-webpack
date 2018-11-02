@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
-import { addOrder } from '../../../shared/actions/orders'
 import logo from './../assets/logo.svg'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'

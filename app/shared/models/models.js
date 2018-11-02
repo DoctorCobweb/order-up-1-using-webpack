@@ -34,6 +34,7 @@ const itemSchema = new Schema({
 const infoSchema = new Schema({
   _id: String,
   completed: { type: Boolean, default: false},
+  quantity: Number,
   infoLines: [{type: String, ref:'InfoLine'}]
 })
 
