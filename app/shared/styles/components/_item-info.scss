@@ -2,6 +2,27 @@
   background: $blue;
   border-radius: $radius;
   color: $dark-grey;
+  display: flex;
+  justify-content: space-between;
   margin-top: 1rem;
+  margin-left: 10rem;
   padding: 0.2rem;
 }
+
+.item-info__container {
+  display: flex;
+  flex-direction: columns;
+}
+
+.item-info__quantity {
+  align-items: center;
+  background: $dark-blue;
+  border-radius: $radius;
+  color: $off-white;
+  display: flex;
+  justify-content: center;
+  margin: 0.4rem;
+  padding: 0 1rem;
+}
+
+

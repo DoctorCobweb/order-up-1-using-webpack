@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
-// orders reducer
 
 const ordersReducerDefaultState = []
 
