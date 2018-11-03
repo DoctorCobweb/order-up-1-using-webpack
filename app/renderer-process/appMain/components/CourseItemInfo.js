@@ -3,7 +3,7 @@ import CourseItemInfoLine from './CourseItemInfoLine'
 
 
 const CourseItemInfo = (props) => (
-    <div className="item-info">
+    <div className={ props.info.quantity <= 0 ? "item-info item-info-completed" : "item-info" }>
       <div className="item-info__container">
         <div className="item-info__quantity">{ props.info.quantity }</div>
         <div className="item-info__lines">

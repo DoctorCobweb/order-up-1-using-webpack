@@ -16,6 +16,7 @@ export default (state=ordersReducerDefaultState, action) => {
         const courseId = action.payload.courseId
         const itemId = action.payload.itemId
         const amount = action.payload.amount
+        const completed = action.payload.completed
         // ALGO:
         // 1. find the order then clone it
         // 2 drill down to items by matching orderId, then courseId
@@ -30,6 +31,7 @@ export default (state=ordersReducerDefaultState, action) => {
                 if (item._id === itemId) {
                   // amount is either 1 or (-1)
                   item.quantity += amount
+                  item.completed = completed
                   return item
                 } else {
                   return item
@@ -45,8 +47,8 @@ export default (state=ordersReducerDefaultState, action) => {
           return order
         }
       })
-      // console.log('updatedItemState')
-      // console.log(updatedItemState)
+      console.log('updatedItemState')
+      console.log(updatedItemState)
       return updatedItemState
     case 'UPDATE_ITEM_AND_INFO_QUANTITY':
       const updatedItemAndInfoState = state.map(order => {
@@ -55,6 +57,8 @@ export default (state=ordersReducerDefaultState, action) => {
         const itemId = action.payload.itemId
         const infoId = action.payload.infoId
         const amount = action.payload.amount
+        const itemCompleted = action.payload.itemCompleted
+        const infoCompleted = action.payload.infoCompleted
 
         // update the quantity in two places
         // 1. item
@@ -78,10 +82,12 @@ export default (state=ordersReducerDefaultState, action) => {
                   const itemCopy = _.cloneDeep(item)
                   itemCopy.infos = itemCopy.infos.map(info => {
                     if(info._id === infoId) {
+                      const infoCopy = _.cloneDeep(info)
                       // amount is either 1 or (-1)
                       itemCopy.quantity += amount
-                      const infoCopy = _.cloneDeep(info)
+                      itemCopy.completed = itemCompleted
                       infoCopy.quantity += amount
+                      infoCopy.completed = infoCompleted
                       return infoCopy
                     } else {
                       return info
@@ -102,8 +108,8 @@ export default (state=ordersReducerDefaultState, action) => {
           return order
         }
       }) 
-      // console.log('updatedItemAndInfoState ')
-      // console.log(updatedItemAndInfoState)
+      console.log('updatedItemAndInfoState ')
+      console.log(updatedItemAndInfoState)
       return updatedItemAndInfoState 
     default:
       return state

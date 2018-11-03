@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CourseItem = (props) => (
-  <div className="course-item">
+  <div className={ props.quantity <= 0 ? "course-item course-item-completed" : "course-item" } >
     <div className="course-item__container">
       <div className="course-item__quantity">{ props.quantity }</div>
       <div className="course-item__name">{ props.name }</div>
