@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Course from './Course'
-import { startUpdateInfo } from '../../../shared/actions/orders'
+import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
 
 export class Order extends React.Component { 
 
@@ -20,8 +20,8 @@ export class Order extends React.Component {
           <div>Clerk: { this.props.order.clerk }</div>
           <div>{ this.props.order.orderSentAt }</div>
         </div>
-        { this.props.order.courses
-            .map(course => (
+        { sortCoursesInOrder(this.props.order).courses
+            .map(course => 
               <Course
                 key={ course._id }
                 orderId={ this.props.order._id }
@@ -29,7 +29,6 @@ export class Order extends React.Component {
                 courseId={ course._id }
                 courseItems={ course.items }
               />
-            )
           )
         }
       </div>
@@ -38,12 +37,12 @@ export class Order extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  order: state.filter(order => order._id === ownProps.orderId)[0]
+  order: findOrder(state, ownProps.orderId)
 })
 
 // TODO: add in async action creators
 const mapDispatchToProps = (dispatch) => ({
-  blah: (yadda) => dispatch(startUpdateInfo(yadda))
+  // blah: (yadda) => dispatch(startUpdateInfo(yadda))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)
