@@ -14,7 +14,11 @@ export class ContainerCourseItem extends React.Component {
     isEditing: false,
     editingInfoId: undefined,
     editingInfoLineId: undefined,
-    editingLineContent: undefined
+    editingLineContent: "",
+    // editingLineContent: undefined,
+    displayNewInfoLine: false,
+    infoIdForNewInfoLine: undefined,
+    newInfoLineContent: "" 
   }
 
   // ---- HANDLING VARIOUS QUANTITY-BUTTON CLICKS ----------
@@ -47,7 +51,8 @@ export class ContainerCourseItem extends React.Component {
       isEditing: true,
       editingInfoId: infoId,
       editingInfoLineId: infoLineId,
-      editingLineContent: e.target.value
+      editingLineContent: e.target.value,
+      infoIdForNewInfoLine: undefined
     }), () => {
       // console.log(this.state)
     })
@@ -58,14 +63,21 @@ export class ContainerCourseItem extends React.Component {
       isEditing: false,
       editingInfoId: undefined,
       editinInfoLineId: undefined,
-      editingLineContent: undefined
+      editingLineContent: "",
+      infoIdForNewInfoLine: undefined
     }))
   }
 
-  // TODO: when we have Enter pressed: save the text to db and update redux store via actions
   handleItemInfoLineKeyDown = (e, infoId, infoLineId) => {
     console.log('handleItemInfoLineKeyDown')
 
+    // in react we have synthetic events, and they are pooled. ie. the synthetic event object
+    // is reused and all properties will be nullified after the event callback has been invoked.
+    // (performance reasons)
+    // => cannot access the event in an async way.
+    // if we need to access the even properties in an async way, we should call
+    // .persist() on the event. this removes the event from the pool and allows for reference to
+    // the event to be retained by user code.
     e.persist()
 
     if (e.key === 'Enter') {
@@ -136,7 +148,7 @@ export class ContainerCourseItem extends React.Component {
           isEditing: false,
           editingInfoId: undefined,
           editingInfoLineId: undefined,
-          editingLineContent: undefined
+          editingLineContent: "" 
         }))
       })
     } else {
@@ -145,9 +157,71 @@ export class ContainerCourseItem extends React.Component {
     }
   }
 
-  //TODO
-  handleAddNewInfoLine = () => {
+  //TODO: finish
+  handleAddNewInfoLine = (e, infoId) => {
+    console.log('TODO: create a new infoline')
+    this.setState(() => ({
+      displayNewInfoLine: true,
+      infoIdForNewInfoLine: infoId
+    }))
 
+  }
+  handleNewItemInfoLineClick = (e, infoId) => {
+    e.persist()
+
+    // anything  TODO here??
+    console.log(infoId)
+  }
+  handleNewItemInfoLineKeyDown = (e, infoId) => {
+    e.persist()
+    console.log(e.target.value)
+    if (e.key === 'Enter') {
+      e.target.blur()
+      let newInfoLine = e.target.value
+        .slice()
+        .trim()
+        .toUpperCase()
+        .split(/\s+/)
+
+      console.log(newInfoLine)
+
+      // is the content is empty and the user tried to save, prevent that
+      // from going any further
+      if (!newInfoLine[0]) return
+
+      let newInfoLineQuantity
+      let newInfoLineName
+
+      if ( newInfoLine.length > 0 && !(isNaN(parseInt(newInfoLine[0]))) ) {
+        // there is a valid number at the start of the infoline
+        newInfoLineQuantity = newInfoLine[0]
+        // assume the rest of the array comprises the infoline's name
+        newInfoLineName = newInfoLine.slice(1).join(' ')
+      } else {
+        // there is no valid number at start. we NEED to have a number
+        // no less that 1 for the quantity because of how we calculate
+        // the item info quantity when parsing a new order (in mongoose-orders.js)
+        // for a given info, the algo looks at all its infoline quantities ,
+        // then and selects the minimum of these to be the quantity for the *info* item:
+        newInfoLineQuantity = 1
+        newInfoLineName = newInfoLine.join(' ')
+      }
+
+
+      // 1. now we have the new stuff to go and save a new info item.
+      // 2. create new InfoItem
+      // 3. assign it to the infolines array of the associated info using the infoId
+      // 4. update the order in the state
+
+    } else {
+      console.log(e)
+      // console.log(e.target.value)
+      this.setState(() => ({
+        newInfoLineContent: e.target.value
+      }), () => {
+        console.log(this.state)
+      })
+    }
   }
 
   render = () => (
@@ -170,6 +244,9 @@ export class ContainerCourseItem extends React.Component {
             editingInfoLineId = { this.state.editingInfoLineId }
             editingLineContent = { this.state.editingLineContent }
             isEditing = { this.state.isEditing }
+            displayNewInfoLine = { this.state.displayNewInfoLine && this.state.infoIdForNewInfoLine === info._id}
+            handleNewItemInfoLineClick = { this.handleNewItemInfoLineClick }
+            handleNewItemInfoLineKeyDown = { this.handleNewItemInfoLineKeyDown }
           />
         )
       }

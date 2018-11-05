@@ -21,18 +21,47 @@ const CourseItemInfo = (props) => (
               />
             )
           } 
+          {
+            props.displayNewInfoLine
+              &&
+            <input
+              onChange={ (e) => props.handleNewItemInfoLineClick(e, props.info._id) }
+              onFocus={ (e) => props.handleNewItemInfoLineClick(e, props.info._id) }
+              onKeyDown={ (e) => props.handleNewItemInfoLineKeyDown(e, props.info._id) }
+            />
+          }
           { props.showEditButtons
               &&
-            <div>
-              { /* <button onClick={ props.handleAddNewInfoLine }>add new line</button> */ }
-              <button onClick={ props.handleCancelClick }>cancel</button>
+            <div className="container--button--infoline">
+              <button
+                className="button--infoline"
+                onClick={ (e) => props.handleAddNewInfoLine(e, props.info._id) }
+              >
+                Add new line
+              </button>
+              <button
+                className="button--infoline"
+                onClick={ props.handleCancelClick }
+              >
+                X
+              </button>
             </div>
           }
         </div>
       </div>
       <div className="button__stack">
-        <button className="button-button__stack" onClick={ () => props.handleItemInfoQuantityClick({ _id: props.info._id, amount:1 }) }>+</button>
-        <button className="button-button__stack" onClick={ () => props.handleItemInfoQuantityClick({ _id: props.info._id, amount:-1 }) }>-</button>
+        <button
+          className="button-button__stack"
+          onClick={ () => props.handleItemInfoQuantityClick({ _id: props.info._id, amount: 1 }) }
+        >
+          +
+        </button>
+        <button
+          className="button-button__stack"
+          onClick={ () => props.handleItemInfoQuantityClick({ _id: props.info._id, amount: -1 }) }
+        >
+          -
+        </button>
       </div>
     </div>
 )
