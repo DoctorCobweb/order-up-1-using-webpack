@@ -111,6 +111,60 @@ export default (state=ordersReducerDefaultState, action) => {
       // console.log('updatedItemAndInfoState ')
       // console.log(updatedItemAndInfoState)
       return updatedItemAndInfoState 
+    case 'UPDATE_INFOLINE':
+      const updatedInfoLineState = state.map(order => {
+        const orderId = action.payload.orderId
+        const courseId = action.payload.courseId
+        const itemId = action.payload.itemId
+        const infoId = action.payload.infoId
+        const infoLineId = action.payload.infoLineId
+        const quantity = action.payload.quantity
+        const name = action.payload.name
+
+        if (order._id === orderId) {
+          const orderClone = _.cloneDeep(order)
+          orderClone.courses = orderClone.courses.map(course => {
+            if (course._id === courseId) {
+              const courseCopy = _.cloneDeep(course)
+              courseCopy.items = courseCopy.items.map(item => {
+                if (item._id === itemId) {
+                  const itemCopy = _.cloneDeep(item)
+                  itemCopy.infos = itemCopy.infos.map(info => {
+                    if (info._id === infoId) {
+                      const infoCopy = _.cloneDeep(info)
+                      infoCopy.infoLines = infoCopy.infoLines.map(infoLine => {
+                        if (infoLine._id === infoLineId ) {
+                          const infoLineCopy = _.cloneDeep(infoLine)
+                          infoLineCopy.quantity = quantity
+                          infoLineCopy.name = name
+                          return infoLineCopy
+                        } else {
+                          return infoLine
+                        }
+                      })
+                      return infoCopy
+                    } else {
+                      return info
+                    }
+                  })
+                  return itemCopy
+                } else {
+                  return item
+                }
+              })
+              return courseCopy
+            } else {
+              return course
+            }
+          })
+          return orderClone
+        } else {
+          return order
+        }
+      }) 
+      console.log('updatedInfoLineState ')
+      console.log(updatedInfoLineState)
+      return updatedInfoLineState
     default:
       return state
   }

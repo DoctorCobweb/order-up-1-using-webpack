@@ -1,6 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { startUpdateItemQuantity, startUpdateItemAndInfoQuantity } from '../../../shared/actions/orders'
+import {
+  startUpdateItemQuantity,
+  startUpdateItemAndInfoQuantity,
+  startUpdateInfoLine
+} from '../../../shared/actions/orders'
 import CourseItem from './CourseItem'
 import CourseItemInfo from './CourseItemInfo'
 
@@ -12,8 +16,8 @@ export class ContainerCourseItem extends React.Component {
     editingLineContent: undefined
   }
 
+  // ---- HANDLING VARIOUS QUANTITY-BUTTON CLICKS ----------
   handleItemQuantityClick = (amount) => {
-    // console.log(`handleItemQuantityClick: item _id: ${this.props.courseItem._id} /// amount: ${amount}`)
     const data = {
       orderId: this.props.orderId,
       courseId: this.props.courseId,
@@ -24,7 +28,6 @@ export class ContainerCourseItem extends React.Component {
   }
 
   handleItemInfoQuantityClick = ({ _id, amount }) => {
-    // console.log(`handleItemInfoQuantityClick: info _id is: ${_id} /// amount: ${amount}`)
     const data = {
       orderId: this.props.orderId,
       courseId: this.props.courseId,
@@ -36,12 +39,9 @@ export class ContainerCourseItem extends React.Component {
     this.props.startUpdateItemAndInfoQuantity(data)
   }
 
-  handleItemInfoLineClick = (e, infoId, infoLineId ) => {
+  // ---- HANDLING INFO-LINES EDITING/ADDING ----------
+  handleItemInfoLineClick = (e, infoId, infoLineId) => {
     e.persist()
-    // console.log('handleItemInfoLineClick')
-    // console.log(e.target.value)
-    // console.log(infoId)
-    // console.log(this.state)
     this.setState(() => ({
       editingInfoId: infoId,
       editingInfoLineId: infoLineId,
@@ -60,7 +60,7 @@ export class ContainerCourseItem extends React.Component {
   }
 
   // TODO: when we have Enter pressed: save the text to db and update redux store via actions
-  handleItemInfoLineKeyDown = (e) => {
+  handleItemInfoLineKeyDown = (e, infoId, infoLineId) => {
     console.log('handleItemInfoLineKeyDown')
 
     e.persist()
@@ -70,24 +70,45 @@ export class ContainerCourseItem extends React.Component {
       // ...a little bit of a gottcha:
       // you need to 'defocus' the textarea field.
       // if you don't, even after the state changes have taken effect,
-      // the components dependent on state WONT update (like getting
-      // rid of the buttons in CourseItemInfo component)
+      // the components dependent on state WONT update (like trying to get
+      // rid of the buttons in CourseItemInfo component when editing is done)
       e.target.blur()
 
       // got to sanitize the data
-      let newLineArray = e.target.value
+      let updatedInfoLine = e.target.value
         .slice()
         .trim()
         .toUpperCase()
         .split(/\s+/)
 
-      // if ( newLineArray.length > 0 && isNaN(parseInt(newLineArray[0]))) {
+      console.log(updatedInfoLine)
 
-      // } else {
+      // is the content is empty and the user tried to save, prevent that
+      // from going any further
+      if (!updatedInfoLine[0]) return
 
-      // }
+      let updatedInfoLineQuantity
+      let updatedInfoLineName
 
+      if ( updatedInfoLine.length > 0 && !(isNaN(parseInt(updatedInfoLine[0]))) ) {
+        // there is a valid number at the start of the infoline
+        updatedInfoLineQuantity = updatedInfoLine[0]
+        // assume the rest of the array comprises the infoline's name
+        updatedInfoLineName = updatedInfoLine.slice(1).join(' ')
+      } else {
+        // there is no valid number at start. we NEED to have a number
+        // no less that 1 for the quantity because of how we calculate
+        // the item info quantity when parsing a new order (in mongoose-orders.js)
+        // for a given info, the algo looks at all its infoline quantities ,
+        // then and selects the minimum of these to be the quantity for the *info* item:
+        updatedInfoLineQuantity = 1
+        updatedInfoLineName = updatedInfoLine
 
+      }
+
+      // console.log('heloo from below')
+      // console.log(updatedInfoLineQuantity)
+      // console.log(updatedInfoLineName)
 
       // procedure:
       // 1. save new item infoline value to mongodb, async action
@@ -95,9 +116,17 @@ export class ContainerCourseItem extends React.Component {
       // 3. the order should now refresh and the infoline should show 
       //    the new value via props.line.name field
       // 4. then you should setState to stuff below
+      this.props.startUpdateInfoLine({
+        orderId: this.props.orderId,
+        courseId: this.props.courseId,
+        itemId: this.props.courseItem._id,
+        infoId,
+        infoLineId,
+        quantity: updatedInfoLineQuantity,
+        name: updatedInfoLineName,
+      })
 
-
-
+      // WHERE TO PUT THIS RESET LOGIC???
       // setState is async which means it takes time to change the state.
       // the callback here gets fired AFTER the state changes.
       // putting the console.log() on the line underneath the this.setState() call,
@@ -106,10 +135,14 @@ export class ContainerCourseItem extends React.Component {
         editingInfoId: undefined,
         editingInfoLineId: undefined,
         editingLineContent: undefined
-
       }), () => {
-        console.log(this.state)
+        // console.log(this.state)
       })
+
+
+
+
+
     } else {
       this.setState(() => ({ editingLineContent: e.target.value }))
     }
@@ -153,6 +186,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startUpdateItemQuantity: (data) => dispatch(startUpdateItemQuantity(data)),
   startUpdateItemAndInfoQuantity: (data) => dispatch(startUpdateItemAndInfoQuantity(data)),
+  startUpdateInfoLine: (data) => dispatch(startUpdateInfoLine(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerCourseItem)

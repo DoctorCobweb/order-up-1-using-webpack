@@ -1,4 +1,4 @@
-import { Order, Item, Info } from '../models/models'
+import { Order, Item, Info, InfoLine } from '../models/models'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 
@@ -25,7 +25,6 @@ const orderPopulation = {
   }
 }
 
-// ADD_ORDER
 export const addOrder = (order) => ({
   type: 'ADD_ORDER',
   payload: order 
@@ -65,24 +64,13 @@ export const startAddOrder = (orderId = undefined) => {
   }
 }
 
-
-
-// UPDATE_ORDER
-// export const updateOrder = (_id, updatedOrder) => ({
-//   type: 'UPDATE_ORDER',
-//   payload: updatedOrder
-// })
-
-// async UPDATE_ORDER
-// because electron-redux turns all actions into async actions
-// we must use appropriate middleware to handle async, eg redux-thunk
-// export const startUpdateOrder = (_id, updatedOrder) => {
-//   return (dispatch, getState) => {
-//     return dispatch(updateOrder(_id, updatedOrder))
-//   }
-// }
-
-export const updateItemQuantity = (orderId, courseId, itemId, amount, completed) => ({
+export const updateItemQuantity = (
+  orderId,
+  courseId,
+  itemId,
+  amount,
+  completed
+  ) => ({
   type: 'UPDATE_ITEM_QUANTITY',
   payload: {
     orderId,
@@ -92,8 +80,13 @@ export const updateItemQuantity = (orderId, courseId, itemId, amount, completed)
     completed
   }
 })
-// TRIAL VERSION
-export const startUpdateItemQuantity = ({orderId, courseId, itemId, amount} = {}) => {
+
+export const startUpdateItemQuantity = ({
+  orderId,
+  courseId,
+  itemId,
+  amount
+} = {}) => {
   return (dispatch, getState) => {
     return Item.findById(itemId)
       .exec()
@@ -129,8 +122,15 @@ export const startUpdateItemQuantity = ({orderId, courseId, itemId, amount} = {}
   }
 }
 
-
-export const updateItemAndInfoQuantity = (orderId, courseId, itemId, infoId, amount, itemCompleted, infoCompleted) => ({
+export const updateItemAndInfoQuantity = (
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  amount,
+  itemCompleted,
+  infoCompleted
+  ) => ({
   type: 'UPDATE_ITEM_AND_INFO_QUANTITY',
   payload: {
     orderId,
@@ -143,7 +143,13 @@ export const updateItemAndInfoQuantity = (orderId, courseId, itemId, infoId, amo
   }
 })
 
-export const startUpdateItemAndInfoQuantity = ({orderId, courseId, itemId, infoId, amount} = {}) => {
+export const startUpdateItemAndInfoQuantity = ({
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  amount
+} = {}) => {
   // need reference to item's completed field later on.
   // => when we call dispatch 
   let itemCompleted = false
@@ -199,26 +205,59 @@ export const startUpdateItemAndInfoQuantity = ({orderId, courseId, itemId, infoI
   }
 }
 
-// export const startUpdateItemAndInfoQuantity = ({orderId, courseId, itemId, infoId, amount} = {}) => {
-//   console.log('startUpdateItemAndInfoQuantity called. updating mongodb')
-//   return (dispatch, getState) => {
-//     return Item.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true })
-//       .exec()
-//       .then(item => {
-//         console.log('updated Item document is:')
-//         console.log(item)
-//         return Info
-//           .findByIdAndUpdate(infoId, { $inc: { quantity: amount } }, { new: true })
-//           .exec()
-//       })
-//       .then((itemInfo) => {
-//         console.log('updated Info document is:')
-//         console.log(itemInfo)
-//         console.log('calling updateItemAndInfoQuantity action')
-//         dispatch(updateItemAndInfoQuantity(orderId, courseId, itemId, infoId, amount))
-//       })
-//       .catch(err => {
-//         throw err
-//       })
-//   }
-// }
+export const updateInfoLine = (
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  infoLineId,
+  quantity,
+  name,
+) => ({
+  type: 'UPDATE_INFOLINE',
+  payload: {
+    orderId,
+    courseId,
+    itemId,
+    infoId,
+    infoLineId,
+    quantity,
+    name
+  }
+})
+
+export const startUpdateInfoLine = ({
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  infoLineId,
+  quantity,
+  name,
+} = {}) => {
+  return (dispatch, getState) => {
+    return InfoLine.findById(infoLineId).exec()
+    .then(infoLine => {
+      infoLine.quantity = quantity
+      infoLine.name = name 
+      return infoLine.save()
+    })
+    .then(infoLine => {
+      console.log('updated InfoLine document is:')
+      console.log(infoLine)
+      console.log('calling updateInfoLine action')
+      dispatch(updateInfoLine(
+        orderId,
+        courseId,
+        itemId,
+        infoId,
+        infoLineId,
+        quantity,
+        name,
+      ))
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
