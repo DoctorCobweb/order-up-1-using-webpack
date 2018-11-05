@@ -234,7 +234,7 @@ export const startUpdateInfoLine = ({
   infoLineId,
   quantity,
   name,
-} = {}) => {
+} = {}, cb) => {
   return (dispatch, getState) => {
     return InfoLine.findById(infoLineId).exec()
     .then(infoLine => {
@@ -255,6 +255,7 @@ export const startUpdateInfoLine = ({
         quantity,
         name,
       ))
+      cb()
     })
     .catch(err => {
       throw err

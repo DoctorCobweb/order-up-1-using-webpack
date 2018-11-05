@@ -15,16 +15,16 @@ const CourseItemInfo = (props) => (
                 infoId={ props.info._id }
                 line={ line }
                 handleItemInfoLineClick={ props.handleItemInfoLineClick }
-                isEditing={ props.editingInfoLineId === line._id }
+                isEditing={ props.isEditing && props.editingInfoLineId === line._id }
                 handleItemInfoLineKeyDown={ props.handleItemInfoLineKeyDown }
                 editingLineContent={ props.editingLineContent }
               />
             )
           } 
-          { props.isEditing
+          { props.showEditButtons
               &&
             <div>
-              <button onClick={ props.handleAddNewInfoLine }>add new line</button>
+              { /* <button onClick={ props.handleAddNewInfoLine }>add new line</button> */ }
               <button onClick={ props.handleCancelClick }>cancel</button>
             </div>
           }

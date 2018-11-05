@@ -11,6 +11,7 @@ import CourseItemInfo from './CourseItemInfo'
 
 export class ContainerCourseItem extends React.Component {
   state = {
+    isEditing: false,
     editingInfoId: undefined,
     editingInfoLineId: undefined,
     editingLineContent: undefined
@@ -43,16 +44,18 @@ export class ContainerCourseItem extends React.Component {
   handleItemInfoLineClick = (e, infoId, infoLineId) => {
     e.persist()
     this.setState(() => ({
+      isEditing: true,
       editingInfoId: infoId,
       editingInfoLineId: infoLineId,
       editingLineContent: e.target.value
     }), () => {
-      console.log(this.state)
+      // console.log(this.state)
     })
   }
   
   handleCancelClick = () => {
     this.setState(() => ({
+      isEditing: false,
       editingInfoId: undefined,
       editinInfoLineId: undefined,
       editingLineContent: undefined
@@ -102,13 +105,9 @@ export class ContainerCourseItem extends React.Component {
         // for a given info, the algo looks at all its infoline quantities ,
         // then and selects the minimum of these to be the quantity for the *info* item:
         updatedInfoLineQuantity = 1
-        updatedInfoLineName = updatedInfoLine
+        updatedInfoLineName = updatedInfoLine.join(' ')
 
       }
-
-      // console.log('heloo from below')
-      // console.log(updatedInfoLineQuantity)
-      // console.log(updatedInfoLineName)
 
       // procedure:
       // 1. save new item infoline value to mongodb, async action
@@ -124,26 +123,24 @@ export class ContainerCourseItem extends React.Component {
         infoLineId,
         quantity: updatedInfoLineQuantity,
         name: updatedInfoLineName,
+      }, () => {
+        // use a callback-style structure for resetting the state after the 
+        // update was successful. if you call it immediately outside a callback
+        // then UI jumps back to previous un-edited name for a short amount of
+        // time whilst db/redux update and hence update UI to show new updated value.
+        // setState is async which means it takes time to change the state.
+        // the callback here gets fired AFTER the state changes.
+        // putting the console.log() on the line underneath the this.setState() call,
+        // outside the callback, will show the yet-to-be-updated state
+        this.setState((prevState) => ({
+          isEditing: false,
+          editingInfoId: undefined,
+          editingInfoLineId: undefined,
+          editingLineContent: undefined
+        }))
       })
-
-      // WHERE TO PUT THIS RESET LOGIC???
-      // setState is async which means it takes time to change the state.
-      // the callback here gets fired AFTER the state changes.
-      // putting the console.log() on the line underneath the this.setState() call,
-      // outside the callback, will show the yet-to-be-updated state
-      this.setState((prevState) => ({
-        editingInfoId: undefined,
-        editingInfoLineId: undefined,
-        editingLineContent: undefined
-      }), () => {
-        // console.log(this.state)
-      })
-
-
-
-
-
     } else {
+      // user is still typing away their updates
       this.setState(() => ({ editingLineContent: e.target.value }))
     }
   }
@@ -169,9 +166,10 @@ export class ContainerCourseItem extends React.Component {
             handleCancelClick = { this.handleCancelClick }
             handleItemInfoLineKeyDown = { this.handleItemInfoLineKeyDown }
             handleAddNewInfoLine = { this.handleAddNewInfoLine }
-            isEditing = { this.state.editingInfoId === info._id }
+            showEditButtons = { this.state.editingInfoId === info._id }
             editingInfoLineId = { this.state.editingInfoLineId }
             editingLineContent = { this.state.editingLineContent }
+            isEditing = { this.state.isEditing }
           />
         )
       }
@@ -186,7 +184,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startUpdateItemQuantity: (data) => dispatch(startUpdateItemQuantity(data)),
   startUpdateItemAndInfoQuantity: (data) => dispatch(startUpdateItemAndInfoQuantity(data)),
-  startUpdateInfoLine: (data) => dispatch(startUpdateInfoLine(data)),
+  startUpdateInfoLine: (data, cb) => dispatch(startUpdateInfoLine(data, cb)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerCourseItem)
