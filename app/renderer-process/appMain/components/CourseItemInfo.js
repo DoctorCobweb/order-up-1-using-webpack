@@ -9,8 +9,24 @@ const CourseItemInfo = (props) => (
         <div className="item-info__lines">
           { props.info.infoLines.length !==0 
               && 
-            props.info.infoLines.map(line => <CourseItemInfoLine key={ line._id } line={ line }/>)
+            props.info.infoLines.map(line => 
+              <CourseItemInfoLine 
+                key={ line._id }
+                infoId = { props.info._id }
+                line={ line }
+                handleItemInfoLineClick = { props.handleItemInfoLineClick }
+                isEditing= { props.isEditing }
+                handleItemInfoLineKeyDown= { props.handleItemInfoLineKeyDown }
+              />
+            )
           } 
+          { props.isEditing
+              &&
+            <div>
+              <button>add new line</button>
+              <button onClick={ props.handleCancelClick }>cancel</button>
+            </div>
+          }
         </div>
       </div>
       <div className="button__stack">

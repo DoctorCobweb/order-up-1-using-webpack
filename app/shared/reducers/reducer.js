@@ -47,8 +47,8 @@ export default (state=ordersReducerDefaultState, action) => {
           return order
         }
       })
-      console.log('updatedItemState')
-      console.log(updatedItemState)
+      // console.log('updatedItemState')
+      // console.log(updatedItemState)
       return updatedItemState
     case 'UPDATE_ITEM_AND_INFO_QUANTITY':
       const updatedItemAndInfoState = state.map(order => {
@@ -108,8 +108,8 @@ export default (state=ordersReducerDefaultState, action) => {
           return order
         }
       }) 
-      console.log('updatedItemAndInfoState ')
-      console.log(updatedItemAndInfoState)
+      // console.log('updatedItemAndInfoState ')
+      // console.log(updatedItemAndInfoState)
       return updatedItemAndInfoState 
     default:
       return state

@@ -37,9 +37,11 @@ export default (db, buffer) => {
     .then(results => {
       //do somethine with the array of strings
       let data = sanitize(results)
+      console.log(colors.blue(stringify(data)))
       const zippedData = tokenizeData(data)
       // log.info(zippedData)
       const order = buildOrder(zippedData)
+      // console.log(colors.blue(stringify(order)))
       insertSingleOrder(db, order)
     })
     .catch(err => {
