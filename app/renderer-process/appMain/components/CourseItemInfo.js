@@ -12,18 +12,19 @@ const CourseItemInfo = (props) => (
             props.info.infoLines.map(line => 
               <CourseItemInfoLine 
                 key={ line._id }
-                infoId = { props.info._id }
+                infoId={ props.info._id }
                 line={ line }
-                handleItemInfoLineClick = { props.handleItemInfoLineClick }
-                isEditing= { props.isEditing }
-                handleItemInfoLineKeyDown= { props.handleItemInfoLineKeyDown }
+                handleItemInfoLineClick={ props.handleItemInfoLineClick }
+                isEditing={ props.editingInfoLineId === line._id }
+                handleItemInfoLineKeyDown={ props.handleItemInfoLineKeyDown }
+                editingLineContent={ props.editingLineContent }
               />
             )
           } 
           { props.isEditing
               &&
             <div>
-              <button>add new line</button>
+              <button onClick={ props.handleAddNewInfoLine }>add new line</button>
               <button onClick={ props.handleCancelClick }>cancel</button>
             </div>
           }

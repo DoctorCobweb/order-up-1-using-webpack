@@ -154,7 +154,7 @@ const tokenMI = (line) => {
   // gotta handle the presence of numbers in the line...we're only after the 
   // menu item name, not quantity.
   const splitLine = line.split(/\s+/)
-  if (isNaN(parseInt(splitLine[0]))) {
+  if (splitLine.length > 0 && isNaN(parseInt(splitLine[0]))) {
     // => first element of splitLine is not able to be parsed to an integer.
     // => that means it's NOT a number.
     // the line could be like "SPECIAL INSTRUCTIONS" (which is a course field)
@@ -188,7 +188,7 @@ const tokenII = (line) => {
   // II:  "Item Info",
   // this function is very similar to tokenMI.
   const splitLine = line.split(/\s+/)
-  if (isNaN(parseInt(splitLine[0]))) {
+  if (splitLine.length > 0 && isNaN(parseInt(splitLine[0]))) {
     return false
   } else {
     const rejoinedItem = splitLine.slice(1, splitLine.length).join(' ')
@@ -339,7 +339,9 @@ const buildMealItems = (data, MIDelimiters, II_idxs) => {
     meal.endIdx = mealEnd
     try {
       const mealSplit = mealLine.split(/\s+/)
-      meal.quantity = isNaN(parseInt(mealSplit[0])) ? '' : parseInt(mealSplit[0])
+      meal.quantity =
+        (mealSplit.length > 0 && isNaN(parseInt(mealSplit[0]))) ?
+        '' : parseInt(mealSplit[0])
       meal.name = mealSplit.slice(1).join(' ')
     }
     catch (e) {
@@ -419,7 +421,9 @@ const getNonEmptyItemInfos = (data, II_idxs) => {
     let infoLine
     try {
       const splitLine = aLine.split(/\s+/)
-      quantity = isNaN(parseInt(splitLine[0])) ? '' : parseInt(splitLine[0])
+      quantity =
+        (splitLine.length > 0 && isNaN(parseInt(splitLine[0]))) ?
+        '' : parseInt(splitLine[0])
       infoLine = splitLine.slice(1).join(' ')
     } catch (e) {
       console.log(`ERROR: tried to split info line and extract fields. ${e.message}`.red)
@@ -561,8 +565,12 @@ const extractFromVariableContent = (variableContent) => {
   }, {})
 
   if (!_.isEmpty(tableNumber)) {
-    extractedVariables.tableNumber = tableNumber.line.split(/\s+/).slice(-1)[0]
-    variableContent.splice(tableNumber.index, 1)
+    const splitTableNumber = tableNumber.line.split(/\s+/)
+    if (splitTableNumber.length > 0 ) {
+      extractedVariables.tableNumber = splitTableNumber.slice(-1)[0]
+      variableContent.splice(tableNumber.index, 1)
+
+    }
   } else {
     extractedVariables.tableNumber = "NO TABLE NUMBER"
   }

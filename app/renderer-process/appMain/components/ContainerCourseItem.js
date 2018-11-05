@@ -7,8 +7,9 @@ import CourseItemInfo from './CourseItemInfo'
 
 export class ContainerCourseItem extends React.Component {
   state = {
-    isEditing: false,
-    infoIdEditing: undefined
+    editingInfoId: undefined,
+    editingInfoLineId: undefined,
+    editingLineContent: undefined
   }
 
   handleItemQuantityClick = (amount) => {
@@ -35,21 +36,35 @@ export class ContainerCourseItem extends React.Component {
     this.props.startUpdateItemAndInfoQuantity(data)
   }
 
-  handleItemInfoLineClick = (e, infoId ) => {
+  handleItemInfoLineClick = (e, infoId, infoLineId ) => {
+    e.persist()
     // console.log('handleItemInfoLineClick')
     // console.log(e.target.value)
     // console.log(infoId)
     // console.log(this.state)
-    this.setState(() => ({ isEditing: true, infoIdEditing: infoId }))
+    this.setState(() => ({
+      editingInfoId: infoId,
+      editingInfoLineId: infoLineId,
+      editingLineContent: e.target.value
+    }), () => {
+      console.log(this.state)
+    })
   }
   
   handleCancelClick = () => {
-    this.setState(() => ({ isEditing: false, infoIdEditing: undefined }))
+    this.setState(() => ({
+      editingInfoId: undefined,
+      editinInfoLineId: undefined,
+      editingLineContent: undefined
+    }))
   }
 
-  // TODO: save the text to db and update redux store via actions
+  // TODO: when we have Enter pressed: save the text to db and update redux store via actions
   handleItemInfoLineKeyDown = (e) => {
     console.log('handleItemInfoLineKeyDown')
+
+    e.persist()
+
     if (e.key === 'Enter') {
 
       // ...a little bit of a gottcha:
@@ -59,17 +74,50 @@ export class ContainerCourseItem extends React.Component {
       // rid of the buttons in CourseItemInfo component)
       e.target.blur()
 
+      // got to sanitize the data
+      let newLineArray = e.target.value
+        .slice()
+        .trim()
+        .toUpperCase()
+        .split(/\s+/)
+
+      // if ( newLineArray.length > 0 && isNaN(parseInt(newLineArray[0]))) {
+
+      // } else {
+
+      // }
+
+
+
+      // procedure:
+      // 1. save new item infoline value to mongodb, async action
+      // 2. upon success, update redux via new action
+      // 3. the order should now refresh and the infoline should show 
+      //    the new value via props.line.name field
+      // 4. then you should setState to stuff below
+
+
+
       // setState is async which means it takes time to change the state.
       // the callback here gets fired AFTER the state changes.
       // putting the console.log() on the line underneath the this.setState() call,
       // outside the callback, will show the yet-to-be-updated state
       this.setState((prevState) => ({
-        isEditing: !prevState.isEditing,
-        infoIdEditing: undefined 
+        editingInfoId: undefined,
+        editingInfoLineId: undefined,
+        editingLineContent: undefined
+
       }), () => {
         console.log(this.state)
       })
+    } else {
+      this.setState(() => ({ editingLineContent: e.target.value }))
     }
+  }
+
+  //TODO
+  handleAddNewInfoLine = () => {
+
   }
 
   render = () => (
@@ -85,9 +133,12 @@ export class ContainerCourseItem extends React.Component {
             info={ info }
             handleItemInfoQuantityClick={ this.handleItemInfoQuantityClick }
             handleItemInfoLineClick = { this.handleItemInfoLineClick }
-            isEditing= { this.state.isEditing && this.state.infoIdEditing === info._id }
             handleCancelClick = { this.handleCancelClick }
             handleItemInfoLineKeyDown = { this.handleItemInfoLineKeyDown }
+            handleAddNewInfoLine = { this.handleAddNewInfoLine }
+            isEditing = { this.state.editingInfoId === info._id }
+            editingInfoLineId = { this.state.editingInfoLineId }
+            editingLineContent = { this.state.editingLineContent }
           />
         )
       }
