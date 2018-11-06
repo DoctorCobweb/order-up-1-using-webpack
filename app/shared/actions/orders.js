@@ -1,6 +1,7 @@
 import { Order, Item, Info, InfoLine } from '../models/models'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
+import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 
 
 // good stuff to use later
@@ -257,6 +258,76 @@ export const startUpdateInfoLine = ({
         name,
       ))
       cb()
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
+
+export const addNewInfoLine = (
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  newInfoLineId,
+  newInfoLineQuantity,
+  newInfoLineName,
+) => ({
+  type: 'ADD_NEW_INFOLINE',
+  payload: {
+    orderId,
+    courseId,
+    itemId,
+    infoId,
+    newInfoLineId,
+    newInfoLineQuantity,
+    newInfoLineName,
+  }
+})
+
+export const startAddNewInfoLine = ({
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  quantity,
+  name,
+} = {}) => {
+  let newInfoLineId
+  return (dispatch, getState) => {
+    const infoLine = new InfoLine({
+      _id: uuidv1(),
+      name,
+      quantity
+    })
+      return infoLine.save()
+    .then(infoLine => {
+      console.log('created and saved a new InfoLine document')
+      console.log(infoLine)
+      newInfoLineId = infoLine._id
+      return Info.findById(infoId).exec()
+    })
+    .then(info => {
+      console.log('appending the new InfoLine doc which has _id')
+      console.log(newInfoLineId)
+      console.log('to info')
+      info.infoLines.push(newInfoLineId)
+
+      return info.save()
+    })
+    .then(info => {
+      console.log('saved the info with a new InfoLine attached:')
+      console.log(info)
+      dispatch(addNewInfoLine(
+        orderId,
+        courseId,
+        itemId,
+        infoId,
+        newInfoLineId,
+        quantity,
+        name
+      ))
     })
     .catch(err => {
       throw err

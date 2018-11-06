@@ -8,7 +8,7 @@ const CourseItemInfoLine = (props) => (
       onFocus={ (e) => props.handleItemInfoLineClick(e, props.infoId, props.line._id) }
       onKeyDown={ (e) => props.handleItemInfoLineKeyDown(e, props.infoId, props.line._id) }
       value={ 
-        props.isEditing ?
+        props.isUpdating ?
         props.editingLineContent
         :
         `${props.line.quantity} ${props.line.name}` }

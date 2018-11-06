@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import {
   startUpdateItemQuantity,
   startUpdateItemAndInfoQuantity,
-  startUpdateInfoLine
+  startUpdateInfoLine,
+  startAddNewInfoLine
 } from '../../../shared/actions/orders'
 import CourseItem from './CourseItem'
 import CourseItemInfo from './CourseItemInfo'
@@ -11,7 +12,7 @@ import CourseItemInfo from './CourseItemInfo'
 
 export class ContainerCourseItem extends React.Component {
   state = {
-    isEditing: false,
+    isUpdating: false,
     editingInfoId: undefined,
     editingInfoLineId: undefined,
     editingLineContent: "",
@@ -48,7 +49,7 @@ export class ContainerCourseItem extends React.Component {
   handleItemInfoLineClick = (e, infoId, infoLineId) => {
     e.persist()
     this.setState(() => ({
-      isEditing: true,
+      isUpdating: true,
       editingInfoId: infoId,
       editingInfoLineId: infoLineId,
       editingLineContent: e.target.value,
@@ -60,7 +61,7 @@ export class ContainerCourseItem extends React.Component {
   
   handleCancelClick = () => {
     this.setState(() => ({
-      isEditing: false,
+      isUpdating: false,
       editingInfoId: undefined,
       editinInfoLineId: undefined,
       editingLineContent: "",
@@ -145,7 +146,7 @@ export class ContainerCourseItem extends React.Component {
         // putting the console.log() on the line underneath the this.setState() call,
         // outside the callback, will show the yet-to-be-updated state
         this.setState((prevState) => ({
-          isEditing: false,
+          isUpdating: false,
           editingInfoId: undefined,
           editingInfoLineId: undefined,
           editingLineContent: "" 
@@ -166,15 +167,17 @@ export class ContainerCourseItem extends React.Component {
     }))
 
   }
+
   handleNewItemInfoLineClick = (e, infoId) => {
     e.persist()
 
     // anything  TODO here??
     console.log(infoId)
   }
+
   handleNewItemInfoLineKeyDown = (e, infoId) => {
     e.persist()
-    console.log(e.target.value)
+    // console.log(e.target.value)
     if (e.key === 'Enter') {
       e.target.blur()
       let newInfoLine = e.target.value
@@ -183,7 +186,9 @@ export class ContainerCourseItem extends React.Component {
         .toUpperCase()
         .split(/\s+/)
 
+      console.log('user hit enter...')
       console.log(newInfoLine)
+      console.log(`infoId: ${infoId}`)
 
       // is the content is empty and the user tried to save, prevent that
       // from going any further
@@ -207,14 +212,20 @@ export class ContainerCourseItem extends React.Component {
         newInfoLineName = newInfoLine.join(' ')
       }
 
-
       // 1. now we have the new stuff to go and save a new info item.
       // 2. create new InfoItem
       // 3. assign it to the infolines array of the associated info using the infoId
       // 4. update the order in the state
-
+      this.props.startAddNewInfoLine({
+        orderId: this.props.orderId,
+        courseId: this.props.courseId,
+        itemId: this.props.courseItem._id,
+        infoId,
+        quantity: newInfoLineQuantity,
+        name: newInfoLineName,
+      })
     } else {
-      console.log(e)
+      // console.log(e)
       // console.log(e.target.value)
       this.setState(() => ({
         newInfoLineContent: e.target.value
@@ -243,7 +254,7 @@ export class ContainerCourseItem extends React.Component {
             showEditButtons = { this.state.editingInfoId === info._id }
             editingInfoLineId = { this.state.editingInfoLineId }
             editingLineContent = { this.state.editingLineContent }
-            isEditing = { this.state.isEditing }
+            isUpdating = { this.state.isUpdating }
             displayNewInfoLine = { this.state.displayNewInfoLine && this.state.infoIdForNewInfoLine === info._id}
             handleNewItemInfoLineClick = { this.handleNewItemInfoLineClick }
             handleNewItemInfoLineKeyDown = { this.handleNewItemInfoLineKeyDown }
@@ -262,6 +273,7 @@ const mapDispatchToProps = (dispatch) => ({
   startUpdateItemQuantity: (data) => dispatch(startUpdateItemQuantity(data)),
   startUpdateItemAndInfoQuantity: (data) => dispatch(startUpdateItemAndInfoQuantity(data)),
   startUpdateInfoLine: (data, cb) => dispatch(startUpdateInfoLine(data, cb)),
+  startAddNewInfoLine: (data) => dispatch(startAddNewInfoLine(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerCourseItem)

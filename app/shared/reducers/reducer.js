@@ -10,6 +10,7 @@ export default (state=ordersReducerDefaultState, action) => {
         ...state,
         action.payload
       ]
+
     case 'UPDATE_ITEM_QUANTITY':
       const updatedItemState = state.map(order => {
         const orderId = action.payload.orderId
@@ -50,6 +51,7 @@ export default (state=ordersReducerDefaultState, action) => {
       // console.log('updatedItemState')
       // console.log(updatedItemState)
       return updatedItemState
+
     case 'UPDATE_ITEM_AND_INFO_QUANTITY':
       const updatedItemAndInfoState = state.map(order => {
         const orderId = action.payload.orderId
@@ -111,6 +113,7 @@ export default (state=ordersReducerDefaultState, action) => {
       // console.log('updatedItemAndInfoState ')
       // console.log(updatedItemAndInfoState)
       return updatedItemAndInfoState 
+
     case 'UPDATE_INFOLINE':
       const updatedInfoLineState = state.map(order => {
         const orderId = action.payload.orderId
@@ -165,6 +168,74 @@ export default (state=ordersReducerDefaultState, action) => {
       console.log('updatedInfoLineState ')
       console.log(updatedInfoLineState)
       return updatedInfoLineState
+
+    case 'ADD_NEW_INFOLINE':
+      const newInfoLineState = state.map(order => {
+        const orderId = action.payload.orderId
+        const courseId = action.payload.courseId
+        const itemId = action.payload.itemId
+        const infoId = action.payload.infoId
+        const newInfoLineId = action.payload.newInfoLineId
+        const newInfoLineQuantity = action.payload.newInfoLineQuantity
+        const newInfoLineName = action.payload.newInfoLineName
+
+        const newInfoLineObj = {
+          _id: newInfoLineId,
+          quantity: newInfoLineQuantity,
+          name: newInfoLineName
+        }
+        console.log(`infoId(reducer): ${infoId}`)
+
+        if (order._id === orderId) {
+          const orderClone = _.cloneDeep(order)
+          orderClone.courses = orderClone.courses.map(course => {
+            if (course._id === courseId) {
+              const courseCopy = _.cloneDeep(course)
+              courseCopy.items = courseCopy.items.map(item => {
+                if (item._id === itemId) {
+                  const itemCopy = _.cloneDeep(item)
+                  itemCopy.infos = itemCopy.infos.map(info => {
+                    if (info._id === infoId) {
+                      console.log('hello we are matched')
+                      const infoCopy = _.cloneDeep(info)
+                      const infoLinesCopy = _.cloneDeep(infoCopy.infoLines)
+                      const newInfoLineObjCopy = _.cloneDeep(newInfoLineObj)
+                      infoLinesCopy.push(newInfoLineObjCopy)
+                      infoCopy.infoLines = infoLinesCopy
+                      // infoCopy.infoLines = infoCopy.infoLines.map(infoLine => {
+                      //   if (infoLine._id === infoLineId ) {
+                      //     const infoLineCopy = _.cloneDeep(infoLine)
+                      //     infoLineCopy.quantity = quantity
+                      //     infoLineCopy.name = name
+                      //     return infoLineCopy
+                      //   } else {
+                      //     return infoLine
+                      //   }
+                      // })
+                      return infoCopy
+                    } else {
+                      return info
+                    }
+                  })
+                  return itemCopy
+                } else {
+                  return item
+                }
+              })
+              return courseCopy
+            } else {
+              return course
+            }
+          })
+          return orderClone
+        } else {
+          return order
+        }
+      }) 
+      console.log('newInfoLineState ')
+      console.log(newInfoLineState)
+      return newInfoLineState
+
     default:
       return state
   }

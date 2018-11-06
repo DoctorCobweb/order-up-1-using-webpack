@@ -15,7 +15,7 @@ const CourseItemInfo = (props) => (
                 infoId={ props.info._id }
                 line={ line }
                 handleItemInfoLineClick={ props.handleItemInfoLineClick }
-                isEditing={ props.isEditing && props.editingInfoLineId === line._id }
+                isUpdating={ props.isUpdating && props.editingInfoLineId === line._id }
                 handleItemInfoLineKeyDown={ props.handleItemInfoLineKeyDown }
                 editingLineContent={ props.editingLineContent }
               />
