@@ -202,16 +202,6 @@ export default (state=ordersReducerDefaultState, action) => {
                       const newInfoLineObjCopy = _.cloneDeep(newInfoLineObj)
                       infoLinesCopy.push(newInfoLineObjCopy)
                       infoCopy.infoLines = infoLinesCopy
-                      // infoCopy.infoLines = infoCopy.infoLines.map(infoLine => {
-                      //   if (infoLine._id === infoLineId ) {
-                      //     const infoLineCopy = _.cloneDeep(infoLine)
-                      //     infoLineCopy.quantity = quantity
-                      //     infoLineCopy.name = name
-                      //     return infoLineCopy
-                      //   } else {
-                      //     return infoLine
-                      //   }
-                      // })
                       return infoCopy
                     } else {
                       return info

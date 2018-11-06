@@ -228,6 +228,8 @@ export const updateInfoLine = (
   }
 })
 
+// cb: is a callback which in its body calls this.setState()
+// to reset the state back to its defaults (not all of state's properties, though)
 export const startUpdateInfoLine = ({
   orderId,
   courseId,
@@ -286,6 +288,8 @@ export const addNewInfoLine = (
   }
 })
 
+// cb: is a callback which in its body calls this.setState()
+// to reset the state back to its defaults (not all of state's properties, though)
 export const startAddNewInfoLine = ({
   orderId,
   courseId,
@@ -293,7 +297,7 @@ export const startAddNewInfoLine = ({
   infoId,
   quantity,
   name,
-} = {}) => {
+} = {}, cb) => {
   let newInfoLineId
   return (dispatch, getState) => {
     const infoLine = new InfoLine({
@@ -328,6 +332,7 @@ export const startAddNewInfoLine = ({
         quantity,
         name
       ))
+      cb()
     })
     .catch(err => {
       throw err

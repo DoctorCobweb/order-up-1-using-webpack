@@ -16,7 +16,6 @@ export class ContainerCourseItem extends React.Component {
     editingInfoId: undefined,
     editingInfoLineId: undefined,
     editingLineContent: "",
-    // editingLineContent: undefined,
     displayNewInfoLine: false,
     infoIdForNewInfoLine: undefined,
     newInfoLineContent: "" 
@@ -223,10 +222,14 @@ export class ContainerCourseItem extends React.Component {
         infoId,
         quantity: newInfoLineQuantity,
         name: newInfoLineName,
+      }, () => {
+        this.setState(() => ({
+          displayNewInfoLine: false,
+          infoIdForNewInfoLine: undefined,
+          newInfoLineContent: "" 
+        }))
       })
     } else {
-      // console.log(e)
-      // console.log(e.target.value)
       this.setState(() => ({
         newInfoLineContent: e.target.value
       }), () => {
@@ -273,7 +276,7 @@ const mapDispatchToProps = (dispatch) => ({
   startUpdateItemQuantity: (data) => dispatch(startUpdateItemQuantity(data)),
   startUpdateItemAndInfoQuantity: (data) => dispatch(startUpdateItemAndInfoQuantity(data)),
   startUpdateInfoLine: (data, cb) => dispatch(startUpdateInfoLine(data, cb)),
-  startAddNewInfoLine: (data) => dispatch(startAddNewInfoLine(data))
+  startAddNewInfoLine: (data, cb) => dispatch(startAddNewInfoLine(data, cb))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerCourseItem)
