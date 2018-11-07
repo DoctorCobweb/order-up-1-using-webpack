@@ -52,3 +52,17 @@
   border-radius: $radius;
   margin-top: 4px;
 }
+
+.button--info {
+  background: $off-white;
+  border: none;
+  border-radius: $radius;
+  margin: 4px 4px 0 4px;
+}
+
+.button--info-save {
+  background: $blue;
+  border: none;
+  border-radius: $radius;
+  margin: 4px 4px 0 4px;
+}

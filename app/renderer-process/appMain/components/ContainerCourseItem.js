@@ -8,6 +8,7 @@ import {
 } from '../../../shared/actions/orders'
 import CourseItem from './CourseItem'
 import CourseItemInfo from './CourseItemInfo'
+import AddInfo from './AddInfo'
 
 
 export class ContainerCourseItem extends React.Component {
@@ -18,7 +19,7 @@ export class ContainerCourseItem extends React.Component {
     editingLineContent: "",
     displayNewInfoLine: false,
     infoIdForNewInfoLine: undefined,
-    newInfoLineContent: "" 
+    newInfoLineContent: "",
   }
 
   // ---- HANDLING VARIOUS QUANTITY-BUTTON CLICKS ----------
@@ -224,6 +225,11 @@ export class ContainerCourseItem extends React.Component {
         name: newInfoLineName,
       }, () => {
         this.setState(() => ({
+          isUpdating: false,
+          editingInfoId: undefined,
+          editingInfoLineId: undefined,
+          editingLineContent: "",
+
           displayNewInfoLine: false,
           infoIdForNewInfoLine: undefined,
           newInfoLineContent: "" 
@@ -237,7 +243,7 @@ export class ContainerCourseItem extends React.Component {
       })
     }
   }
-
+  
   render = () => (
     <div className="container-course">
       <CourseItem
@@ -263,6 +269,37 @@ export class ContainerCourseItem extends React.Component {
             handleNewItemInfoLineKeyDown = { this.handleNewItemInfoLineKeyDown }
           />
         )
+      }
+
+      {
+        this.props.showAddNewInfo
+        ?
+        ""
+        :
+        <button
+          className="button--info"
+          onClick={ () => 
+            this.props.handleAddNewInfo(
+              this.props.courseId,
+              this.props.courseName,
+              this.props.courseItem.name,
+              this.props.courseItem._id
+            )
+          }
+        >
+          + Add new info
+        </button>
+      }
+      {
+        this.props.showAddNewInfo
+        ?
+        <AddInfo
+          handleCancelAddInfoClick = { this.props.handleCancelAddInfoClick }
+          handleSaveAddInfoClick = { this.props.handleSaveAddInfoClick }
+          itemId={ this.props.courseItem._id }
+        />
+        :
+        ""
       }
     </div>
   )

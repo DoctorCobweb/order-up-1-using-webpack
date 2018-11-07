@@ -1,20 +1,72 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import ContainerCourseItem from './ContainerCourseItem'
+import { startAddNewInfo } from '../../../shared/actions/orders'
 
-const Course = (props) => (
-  <div>
-    <h2 className="heading">{ props.courseName }</h2>
-    { props.courseItems.map(courseItem => (
-        <ContainerCourseItem
-          key={ courseItem._id }
-          orderId={ props.orderId }
-          courseItem={ courseItem }
-          courseName = { props.courseName }
-          courseId={ props.courseId }
-        />
-      ))
+export class Course extends React.Component {
+  state = {
+    itemIdToEdit: undefined
+  }
+  handleAddNewInfo = (courseId, courseName, itemName, itemId) => {
+    // console.log(courseId)
+    // console.log(courseName)
+    // console.log(itemName)
+    // console.log(itemId)
+    this.setState(() => ({
+      itemIdToEdit: itemId
+    }))
+  }
+
+  handleCancelAddInfoClick = () => {
+    this.setState(() => ({
+      itemIdToEdit: undefined
+    }))
+  }
+
+  handleSaveAddInfoClick = (infoQuantity, infoName, itemId) => {
+    console.log(`${infoQuantity} ${infoName}`)
+
+    const data = {
+      orderId: this.props.orderId,
+      courseId: this.props.courseId,
+      itemId,
+      quantity: infoQuantity,
+      name: infoName,
     }
-  </div>
-)
+    this.props.startAddNewInfo(data)
+    // call this after successfully saving new info
+    this.setState(() => ({
+      itemIdToEdit: undefined
+    }))
+  }
 
-export default Course
+  render = () => (
+    <div>
+      <h2 className="heading">{ this.props.courseName }</h2>
+      { this.props.courseItems.map(courseItem => (
+          <ContainerCourseItem
+            key={ courseItem._id }
+            orderId={ this.props.orderId }
+            courseItem={ courseItem }
+            courseName = { this.props.courseName }
+            courseId={ this.props.courseId }
+            handleAddNewInfo = { this.handleAddNewInfo }
+            showAddNewInfo = { this.state.itemIdToEdit === courseItem._id }
+            handleCancelAddInfoClick = { this.handleCancelAddInfoClick }
+            handleSaveAddInfoClick = { this.handleSaveAddInfoClick }
+          />
+        ))
+      }
+    </div>
+  )
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  // order: findOrder(state, ownProps.orderId)
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  startAddNewInfo: (data) => dispatch(startAddNewInfo(data))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Course)

@@ -196,7 +196,6 @@ export default (state=ordersReducerDefaultState, action) => {
                   const itemCopy = _.cloneDeep(item)
                   itemCopy.infos = itemCopy.infos.map(info => {
                     if (info._id === infoId) {
-                      console.log('hello we are matched')
                       const infoCopy = _.cloneDeep(info)
                       const infoLinesCopy = _.cloneDeep(infoCopy.infoLines)
                       const newInfoLineObjCopy = _.cloneDeep(newInfoLineObj)
@@ -225,6 +224,72 @@ export default (state=ordersReducerDefaultState, action) => {
       console.log('newInfoLineState ')
       console.log(newInfoLineState)
       return newInfoLineState
+
+    case 'ADD_NEW_INFO':
+      const newInfoState = state.map(order => {
+        const orderId = action.payload.orderId
+        const courseId = action.payload.courseId
+        const itemId = action.payload.itemId
+        const newInfo = action.payload.newInfo
+        const quantity = action.payload.quantity
+        // const newInfoLineId = action.payload.newInfoLineId
+        // const newInfoLineQuantity = action.payload.newInfoLineQuantity
+        // const newInfoLineName = action.payload.newInfoLineName
+
+        // const newInfoLineObj = {
+        //   _id: newInfoLineId,
+        //   quantity: newInfoLineQuantity,
+        //   name: newInfoLineName
+        // }
+        // console.log(`infoId(reducer): ${infoId}`)
+
+        if (order._id === orderId) {
+          const orderClone = _.cloneDeep(order)
+          orderClone.courses = orderClone.courses.map(course => {
+            if (course._id === courseId) {
+              const courseCopy = _.cloneDeep(course)
+              courseCopy.items = courseCopy.items.map(item => {
+                if (item._id === itemId) {
+                  const itemCopy = _.cloneDeep(item)
+                  const infosCopy = _.cloneDeep(itemCopy.infos)
+                  console.log('infosCopy')
+                  console.log(infosCopy)
+                  infosCopy.push(newInfo)
+                  itemCopy.infos = infosCopy
+                  itemCopy.quantity -= quantity
+                  console.log('AFTER infosCopy')
+                  console.log(infosCopy)
+                  // itemCopy.infos = itemCopy.infos.map(info => {
+                  //   if (info._id === infoId) {
+                  //     console.log('hello we are matched')
+                  //     const infoCopy = _.cloneDeep(info)
+                  //     const infoLinesCopy = _.cloneDeep(infoCopy.infoLines)
+                  //     const newInfoLineObjCopy = _.cloneDeep(newInfoLineObj)
+                  //     infoLinesCopy.push(newInfoLineObjCopy)
+                  //     infoCopy.infoLines = infoLinesCopy
+                  //     return infoCopy
+                  //   } else {
+                  //     return info
+                  //   }
+                  // })
+                  return itemCopy
+                } else {
+                  return item
+                }
+              })
+              return courseCopy
+            } else {
+              return course
+            }
+          })
+          return orderClone
+        } else {
+          return order
+        }
+      }) 
+      console.log('newInfoState ')
+      console.log(newInfoState)
+      return newInfoState
 
     default:
       return state

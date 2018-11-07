@@ -305,7 +305,7 @@ export const startAddNewInfoLine = ({
       name,
       quantity
     })
-      return infoLine.save()
+    return infoLine.save()
     .then(infoLine => {
       console.log('created and saved a new InfoLine document')
       console.log(infoLine)
@@ -336,6 +336,96 @@ export const startAddNewInfoLine = ({
     })
     .catch(err => {
       throw err
+    })
+  }
+}
+
+export const addNewInfo = (
+  courseId,
+  orderId,
+  itemId,
+  newInfo,
+  quantity
+) => ({
+  type: 'ADD_NEW_INFO',
+  payload: {
+    courseId,
+    orderId,
+    itemId,
+    newInfo,
+    quantity
+  }
+})
+
+export const startAddNewInfo = ({
+  orderId,
+  courseId,
+  itemId,
+  quantity,
+  name
+}) => {
+  let newInfo
+  let newInfoLine 
+
+  return (dispatch, getState) => {
+    const infoLine = new InfoLine({
+      _id: uuidv1(),
+      name,
+      quantity: 1 //default for now
+    })
+    return infoLine.save()
+    .then(infoLine => {
+      console.log('created and saved a new InfoLine document')
+      console.log(infoLine.toJSON())
+
+      newInfoLine = infoLine.toJSON()
+
+      const info = new Info({
+        _id: uuidv1(),
+        completed: false,
+        quantity,
+        infoLines: [infoLine._id]
+      })
+      return info.save()
+    })
+    .then(info => {
+      console.log('created and saved a new Info document')
+      console.log(info.toJSON())
+      // and also append the new info doc _id to the corresponding
+      // item infos array
+      newInfo = info.toJSON()
+      newInfo.infoLines = [newInfoLine]
+      return Item.findById(itemId).exec()
+    })
+    .then(item => {
+      console.log('found item doc. appending infos array with new info _id')
+      console.log(item.toJSON())
+
+      // update the infos array
+      item.infos.push(newInfo._id)
+
+      // updated the item's quantity to take into account the 
+      // new info's quantity. it 'takes away' from the item's quantity
+      // which represents a normal item (no info specifications)
+      item.quantity -= quantity
+
+      return item.save()
+    })
+    .then(item => {
+      console.log('updated the new item document')
+      console.log(item.toJSON())
+      console.log('newInfo is')
+      console.log(newInfo)
+
+      // now call dispatch
+      console.log('calling dispatch(addNewInfo())')
+      dispatch(addNewInfo(
+        courseId,
+        orderId,
+        itemId,
+        newInfo,
+        quantity
+      ))
     })
   }
 }
