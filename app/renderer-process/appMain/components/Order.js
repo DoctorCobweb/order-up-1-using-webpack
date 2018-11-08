@@ -2,13 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Course from './Course'
 import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
+import { startToggleGoOnMains } from '../../../shared/actions/orders'
 
 export class Order extends React.Component { 
 
-  render = () => {
-    // console.log('this.props')
-    // console.log(this.props)
+  handleGoOnMainsClick = (e) => {
+    console.log('go on mains button handler')
+    this.props.startToggleGoOnMains({
+      orderId: this.props.orderId
+    })
+  }
 
+  render = () => {
     return (
       <div>
         <div className="heading">
@@ -19,17 +24,23 @@ export class Order extends React.Component {
           <div>{ this.props.order.orderTakenUsing }</div>
           <div>Clerk: { this.props.order.clerk }</div>
           <div>{ this.props.order.orderSentAt }</div>
+          { this.props.order.goOnMains ? 
+            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
+            :
+            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
+          }
         </div>
         { sortCoursesInOrder(this.props.order).courses
-            .map(course => 
+            .map(course => (
               <Course
                 key={ course._id }
                 orderId={ this.props.order._id }
                 courseName={ course.name}
                 courseId={ course._id }
                 courseItems={ course.items }
-              />
-          )
+                goOnMains={ this.props.order.goOnMains }
+              />)
+            )
         }
       </div>
     )
@@ -40,9 +51,8 @@ const mapStateToProps = (state, ownProps) => ({
   order: findOrder(state, ownProps.orderId)
 })
 
-// TODO: add in async action creators
 const mapDispatchToProps = (dispatch) => ({
-  // blah: (yadda) => dispatch(startUpdateInfo(yadda))
+  startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)

@@ -60,9 +60,10 @@
   margin: 4px 4px 0 4px;
 }
 
-.button--info-save {
-  background: $blue;
-  border: none;
-  border-radius: $radius;
-  margin: 4px 4px 0 4px;
+.button--hold-course {
+  background: $red;
+}
+
+.button--go-on-course {
+  background: $green;
 }

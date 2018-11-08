@@ -73,7 +73,6 @@ export const addToMongoDB = (db, order) => {
 }
 
 
-// WIP VERSION
 const insertInfos = (orderMap) => {
   const infos = _.map(orderMap.get('itemInfos'), (info) => {
     return _.map(info, itemInfo => {
@@ -134,41 +133,6 @@ const insertInfos = (orderMap) => {
     })
 }
 
-// WORKING VERSION
-// const insertInfos = (orderMap) => {
-//   const infos = _.map(orderMap.get('itemInfos'), (info) => {
-//     return _.map(info, itemInfo => {
-//       const infoLinesIds = _.map(itemInfo, infoLine => {
-//         // infoLine here is like:
-//         // [' the _id string', 'EX SCOOP', 1]
-          
-//         console.log(infoLine)
-//         const [ _id ] = infoLine 
-//         return _id
-//       })
-//       return new Info({
-//         _id: uuidv1(),
-//         infoLines: infoLinesIds
-//       })
-//     })
-//   })
-//   console.log('stringify(infos)')
-//   console.log(stringify(infos))
-
-//   Info.insertMany(_.flattenDepth(infos, 1), {ordered: true})
-//     .then(results => {
-//       // console.log(results)
-//       const updatedMap = updateOrderMapWithItemIds(orderMap, results)
-//       // console.log('updatedMap Info.insertMany then()')
-//       // console.log(stringify(updatedMap.get('items')))
-
-//       // now go onto inserting the 'Item' models
-//       insertItems(updatedMap)
-//     })
-//     .catch(err => {
-//       throw err
-//     })
-// }
 
 const insertItems = (orderMap) => {
   const items = _.flattenDepth(orderMap.get('items'), 1)
@@ -231,6 +195,7 @@ const createOrderAndSave = (map, vals) => {
     clerk: courseMetaData.clerk,
     covers: courseMetaData.covers,
     customerName: courseMetaData.customerName,
+    goOnMains: courseMetaData.goOnMains,
     location: courseMetaData.location,
     orderSentAt: courseMetaData.orderSentAt,
     orderTakenUsing: courseMetaData.orderTakenUsing,

@@ -37,10 +37,12 @@ export default (db, buffer) => {
     .then(results => {
       //do somethine with the array of strings
       let data = sanitize(results)
+      console.log('pareser.js default func')
       console.log(colors.blue(stringify(data)))
       const zippedData = tokenizeData(data)
       // log.info(zippedData)
       const order = buildOrder(zippedData)
+      // console.log('pareser.js default func')
       // console.log(colors.blue(stringify(order)))
       insertSingleOrder(db, order)
     })
@@ -239,7 +241,159 @@ const buildOrder = (data) => {
   order.metaData = metaData
   order.metaData.location = location
   order.meals = meals
+
+  // calc hold mains or not
+  const mainsLineType = calculateHoldMains(order)
+  const goOnMains = mainsLineType === 'straight' ? false : true 
+  order.metaData.goOnMains = goOnMains
+
+  // TODO
+  // calc hold dessert if present
+
+
+
   return order
+}
+
+const calculateHoldMains = (order) => {
+  // TODO: before returning the order, determine whether the 'mains'
+  // course should be cooked immediately after entrees go out, or
+  // whether they should be held back until FOH says to start cooking them.
+  //
+  // delineation between entrees and mains in the UI:
+  // go immediately === dotted line
+  // hold === straight line
+  //
+  // when a hold on mains is called away by the FOH staff, the hold
+  // line can either 
+  // i) become a dotted line, or
+  // ii) disappear completely
+  //
+  // we usually write the time that the mains are called away. this
+  // is to see how long mains have been since call away; helps with
+  // scheduling which meals to cook next.
+
+  // DOTTED-VS-STRAIGHT-LINE ALGO
+  // look at order.meals and see if there are courses for both entrees and mains
+  // 1. if not, then dont need to worry about the line-type; its a single course like
+  // ENTREES DINNER, or something like a dessert docket.
+  // 2. if so, then look through the entree meals: if there is an item other than:
+  //    i) garlic bread
+  //    i) kids meals: parmi, schnitzel, steak, bolog, rice etc
+  //    then it means we should hold mains
+  //
+  // nb. sometimes FOH will freetext on the docket to not hold on the mains (even
+  //     when the entrees meals would imply to hold mains)
+  //     for simplicity, allow the operator to manually change the line-type 
+  //     (this functionality needs to exist in client app)
+  //
+  // the ultimate goal is to set a field in the metaData part of the object.
+  // something like:
+  // 
+  // holdMains: false | true
+  //
+  // can also do this for dessert courses if they're present:
+  // eg. a docket with entrees, mains, and desserts
+  // holdDesserts: false | true
+  //
+  // ... this is good because sometimes we get 'call away' dockets for desserts
+
+  const dottedLineEntreeItems = [
+  "CHILDS BOLOG",
+  "CHILDS BURGER",
+  "CHILDS FISH",
+  "CHILDS HAMBURGER",
+  "CHILDS PARMI",
+  "CHILDS RICE",
+  "CHILDS ROAST",
+  "CHILDS SNIT",
+  "CHILDS STEAK",
+  "GARLIC BREAD"
+  ]
+
+
+  const courseNames = Object.keys(order.meals)
+  let lineType
+
+  if (
+    _.includes(courseNames, 'ENTREES DINNER') ||
+    _.includes(courseNames, 'BAR ENTREE')
+  ) {
+    // have entrees. check if there's also mains present
+    if (
+      _.includes(courseNames, 'MAINS DINNER') ||
+      _.includes(courseNames, 'BAR MEALS')
+    ) {
+      // have entrees and mains. go onto to determine line-type
+
+      let allEntrees = []
+
+      if (order.meals['ENTREES DINNER']) {
+        allEntrees.push(order.meals['ENTREES DINNER'])
+      }
+      if (order.meals['BAR ENTREE']) {
+        allEntrees.push(order.meals['BAR ENTREE'])
+      }
+
+      const allEntreesNames = _.map(_.flatten(allEntrees), item => {
+          return item.name
+        }
+      )
+
+      // scan through all entrees and see if they are matched in 
+      // our dotted line candidates. then, if the resulting array of
+      // bools are all true then we have a dotted-line, else a straight-line
+      const itemInDottedItems = _.map(allEntreesNames, name => {
+        if (_.includes(dottedLineEntreeItems, name)) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+
+      const reducedDottedItems = _.reduce(itemInDottedItems, (acc, val) => {
+        return acc + val
+      }, 0)
+
+
+      if (reducedDottedItems === allEntreesNames.length) {
+        // all dotted-line entrees
+        // console.log('have dotted-line'.green)
+        lineType = 'dotted'
+      } else {
+        // need to hold on mains; straight-line
+        // console.log('have straight-line'.red)
+        lineType = 'straight'
+      }
+
+      console.log(colors.red(allEntrees))
+      console.log(allEntreesNames)
+      console.log(itemInDottedItems)
+      console.log(reducedDottedItems)
+      console.log(`lineType: ${lineType}`.red)
+
+    } else {
+      // TODO
+      // have entrees but no mains. 
+      console.log('have entrees but no mains'.red)
+      lineType = 'dotted'
+      console.log(`lineType: ${lineType}`.red)
+    }
+
+  } else {
+    // TODO
+    // have a docket with no entrees.
+    // => could be mains only, or
+    //    dessert docket, or
+    //    call away docket, or
+    //    random docket, or
+    //    ....
+    console.log('have mains only, or dessert, or call away docket, or ...'.red)
+    lineType = 'dotted'
+    console.log(`lineType: ${lineType}`.red)
+  }
+
+  return lineType
 }
 
 const handleMenuItemsAndItemInfo = (data, idxs) => {

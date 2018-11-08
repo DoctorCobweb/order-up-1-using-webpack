@@ -8,6 +8,7 @@ const orderSchema = new Schema({
   clerk: String,
   covers: Number,
   customerName: String,
+  goOnMains: Boolean,
   location: String,
   orderSentAt: String,
   orderTakenUsing: String,

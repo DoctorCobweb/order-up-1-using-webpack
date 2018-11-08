@@ -6,7 +6,9 @@ export const docketTemplate = {
   covers: "",
   meals: {
     "ENTREES DINNER": [],
+    "MAINS LUNCH": [],
     "MAINS DINNER": [],
+    "BAR ENTREE": [],
     "BAR MEALS": [],
     "CHILDS MENUS": [],
     "CHILDS DESSERT TOPS": [],
@@ -46,6 +48,7 @@ export const courseFields = [
   "ENTREES DINNER",
   "MAINS DINNER",
   "MAINS LUNCH",
+  "BAR ENTREE",
   "BAR MEALS",
   "CHILDS MENUS",
   "CHILD DESSERT TOPS",

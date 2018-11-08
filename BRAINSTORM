@@ -1,0 +1,32 @@
+
+-----------------------
+dotted vs straight line 
+-----------------------
+
+Q. what are all the different entrees course names in dockets?
+A. ENTREES DINNER, BAR ENTREE (all?)
+
+Q. what are all the different 'main' course names in dockets?
+A. MAINS DINNER, BAR MEALS, MAINS LUNCH (all?)
+
+Q. what causes a dotted line?
+A. 
+   i) an entree that contains any combination of the following, but nothing else
+   from the entree selection
+   1. garlic bread
+   2. childs snitz
+   3. childs parmi
+   4. childs fish
+   5. childs steak
+   6. childs bolog
+   7. childs spaghetti (is this an item?)
+
+   or
+
+   ii) if there are free-text notes saying dont hold mains
+
+   or
+
+   iii) a person physically comes into the kitchen and says dont hold mains
+
+=> need automatic hold detections and manual override functionality 

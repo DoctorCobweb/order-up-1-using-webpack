@@ -36,3 +36,43 @@
 .item-info-completed {
   background: $grey;
 }
+
+.item-info-new__container {
+  align-items: flex-end;
+  background: $blue;
+  border-radius: $radius;
+  display: flex;
+  font-size: 1.3rem;
+  justify-content: space-between;
+  margin-left: 10rem;
+  padding: 1rem;
+}
+
+.item-info-new__input-stack {
+  background: $off-white;
+  border-radius: $radius;
+  font-size: 1.3rem;
+  padding: 1rem;
+}
+
+.item-info-new__quantity {
+  background: $dark-blue;
+  border-radius: $radius;
+  color: $off-white;
+  font-size: 1.3rem;
+  font-weight: 100;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.item-info-new__heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-info-new__info {
+  background: $off-white;
+  border-radius: $radius;
+  font-size: 1.3rem;
+  padding: 1rem;
+}

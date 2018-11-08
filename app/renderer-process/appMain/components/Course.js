@@ -8,10 +8,6 @@ export class Course extends React.Component {
     itemIdToEdit: undefined
   }
   handleAddNewInfo = (courseId, courseName, itemName, itemId) => {
-    // console.log(courseId)
-    // console.log(courseName)
-    // console.log(itemName)
-    // console.log(itemId)
     this.setState(() => ({
       itemIdToEdit: itemId
     }))
@@ -33,16 +29,26 @@ export class Course extends React.Component {
       quantity: infoQuantity,
       name: infoName,
     }
-    this.props.startAddNewInfo(data)
-    // call this after successfully saving new info
-    this.setState(() => ({
-      itemIdToEdit: undefined
-    }))
+    this.props.startAddNewInfo(data, () => {
+      // call this after successfully saving new info
+      this.setState(() => ({
+        itemIdToEdit: undefined
+      }))
+    })
   }
 
   render = () => (
     <div>
-      <h2 className="heading">{ this.props.courseName }</h2>
+      <h2
+        className="heading"
+      >
+        { this.props.courseName }
+        { (this.props.courseName === 'MAINS DINNER' || this.props.courseName === 'BAR MEALS')
+            &&
+          !this.props.goOnMains
+          ? ' (HOLD)' : ''
+        }
+      </h2>
       { this.props.courseItems.map(courseItem => (
           <ContainerCourseItem
             key={ courseItem._id }
@@ -62,11 +68,11 @@ export class Course extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  // order: findOrder(state, ownProps.orderId)
+  // TODO?
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startAddNewInfo: (data) => dispatch(startAddNewInfo(data))
+  startAddNewInfo: (data, cb) => dispatch(startAddNewInfo(data, cb))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Course)

@@ -363,7 +363,7 @@ export const startAddNewInfo = ({
   itemId,
   quantity,
   name
-}) => {
+} = {}, cb) => {
   let newInfo
   let newInfoLine 
 
@@ -404,11 +404,6 @@ export const startAddNewInfo = ({
       // update the infos array
       item.infos.push(newInfo._id)
 
-      // updated the item's quantity to take into account the 
-      // new info's quantity. it 'takes away' from the item's quantity
-      // which represents a normal item (no info specifications)
-      item.quantity -= quantity
-
       return item.save()
     })
     .then(item => {
@@ -426,6 +421,39 @@ export const startAddNewInfo = ({
         newInfo,
         quantity
       ))
+      cb()
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
+
+export const toggleGoOnMains = (orderId, goOnMainsBool) => ({
+  type: 'TOGGLE_GO_ON_MAINS',
+  payload: {
+    orderId,
+    goOnMainsBool
+  }
+})
+
+export const startToggleGoOnMains = ({ orderId } = {}) => {
+  let updatedGoOnMainsBool
+  return (dispatch, getState) => {
+    // find the order using orderId, updated the goOnMains field to goOnMains arg 
+    return Order.findById(orderId).exec()
+    .then(order => {
+      updatedGoOnMainsBool = !order.goOnMains
+      order.goOnMains = updatedGoOnMainsBool
+      return order.save()
+    })
+    .then(order => {
+      console.log('updated order goOnMains value:')
+      console.log(order.toJSON())
+      dispatch(toggleGoOnMains(orderId, updatedGoOnMainsBool))
+    })
+    .catch(err => {
+      throw err
     })
   }
 }
