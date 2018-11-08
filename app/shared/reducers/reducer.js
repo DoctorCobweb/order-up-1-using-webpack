@@ -5,6 +5,7 @@ const ordersReducerDefaultState = []
 
 export default (state=ordersReducerDefaultState, action) => {
   switch(action.type) {
+
     case 'ADD_ORDER': 
       return [
         ...state,
@@ -271,33 +272,17 @@ export default (state=ordersReducerDefaultState, action) => {
         if (order._id === orderId) {
           const orderClone = _.cloneDeep(order)
           orderClone.goOnMains = goOnMainsBool
-          // orderClone.courses = orderClone.courses.map(course => {
-          //   if (course._id === courseId) {
-          //     const courseCopy = _.cloneDeep(course)
-          //     courseCopy.items = courseCopy.items.map(item => {
-          //       if (item._id === itemId) {
-          //         const itemCopy = _.cloneDeep(item)
-          //         const infosCopy = _.cloneDeep(itemCopy.infos)
-          //         infosCopy.push(newInfo)
-          //         itemCopy.infos = infosCopy
-          //         return itemCopy
-          //       } else {
-          //         return item
-          //       }
-          //     })
-          //     return courseCopy
-          //   } else {
-          //     return course
-          //   }
-          // })
           return orderClone
         } else {
           return order
         }
       }) 
-      console.log('toggleGoOnMainsState ')
-      console.log(toggleGoOnMainsState)
+      // console.log('toggleGoOnMainsState ')
+      // console.log(toggleGoOnMainsState)
       return toggleGoOnMainsState 
+
+    case 'SET_ORDERS':
+      return action.payload.orders
 
     default:
       return state

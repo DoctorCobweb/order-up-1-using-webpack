@@ -457,3 +457,29 @@ export const startToggleGoOnMains = ({ orderId } = {}) => {
     })
   }
 }
+
+export const setOrders = (orders) => ({
+  type: 'SET_ORDERS',
+  payload: {
+    orders
+  }
+})
+
+export const startSetOrders = () => {
+  return (dispatch, getState) => {
+    console.log('hello from startSetOrders@')
+    // return dispatch(setOrders())
+    return Order.find({})
+      .populate(orderPopulation)
+      .exec()
+      .then(orders => {
+        const ordersCleanedUp = _.map(orders, order => order.toJSON())
+        console.log(`found all orders in mongodb. orders.length=${ordersCleanedUp.length}`)
+        console.log(ordersCleanedUp)
+        dispatch(setOrders(ordersCleanedUp))
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}

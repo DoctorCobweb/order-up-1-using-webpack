@@ -7,7 +7,6 @@ import { startToggleGoOnMains } from '../../../shared/actions/orders'
 export class Order extends React.Component { 
 
   handleGoOnMainsClick = (e) => {
-    console.log('go on mains button handler')
     this.props.startToggleGoOnMains({
       orderId: this.props.orderId
     })

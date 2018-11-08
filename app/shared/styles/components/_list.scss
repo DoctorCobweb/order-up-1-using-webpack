@@ -1,3 +1,9 @@
+.order-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .list-item {
   background: $off-white;
   padding: 1rem;

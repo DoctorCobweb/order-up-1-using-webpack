@@ -27,6 +27,19 @@ const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']
 //     RC = Random Content                                                   //
 // ------------------------------------------------------------------------- //
 
+const dottedLineEntreeItems = [
+  "CHILDS BOLOG",
+  "CHILDS BURGER",
+  "CHILDS FISH",
+  "CHILDS HAMBURGER",
+  "CHILDS PARMI",
+  "CHILDS RICE",
+  "CHILDS ROAST",
+  "CHILDS SNIT",
+  "CHILDS STEAK",
+  "GARLIC BREAD",
+]
+
 log.transports.file.level = 'info'
 
 export default (db, buffer) => {
@@ -298,18 +311,6 @@ const calculateHoldMains = (order) => {
   //
   // ... this is good because sometimes we get 'call away' dockets for desserts
 
-  const dottedLineEntreeItems = [
-  "CHILDS BOLOG",
-  "CHILDS BURGER",
-  "CHILDS FISH",
-  "CHILDS HAMBURGER",
-  "CHILDS PARMI",
-  "CHILDS RICE",
-  "CHILDS ROAST",
-  "CHILDS SNIT",
-  "CHILDS STEAK",
-  "GARLIC BREAD"
-  ]
 
 
   const courseNames = Object.keys(order.meals)
