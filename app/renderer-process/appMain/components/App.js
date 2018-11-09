@@ -22,6 +22,7 @@ export class App extends Component {
   }
 
   componentDidMount() {
+    console.log('hello from App.js componentDidMount()')
     // fetch all the orders on app startup.
     // get from mongodb, populate all orders, put in redux store
     this.props.startSetOrders()

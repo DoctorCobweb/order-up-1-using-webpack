@@ -4,6 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux'
 import thunk from 'redux-thunk'
+import AppRouter, { history } from '../../shared/routers/AppRouter'
 // import log from 'electron-log'
 import mongoose from 'mongoose'
 import mongodb from 'mongodb'
@@ -95,12 +96,16 @@ db.once('open', () => {
   console.log('db mongoose opened event')
 })
 
-// Provider will provide the redux store to 
-// all components in the app
-const jsx = (
-  <Provider store={store}>
-    <App />
-  </Provider>
-)
+const renderApp = () => {
+  const jsx = (
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
+  )
+  ReactDOM.render( jsx, document.getElementById('root'))
+}
 
-ReactDOM.render( jsx, document.getElementById('root'))
+// start app off at home, the App.js Component
+history.push('/')
+
+renderApp()

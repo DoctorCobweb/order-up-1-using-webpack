@@ -3,10 +3,13 @@ import { connect } from 'react-redux'
 import Course from './Course'
 import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
 import { startToggleGoOnMains } from '../../../shared/actions/orders'
+import { history } from '../../../shared/routers/AppRouter'
 
 export class Order extends React.Component { 
 
   handleGoOnMainsClick = (e) => {
+    // playing around with history functionality
+    history.push('/test')
     this.props.startToggleGoOnMains({
       orderId: this.props.orderId
     })
