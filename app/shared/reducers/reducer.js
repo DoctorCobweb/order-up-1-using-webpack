@@ -284,6 +284,9 @@ export default (state=ordersReducerDefaultState, action) => {
     case 'SET_ORDERS':
       return action.payload.orders
 
+    case 'DELETE_ALL_ORDERS':
+      return ordersReducerDefaultState
+
     default:
       return state
   }

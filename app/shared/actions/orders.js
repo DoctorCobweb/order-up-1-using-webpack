@@ -1,4 +1,4 @@
-import { Order, Item, Info, InfoLine } from '../models/models'
+import { Order, Course, Item, Info, InfoLine } from '../models/models'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
@@ -481,5 +481,41 @@ export const startSetOrders = () => {
       .catch(err => {
         throw err
       })
+  }
+}
+
+export const deleteAllOrders = () => ({
+  type: 'DELETE_ALL_ORDERS',
+  payload: {}
+})
+
+export const startDeleteAllOrders = () => {
+  return (dispatch, getState) => {
+    return InfoLine.deleteMany({}).exec()
+    .then(() => {
+      console.log('deleted all docs in InfoLine collection')
+      return Info.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Info collection')
+      return Item.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Item collection')
+      return Course.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Course collection')
+      return Order.deleteMany({}).exec()
+    })
+    .then(()=> {
+      console.log('calling dispatch to delete all of its order state')
+      dispatch(deleteAllOrders())
+    })
+    .catch(err => {
+      throw err
+    })
+
+
   }
 }

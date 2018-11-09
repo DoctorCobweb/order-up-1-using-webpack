@@ -27,9 +27,9 @@ export class Order extends React.Component {
           <div>Clerk: { this.props.order.clerk }</div>
           <div>{ this.props.order.orderSentAt }</div>
           { this.props.order.goOnMains ? 
-            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains (+ Test)</button>
+            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
             :
-            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains (+ Test)</button>
+            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
           }
         </div>
         { sortCoursesInOrder(this.props.order).courses

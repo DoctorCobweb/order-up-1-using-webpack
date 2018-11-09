@@ -54,6 +54,7 @@ const store = configureStore()
 // so using the mongodb driver of js instead of Mongoose .watch()
 // functionality.
 //
+
 const urlMongo = 'mongodb://localhost/?replicaSet=rs'
 MongoClient.connect(urlMongo, (err, client) => {
   if (err) throw err
@@ -78,10 +79,20 @@ const pollStream = (cursor) => {
 }
 
 const populateOrderChangeStream = (results) => {
-  const newOrderId = results.fullDocument._id
-  
-  console.log(colors.blue('MAIN PROCESS: change stream. new order avail, dispatching to startAddOrder actionas'))
-  store.dispatch(startAddOrder(newOrderId))
+  // console.log(results)
+  if (results.operationType === 'insert') {
+    const newOrderId = results.fullDocument._id
+    console.log(
+      colors.blue(
+        'MAIN PROCESS: change stream. new order avail, dispatching to startAddOrder actionas'
+      )
+    )
+    store.dispatch(startAddOrder(newOrderId))
+  } else if (results.operationType === 'deleted') {
+    console.log('TODO: we deleted an order or many orders.'.red)
+  } else {
+    console.log(`TODO: operationType was ${results.operationType}`.red)
+  }
 }
 
 mongoose.set('bufferCommands', false)
@@ -90,11 +101,6 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
-  // this sets up:
-  // 0. mongodb
-  // 1. serialport to listen
-  // 2. parse escpos data to make orders
-  // 3. inserts order into mongodb
 
   // start fresh, clear out collections of orders. dev only.
   // db.collections.items.drop()
@@ -113,6 +119,12 @@ db.once('open', () => {
   //     console.log('error: calling knuckleDragger anyway')
   //     knuckleDragger(db)
   //   })
+
+  // this sets up:
+  // 0. mongodb
+  // 1. serialport to listen
+  // 2. parse escpos data to make orders
+  // 3. inserts order into mongodb
   knuckleDragger()
 })
 

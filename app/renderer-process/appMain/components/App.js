@@ -40,21 +40,6 @@ export class App extends React.Component {
       />
     </div>
   )
-
-  // render = () => (
-  //   <div className="app">
-  //     <Header />
-  //     <header className="app-header">
-  //       <img src={ logo } className="app-logo" alt="logo" />
-  //       <h1 className="app-title">OrderUp: AppMain</h1>
-  //     </header>
-  //     <OrderList handleOrderClick={ this.handleOrderClick }/>
-  //     <OrderModal
-  //       selectedOrderId={ this.state.selectedOrderId }
-  //       handleClearSelectedOrder={ this.handleClearSelectedOrder }
-  //     />
-  //   </div>
-  // )
 }
 
 // TODO?

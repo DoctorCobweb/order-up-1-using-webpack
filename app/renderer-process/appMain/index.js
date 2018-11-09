@@ -106,6 +106,6 @@ const renderApp = () => {
 }
 
 // start app off at home, the App.js Component
-history.push('/')
+history.push('/home')
 
 renderApp()
