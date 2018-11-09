@@ -475,7 +475,7 @@ export const startSetOrders = () => {
       .then(orders => {
         const ordersCleanedUp = _.map(orders, order => order.toJSON())
         console.log(`found all orders in mongodb. orders.length=${ordersCleanedUp.length}`)
-        console.log(ordersCleanedUp)
+        // console.log(ordersCleanedUp)
         dispatch(setOrders(ordersCleanedUp))
       })
       .catch(err => {

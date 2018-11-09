@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import logo from './../assets/logo.svg'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'
+import Header from './Header'
 import { startSetOrders } from '../../../shared/actions/orders'
 
-export class App extends Component {
+export class App extends React.Component {
   state = {
     selectedOrderId: undefined
   }
@@ -29,18 +30,31 @@ export class App extends Component {
   }
 
   render = () => (
-    <div className="app">
-      <header className="app-header">
-        <img src={ logo } className="app-logo" alt="logo" />
-        <h1 className="app-title">OrderUp: AppMain</h1>
-      </header>
+    <div className="grid-container">
+      <Header />
       <OrderList handleOrderClick={ this.handleOrderClick }/>
+      <div className="item-board">Board Area</div>
       <OrderModal
         selectedOrderId={ this.state.selectedOrderId }
         handleClearSelectedOrder={ this.handleClearSelectedOrder }
       />
     </div>
   )
+
+  // render = () => (
+  //   <div className="app">
+  //     <Header />
+  //     <header className="app-header">
+  //       <img src={ logo } className="app-logo" alt="logo" />
+  //       <h1 className="app-title">OrderUp: AppMain</h1>
+  //     </header>
+  //     <OrderList handleOrderClick={ this.handleOrderClick }/>
+  //     <OrderModal
+  //       selectedOrderId={ this.state.selectedOrderId }
+  //       handleClearSelectedOrder={ this.handleClearSelectedOrder }
+  //     />
+  //   </div>
+  // )
 }
 
 // TODO?

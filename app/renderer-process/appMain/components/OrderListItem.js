@@ -1,14 +1,35 @@
 import React from 'react'
 
-const OrderListItem = (props) => (
-    <div className="list-item">
-      <button className="button" onClick={ () => { props.handleOrderClick(props.order._id) }}>
-        <p>{ props.order.location }</p>
-        <p>Table: { props.order.tableNumber }</p>
-        <p>Time: { props.order.orderSentAt }</p>
-        <p>Covers: { props.order.covers }</p>
-        <p>Booking Name: { props.order.customerName }</p>
+
+const customizeButton = (props) => {
+  const location = props.order.location
+  if (location === 'RESTAURANT BAR') {
+    return (
+      <button className="button button--restaurant" onClick={() => { props.handleOrderClick(props.order._id) }}>
+        <div>{props.order.location} / T: {props.order.tableNumber} / C: {props.order.covers}</div>
       </button>
-    </div>
+    )
+  } else if (location === 'GAMING BAR') {
+    return (
+      <button className="button button--gaming" onClick={() => { props.handleOrderClick(props.order._id) }}>
+        <div>{props.order.location} / T: {props.order.tableNumber} / C: {props.order.covers}</div>
+      </button>
+    )
+  } else {
+    return (
+      <button className="button button--bar" onClick={() => { props.handleOrderClick(props.order._id) }}>
+        <div>{props.order.location} / T: {props.order.tableNumber} / C: {props.order.covers}</div>
+      </button>
+
+    )
+  }
+
+}
+
+
+const OrderListItem = (props) => (
+  <div className="list-item">
+    {customizeButton(props)}
+  </div>
 )
 export default OrderListItem

@@ -9,7 +9,7 @@ export class Order extends React.Component {
 
   handleGoOnMainsClick = (e) => {
     // playing around with history functionality
-    history.push('/test')
+    // history.push('/test')
     this.props.startToggleGoOnMains({
       orderId: this.props.orderId
     })
@@ -27,9 +27,9 @@ export class Order extends React.Component {
           <div>Clerk: { this.props.order.clerk }</div>
           <div>{ this.props.order.orderSentAt }</div>
           { this.props.order.goOnMains ? 
-            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
+            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains (+ Test)</button>
             :
-            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
+            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains (+ Test)</button>
           }
         </div>
         { sortCoursesInOrder(this.props.order).courses
