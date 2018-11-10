@@ -5,6 +5,7 @@ import logo from './../assets/logo.svg'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
+import Board from './Board'
 import { startSetOrders } from '../../../shared/actions/orders'
 
 export class App extends React.Component {
@@ -33,9 +34,7 @@ export class App extends React.Component {
     <div className="grid-container">
       <Header />
       <OrderList handleOrderClick={ this.handleOrderClick }/>
-      <div className="item-board">
-        <h3 className="item-board__content">Board Area</h3>
-      </div>
+      <Board />
       <OrderModal
         selectedOrderId={ this.state.selectedOrderId }
         handleClearSelectedOrder={ this.handleClearSelectedOrder }
