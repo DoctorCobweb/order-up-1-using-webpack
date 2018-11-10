@@ -1,10 +1,17 @@
 .order-list {
+  background: $grey;
+  color: $dark-grey;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  height: 70rem;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 2rem;
 }
 
 .list-item {
   background: $off-white;
-  padding: 1rem;
+  padding:0.1rem;
+
 }

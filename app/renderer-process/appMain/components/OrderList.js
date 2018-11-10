@@ -9,19 +9,22 @@ export class OrderList extends React.Component {
 
   render = () => (
     <div className="item-new-orders">
-      {
-        this.props.orders.length === 0 ? (
-          "No orders yet. Listening for one ..."
-        ) : (
-          this.props.orders.map(order => 
-            <OrderListItem
-              key={ order._id }
-              order={ order }
-              handleOrderClick={ this.handleOrderClick }
-            />
+      <div className="order-list">
+        <h3>New Orders</h3>
+        {
+          this.props.orders.length === 0 ? (
+            "No orders yet. Listening for one ..."
+          ) : (
+            this.props.orders.map(order => 
+              <OrderListItem
+                key={ order._id }
+                order={ order }
+                handleOrderClick={ this.handleOrderClick }
+              />
+            )
           )
-        )
-      }
+        }
+      </div>
     </div>
   )
 }

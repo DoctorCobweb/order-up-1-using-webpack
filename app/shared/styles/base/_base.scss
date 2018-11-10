@@ -10,11 +10,13 @@ html {
 }
 
 body {
+  background:$light-grey;
   color: $dark-grey;
   font-family: Helvetica, Arial, sans-serif;
   font-size: $m-size; // (16px)
+  height: 100%;
   line-height: 1.6;
-  background:$light-grey;
+  overflow: hidden;
 }
 
 button {

@@ -4,13 +4,12 @@
   grid-template-rows: 100px auto;
   grid-template-areas:
     "header-area header-area"
-    "new-orders board"
+    "new-orders board";
 }
 
 .item-header {
   grid-area: header-area;
   grid-column-start: 1;
-  grid-column-end: span;
   grid-row-start: 1;
   grid-row-end: 2;
 }
@@ -20,13 +19,10 @@
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 2;
-  grid-row-end: span;
 }
 
 .item-board {
   grid-area: board;
   grid-column-start:2 ;
-  grid-column-end: span;
   grid-row-start: 2;
-  grid-row-end: span;
 }

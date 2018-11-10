@@ -489,6 +489,14 @@ export const deleteAllOrders = () => ({
   payload: {}
 })
 
+// TODO: learn more about change streams and removing collections
+//       when watchers are present on the collection
+// deleting all the documents from all the collections.
+// we won't lose the collections, just their count will be 0.
+// this is important because we have change stream watchers for
+// collection (s) and at this stage of development, im not sure
+// what will happen if you pull the proverbial rug out from underneath
+// the watcher's feet.
 export const startDeleteAllOrders = () => {
   return (dispatch, getState) => {
     return InfoLine.deleteMany({}).exec()
@@ -515,7 +523,5 @@ export const startDeleteAllOrders = () => {
     .catch(err => {
       throw err
     })
-
-
   }
 }

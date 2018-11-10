@@ -28,8 +28,12 @@ const customizeButton = (props) => {
 
 
 const OrderListItem = (props) => (
-  <div className="list-item">
-    {customizeButton(props)}
-  </div>
+  customizeButton(props)
 )
+
+// const OrderListItem = (props) => (
+//   <div className="list-item">
+//     {customizeButton(props)}
+//   </div>
+// )
 export default OrderListItem
