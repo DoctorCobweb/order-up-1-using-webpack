@@ -33,7 +33,9 @@ export class App extends React.Component {
     <div className="grid-container">
       <Header />
       <OrderList handleOrderClick={ this.handleOrderClick }/>
-      <div className="item-board">Board Area</div>
+      <div className="item-board">
+        <h3 className="item-board__content">Board Area</h3>
+      </div>
       <OrderModal
         selectedOrderId={ this.state.selectedOrderId }
         handleClearSelectedOrder={ this.handleClearSelectedOrder }

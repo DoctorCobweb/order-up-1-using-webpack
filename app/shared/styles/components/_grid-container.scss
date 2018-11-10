@@ -1,7 +1,7 @@
 .grid-container {
   display: grid;
   grid-template-columns: 450px auto;
-  grid-template-rows: 100px auto;
+  grid-template-rows: 5rem auto;
   grid-template-areas:
     "header-area header-area"
     "new-orders board";
@@ -22,7 +22,17 @@
 }
 
 .item-board {
+  background: $grey;
+  border-radius: $radius;
   grid-area: board;
   grid-column-start:2 ;
   grid-row-start: 2;
+  margin: 2rem 0 0 2rem;
+  text-align: center;
+}
+
+.item-board__content {
+  color: $off-white;
+  font-weight: 300;
+  display: inline-block;
 }

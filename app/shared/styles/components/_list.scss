@@ -1,10 +1,12 @@
 .order-list {
   background: $grey;
+  border-radius: $radius;
   color: $dark-grey;
   display: flex;
   flex-direction: column;
-  height: 70rem;
+  height: 77rem;
   justify-content: flex-start;
+  margin-top: 2rem;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0 2rem;
@@ -14,4 +16,10 @@
   background: $off-white;
   padding:0.1rem;
 
+}
+
+.list__heading {
+  color: $off-white;
+  font-weight: 300;
+  text-align: center;
 }

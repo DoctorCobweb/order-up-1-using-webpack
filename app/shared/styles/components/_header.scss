@@ -1,6 +1,13 @@
 .header__container {
-  background: $dark-grey;
-  color: $orange;
+  background: $orange;
+  border-radius: $radius;
+  color: $off-white;
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
+}
+
+.header__app-title {
+  font-size: $font-size-large;
+  margin: 0.5rem 0;
+  padding: 1rem;
 }

@@ -13,7 +13,7 @@ const OrderModal = (props) => {
       onRequestClose={ props.handleClearSelectedOrder }
       contentLabel="Selected Order"
       // closeTimeoutMS={200}
-      className="modal item-board"
+      className="modal"
     >
       <div>
         <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>

@@ -10,7 +10,7 @@ export class OrderList extends React.Component {
   render = () => (
     <div className="item-new-orders">
       <div className="order-list">
-        <h3>New Orders</h3>
+        <h3 className="list__heading">New Orders</h3>
         {
           this.props.orders.length === 0 ? (
             "No orders yet. Listening for one ..."
