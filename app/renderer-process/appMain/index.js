@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux'
 import thunk from 'redux-thunk'
@@ -14,7 +14,8 @@ import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
 
-import reducer from '../../shared/reducers/reducer'
+import ordersReducer from '../../shared/reducers/orders'
+import boardReducer from '../../shared/reducers/board'
 const dbHost= config['DB_HOST']
 const dbPort = config['DB_PORT']
 const dbName = config['DB_NAME']
@@ -22,7 +23,10 @@ const dbTableName= config['DB_TABLE_NAME']
 
 const initialState = getInitialStateRenderer()
 const store = createStore(
-  reducer,
+  combineReducers({
+    orders: ordersReducer,
+    board: boardReducer
+  }),
   initialState,
   compose(applyMiddleware(forwardToMain, thunk))
   // applyMiddleware(forwardToMain)

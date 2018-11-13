@@ -30,7 +30,7 @@ export class OrderList extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  orders: state
+  orders: state.orders
 })
 
 export default connect(mapStateToProps, null)(OrderList)

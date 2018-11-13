@@ -50,7 +50,7 @@ export class Order extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  order: findOrder(state, ownProps.orderId)
+  order: findOrder(state.orders, ownProps.orderId)
 })
 
 const mapDispatchToProps = (dispatch) => ({

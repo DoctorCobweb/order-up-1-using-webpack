@@ -13,8 +13,8 @@ const coursesOrdered = [
   "SIDES"
 ]
 
-export const findOrder = (state, orderId) => {
-  return state.filter(order => order._id === orderId)[0]
+export const findOrder = (ordersState, orderId) => {
+  return ordersState.filter(order => order._id === orderId)[0]
 }
 
 export const sortCoursesInOrder = (order) => {

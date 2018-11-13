@@ -288,6 +288,6 @@ export default (state=ordersReducerDefaultState, action) => {
       return ordersReducerDefaultState
 
     default:
-      return state
+      return state // or just 'state' ?
   }
 }
