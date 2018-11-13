@@ -306,7 +306,7 @@ export class ContainerCourseItem extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  orders: state
+  orders: state.orders
 })
 
 const mapDispatchToProps = (dispatch) => ({

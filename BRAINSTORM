@@ -30,3 +30,22 @@ A.
    iii) a person physically comes into the kitchen and says dont hold mains
 
 => need automatic hold detections and manual override functionality 
+
+-----------------------
+drag and drop
+-----------------------
+
+- use react-beautiful-dnd to achieve dragging an order to the board area
+- OrderListItem component should be 'Draggable'
+- OrderModal should also be 'Draggable' (more difficult to achieve but it will probably be the main use case of 
+  i) click on new order item ii) call out order whilst reading the OrderModal iii) drag and drop the OrderModal onto
+  the board location
+- the Board is really 2 horizontal react-beautiful-dnd lists. the top-most list is for display A, and the bottom-list is for display B
+- user can drag an order back from top & bottom lists, back to the new orders list. 
+  => new order list, OrderList must be 'Droppable'
+- horizontal lists must also be 'Draggable' so they can swap displays. this is needed when top list is empty, bottom list is full, and 
+  user has another order they want to add. in this scenario, if user puts the new order in the empty top list then the displays will 
+  show an out-of-order chronology of orders: the newest order should've gone on the end of the bottom list, instead it's jumped to be
+  the infront of all the older orders in display B.
+  dragging bottom list upwards, thus making it the top list, put it on display A. this frees
+  up display B, and allows user to put new orders there.

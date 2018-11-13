@@ -3,6 +3,7 @@ import stringify from 'json-stringify-pretty-compact'
 
 const ordersReducerDefaultState = []
 
+// the 'state' here is the orders slice (you don't have to do this: state.orders)
 export default (state=ordersReducerDefaultState, action) => {
   switch(action.type) {
 

@@ -14,8 +14,10 @@
 
 .list-item {
   background: $off-white;
-  padding:0.1rem;
-
+  display: flex;
+  padding: 0.1rem;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .list__heading {

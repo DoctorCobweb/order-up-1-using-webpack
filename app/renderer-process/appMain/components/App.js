@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
-import logo from './../assets/logo.svg'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
@@ -30,15 +30,51 @@ export class App extends React.Component {
     this.props.startSetOrders()
   }
 
+  onDragStart = start => {
+    console.log('hello from onDragStart')
+
+  }
+
+  onDragUpdate = update => {
+    console.log('hello from onDragUpdate')
+
+  }
+
+  onDragEnd = result => {
+    console.log('hello from onDragEnd')
+    // typical result obj
+    // const result = {
+    //   draggableId: 'task-1',
+    //   type: 'TYPE',
+    //   reason: 'DROP',
+    //   source: {
+    //     droppableId: 'column-1',
+    //     index:0,
+    //   },
+    //   destination: {
+    //     droppableId: 'column-1',
+    //     index: 1,
+    //   }
+    // }
+
+
+  }
+
   render = () => (
     <div className="grid-container">
       <Header />
-      <OrderList handleOrderClick={ this.handleOrderClick }/>
-      <Board />
-      <OrderModal
-        selectedOrderId={ this.state.selectedOrderId }
-        handleClearSelectedOrder={ this.handleClearSelectedOrder }
-      />
+      <DragDropContext
+        onDragStart={ this.onDragStart }
+        onDragUpdate={ this.onDragUpdate }
+        onDragEnd={ this.onDragEnd }
+      >
+        <OrderList handleOrderClick={ this.handleOrderClick }/>
+        <Board />
+        <OrderModal
+          selectedOrderId={ this.state.selectedOrderId }
+          handleClearSelectedOrder={ this.handleClearSelectedOrder }
+        />
+      </DragDropContext>
     </div>
   )
 }
