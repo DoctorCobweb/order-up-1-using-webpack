@@ -193,8 +193,8 @@ const createOrderAndSave = (map, vals) => {
   const courseMetaData = map.get('order').metaData
   const orderDoc = new Order({
     _id: uuidv1(),
-    board: null, // null means it's in new orders list
-    boardPosition: null,
+    list: 'new-orders', // null means it's in new orders list
+    listPosition: null,
     completed: false,
     clerk: courseMetaData.clerk,
     covers: courseMetaData.covers,

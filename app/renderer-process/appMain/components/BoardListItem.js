@@ -39,7 +39,7 @@ export default class BoardListItem extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {this.props.order.content}
+            {this.props.order.content._id}
           </div>
         )}
       </Draggable>

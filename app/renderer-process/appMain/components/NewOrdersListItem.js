@@ -39,7 +39,7 @@ export default class NewOrdersListItem extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {this.props.order.content}
+            {this.props.order.content._id}
           </div>
         )}
       </Draggable>

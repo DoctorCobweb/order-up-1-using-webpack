@@ -40,7 +40,10 @@ export default (state=listsReducerDefaultState, action) => {
   switch(action.type) {
 
     case 'SETUP_LISTS': 
-      return state
+      console.log('SETUP_LISTS')
+      console.log(action.payload.listsData)
+      return action.payload.listsData
+      // return state
 
     case 'UPDATE_LISTS': 
       return action.payload

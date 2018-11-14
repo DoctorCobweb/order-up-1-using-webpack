@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
   _id: String,
-  board: String, // 'A' or 'B' or null (no board, new orders list)
-  boardPosition: Number,
+  list: String, // 'A' | B' | 'new-orders'
+  listPosition: Number,
   completed: { type: Boolean, default: false },
   clerk: String,
   covers: Number,

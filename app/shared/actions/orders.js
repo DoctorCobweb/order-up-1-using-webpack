@@ -470,7 +470,7 @@ export const startSetOrders = () => {
     console.log('hello from startSetOrders@')
 
     // { board: null } are all orders not on any board, ie they're new orders
-    return Order.find({ board: null }) 
+    return Order.find({ list: 'new-orders'}) 
       .populate(orderPopulation)
       .exec()
       .then(orders => {
