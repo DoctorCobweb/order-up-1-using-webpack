@@ -11,7 +11,7 @@ export class OrderList extends React.Component {
   render = () => (
     <div className="item-new-orders">
       <div className="order-list">
-        <h3 className="list__heading">NEW ORDERS</h3>
+        <h1 className="list__heading">NEW ORDERS</h1>
         <Droppable droppableId="new-orders-list" >
           {(provided, snapshot) => (
               <div

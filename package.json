@@ -74,6 +74,7 @@
     "express": "^4.16.4",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
+    "moment": "^2.22.2",
     "normalizr": "^3.3.0",
     "react": "^16.5.2",
     "react-beautiful-dnd": "^10.0.0",

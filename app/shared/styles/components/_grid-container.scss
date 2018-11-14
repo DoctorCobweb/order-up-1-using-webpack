@@ -21,7 +21,7 @@
   grid-row-start: 2;
 }
 
-.item-board {
+.item-board-container {
   background: $grey;
   border-radius: $radius;
   grid-area: board;
@@ -31,7 +31,7 @@
   text-align: center;
 }
 
-.item-board__content {
+.item-board-container__content {
   color: $off-white;
   font-weight: 300;
   display: inline-block;

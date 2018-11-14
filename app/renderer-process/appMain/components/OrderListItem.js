@@ -62,7 +62,7 @@ export default class OrderListItem extends React.Component {
           <div
             { ...provided.dragHandleProps }
           >
-            DRAG 
+            DRAG HANDLE 
           </div>
         </div>
       )}

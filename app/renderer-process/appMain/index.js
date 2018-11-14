@@ -9,7 +9,7 @@ import AppRouter, { history } from '../../shared/routers/AppRouter'
 import mongoose from 'mongoose'
 import mongodb from 'mongodb'
 const MongoClient = mongodb.MongoClient
-import { Order } from '../../shared/models/models'
+import { Order } from '../../shared/models/order'
 import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
 import App from './components/App'

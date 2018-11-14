@@ -3,14 +3,16 @@ const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
   _id: String,
+  board: String, // 'A' or 'B' or null (no board, new orders list)
+  boardPosition: Number,
   completed: { type: Boolean, default: false },
-  assignedToBoard: { type: Boolean, default: false },
   clerk: String,
   covers: Number,
   customerName: String,
   goOnMains: Boolean,
   location: String,
-  orderSentAt: String,
+  orderSentAt: Date,
+  orderReceivedAt: Date,
   orderTakenUsing: String,
   tableNumber: String,
   variableContent: [String],

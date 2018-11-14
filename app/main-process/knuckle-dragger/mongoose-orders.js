@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
-import { Order, Course, Item, Info, InfoLine } from '../../shared/models/models'
+import { Order, Course, Item, Info, InfoLine } from '../../shared/models/order'
 import { populateAllOrders, streamDemo } from './mongoose-playground'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
+import moment from 'moment'
 
 
 export const addToMongoDB = (db, order) => {
@@ -192,12 +193,16 @@ const createOrderAndSave = (map, vals) => {
   const courseMetaData = map.get('order').metaData
   const orderDoc = new Order({
     _id: uuidv1(),
+    board: null, // null means it's in new orders list
+    boardPosition: null,
+    completed: false,
     clerk: courseMetaData.clerk,
     covers: courseMetaData.covers,
     customerName: courseMetaData.customerName,
     goOnMains: courseMetaData.goOnMains,
     location: courseMetaData.location,
-    orderSentAt: courseMetaData.orderSentAt,
+    orderReceivedAt: moment(),
+    orderSentAt: moment(courseMetaData.orderSentAt, "DD-MM-YYYY HH:mm:ss"),
     orderTakenUsing: courseMetaData.orderTakenUsing,
     tableNumber: courseMetaData.tableNumber,
     variableContent: courseMetaData.variableContent,

@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
-import Board from './Board'
+import BoardContainer from './BoardContainer'
 import { startSetOrders } from '../../../shared/actions/orders'
 
 export class App extends React.Component {
@@ -42,6 +42,7 @@ export class App extends React.Component {
 
   onDragEnd = result => {
     console.log('hello from onDragEnd')
+    console.log(result)
     // typical result obj
     // const result = {
     //   draggableId: 'task-1',
@@ -69,7 +70,7 @@ export class App extends React.Component {
         onDragEnd={ this.onDragEnd }
       >
         <OrderList handleOrderClick={ this.handleOrderClick }/>
-        <Board />
+        <BoardContainer />
         <OrderModal
           selectedOrderId={ this.state.selectedOrderId }
           handleClearSelectedOrder={ this.handleClearSelectedOrder }

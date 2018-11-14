@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import Course from './Course'
 import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
 import { startToggleGoOnMains } from '../../../shared/actions/orders'
@@ -25,7 +26,12 @@ export class Order extends React.Component {
         <div className="order-meta-details">
           <div>{ this.props.order.orderTakenUsing }</div>
           <div>Clerk: { this.props.order.clerk }</div>
-          <div>{ this.props.order.orderSentAt }</div>
+          <div>
+            Order sent at: { moment(this.props.order.orderSentAt).format("DD/MM/YYYY HH:mm:ss") }
+          </div>
+          <div>
+            Order received at: { moment(this.props.order.orderReceivedAt).format("DD/MM/YYYY HH:mm:ss") }
+          </div>
           { this.props.order.goOnMains ? 
             <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
             :

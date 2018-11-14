@@ -1,4 +1,4 @@
-import { Order, Course, Item, Info, InfoLine } from '../models/models'
+import { Order, Course, Item, Info, InfoLine } from '../models/order'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
@@ -468,14 +468,14 @@ export const setOrders = (orders) => ({
 export const startSetOrders = () => {
   return (dispatch, getState) => {
     console.log('hello from startSetOrders@')
-    // return dispatch(setOrders())
-    return Order.find({})
+
+    // { board: null } are all orders not on any board, ie they're new orders
+    return Order.find({ board: null }) 
       .populate(orderPopulation)
       .exec()
       .then(orders => {
         const ordersCleanedUp = _.map(orders, order => order.toJSON())
         console.log(`found all orders in mongodb. orders.length=${ordersCleanedUp.length}`)
-        // console.log(ordersCleanedUp)
         dispatch(setOrders(ordersCleanedUp))
       })
       .catch(err => {
