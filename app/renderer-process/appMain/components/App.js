@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { startSetOrders } from '../../../shared/actions/orders'
+import { startSetupLists, startUpdateLists } from '../../../shared/actions/lists'
 import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
-import { startSetOrders } from '../../../shared/actions/orders'
 import initialData from '../initial-data'
-import List from './List'
 import NewOrdersList from './NewOrdersList'
 import BoardList from './BoardList'
 
@@ -31,21 +31,18 @@ export class App extends React.Component {
     console.log('hello from App.js componentDidMount()')
     // fetch all the orders on app startup.
     // get from mongodb, populate all orders, put in redux store
-    this.props.startSetOrders()
+    // this.props.startSetOrders()
+
+    this.props.startSetupLists()
   }
 
   onDragStart = start => {
-    console.log('hello from onDragStart')
-
   }
 
   onDragUpdate = update => {
-    console.log('hello from onDragUpdate')
-
   }
 
   onDragEnd = result => {
-    console.log('hello from onDragEnd')
     console.log(result)
     // typical result obj
     // const result = {
@@ -77,8 +74,8 @@ export class App extends React.Component {
       return
     }
 
-    const start = this.state.dndData.lists[source.droppableId]
-    const finish = this.state.dndData.lists[destination.droppableId]
+    const start = this.props.lists.lists[source.droppableId]
+    const finish = this.props.lists.lists[destination.droppableId]
 
     if (start === finish) {
       const newOrderIds = Array.from(start.orderIds)
@@ -95,22 +92,24 @@ export class App extends React.Component {
       }
 
       const newDndState = {
-        ...this.state.dndData,
+        ...this.props.lists,
         lists: {
-          ...this.state.dndData.lists,
+          ...this.props.lists.lists,
           [newList.id]: newList, // the [] is a computed property name ES6
         },
       }
 
-      this.setState(() => ({
-        dndData: newDndState
-      }))
+      this.props.startUpdateLists(newDndState)
+
+      // this.setState(() => ({
+      //   lists: newDndState
+      // }))
       return
     }
 
     // moving from one list to another
     const startOrderIds = Array.from(start.orderIds)
-    startOrderIds.splice(source.index,1)
+    startOrderIds.splice(source.index, 1)
     const newStart = {
       ...start,
       orderIds: startOrderIds,
@@ -124,16 +123,17 @@ export class App extends React.Component {
     }
 
     const newDndState = {
-      ...this.state.dndData,
+      ...this.props.lists,
       lists: {
-        ...this.state.dndData.lists,
+        ...this.props.lists.lists,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
       }
     }
-    this.setState(() => ({
-      dndData: newDndState
-    }))
+    this.props.startUpdateLists(newDndState)
+    // this.setState(() => ({
+    //   lists: newDndState
+    // }))
   }
 
   render = () => (
@@ -146,21 +146,21 @@ export class App extends React.Component {
       >
         <div className="app-container">
           <NewOrdersList 
-            key={ this.state.dndData.lists['new-orders'].id }
-            list={ this.state.dndData.lists['new-orders'] }
-            orders={ this.state.dndData.lists['new-orders'].orderIds.map(orderId => this.state.dndData.orders[orderId]) }
+            key={ this.props.lists.lists['new-orders'].id }
+            list={ this.props.lists.lists['new-orders'] }
+            orders={ this.props.lists.lists['new-orders'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
             index={ 0 }
           />
           <BoardList 
-            key={ this.state.dndData.lists['board-a'].id }
-            list={ this.state.dndData.lists['board-a'] }
-            orders={ this.state.dndData.lists['board-a'].orderIds.map(orderId => this.state.dndData.orders[orderId]) }
+            key={ this.props.lists.lists['board-a'].id }
+            list={ this.props.lists.lists['board-a'] }
+            orders={ this.props.lists.lists['board-a'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
             index={ 1 }
           />
           <BoardList 
-            key={ this.state.dndData.lists['board-b'].id }
-            list={ this.state.dndData.lists['board-b'] }
-            orders={ this.state.dndData.lists['board-b'].orderIds.map(orderId => this.state.dndData.orders[orderId]) }
+            key={ this.props.lists.lists['board-b'].id }
+            list={ this.props.lists.lists['board-b'] }
+            orders={ this.props.lists.lists['board-b'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
             index={ 2 }
           />
         </div>
@@ -172,40 +172,7 @@ export class App extends React.Component {
     </div>
   )
 
-  // render = () => (
-  //   <div>
-  //     <Header />
-  //     <DragDropContext
-  //       onDragStart={ this.onDragStart }
-  //       onDragUpdate={ this.onDragUpdate }
-  //       onDragEnd={ this.onDragEnd }
-  //     >
-        
-  //       <div className="app-container">
-  //         { this.state.dndData.listOrder.map((listId, index) => {
-  //           const list = this.state.dndData.lists[listId]
-  //           const orders = list.orderIds.map(orderId => this.state.dndData.orders[orderId])
-  //           return (
-  //             <List 
-  //               key={ list.id }
-  //               list={ list }
-  //               orders={ orders }
-  //               index={ index }
-  //             />
-  //           )
-  //         })}
-  //       <NewOrdersList />
-
-  //       </div>
-  //       <OrderModal
-  //         selectedOrderId={ this.state.selectedOrderId }
-  //         handleClearSelectedOrder={ this.handleClearSelectedOrder }
-  //       />
-  //     </DragDropContext>
-  //   </div>
-  // )
-
-  // WORKING VERSION
+  // WORKING OLD VERSION
   // render = () => (
   //   <div className="grid-container">
   //     <Header />
@@ -225,15 +192,18 @@ export class App extends React.Component {
   // )
 }
 
-// TODO?
-// const mapStateToProps = (state) => ({
-//
-// })
-
-const mapDispatchToProps = (dispatch) => ({
-  startSetOrders: () => dispatch(startSetOrders())
+const mapStateToProps = (state) => ({
+  orders: state.orders,
+  lists: state.lists,
 })
 
-const AppConnected = connect(null, mapDispatchToProps)(App)
+const mapDispatchToProps = (dispatch) => ({
+  startSetOrders: () => dispatch(startSetOrders()),
+  startSetupLists: () => dispatch(startSetupLists()),
+  startUpdateLists: (data) => dispatch(startUpdateLists(data)),
+
+})
+
+const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)
 
 export default hot(module)(AppConnected) 

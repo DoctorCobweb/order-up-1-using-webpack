@@ -27,7 +27,6 @@ export class OrderList extends React.Component {
       </div>
     )
   }
-
 }
 
 const mapStateToProps = (state) => ({

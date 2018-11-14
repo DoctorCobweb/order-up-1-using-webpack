@@ -1,7 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import NewOrdersListItem from './NewOrdersListItem'
-
 
 // const Container = styled.div`
 //   margin: 8px;
@@ -23,7 +23,29 @@ import NewOrdersListItem from './NewOrdersListItem'
 //   min-height: 100px;
 // `
 
-export default class NewOrdersList extends React.Component {
+// SNAPSHOT STUFF
+// example draggable snapshot obj
+// const draggableSnapshot = {
+//   isDragging: true,
+//   draggingOver: 'column-1',
+// }
+
+// and droppable snapshot obj
+// const droppableSnapshot = {
+//   isDraggingOver: true,
+//   draggingOverWith: 'task-1',
+// }
+
+export class NewOrdersList extends React.Component {
+
+  componentDidMount() {
+    console.log('hello from NewOrdersList / componentDidMount()')
+    // fetch all the orders on app startup.
+    // get from mongodb, populate all orders, put in redux store
+    // this.props.startSetOrders()
+  }
+
+
   render() {
     return (
       <div className="new-orders-list-container">
@@ -52,14 +74,14 @@ export default class NewOrdersList extends React.Component {
   }
 }
 
-// example draggable snapshot obj
-// const draggableSnapshot = {
-//   isDragging: true,
-//   draggingOver: 'column-1',
-// }
+const mapStateToProps = (state) => ({
+  // orders: state.orders,
+  // lists: state.lists,
+})
 
-// and droppable snapshot obj
-// const droppableSnapshot = {
-//   isDraggingOver: true,
-//   draggingOverWith: 'task-1',
-// }
+const mapDispatchToProps = (dispatch) => ({
+  startSetOrders: () => dispatch(startSetOrders())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrdersList)
+
