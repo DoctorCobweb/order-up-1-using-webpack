@@ -139,9 +139,9 @@ let winOne
 app.on('ready', () => {
 
   let winMain = new BrowserWindow({
-    width: 1500,
+    width: 1230,
     height: 900,
-    x: 200,
+    x: 650,
     y: 100
   })
   // let winOne = new BrowserWindow({

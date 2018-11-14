@@ -25,3 +25,57 @@
   font-weight: 300;
   text-align: center;
 }
+
+.new-orders-list-container {
+  background: $off-white;
+  border: 0.2rem solid lightgrey;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  width: 40rem;
+}
+
+.new-orders-list {
+  flex-grow: 1;
+  min-height: 50rem;
+  padding: 2rem;
+}
+
+.new-orders-list-item-dnd {
+  border: 0.2rem solid lightgrey;
+  border-radius: $radius;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  padding: 0.2rem;
+}
+
+.board-list-container {
+  background: $off-white;
+  border: 0.2rem solid lightgrey;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  width: 40rem;
+}
+
+.board-list {
+  display: flex;
+  padding: 2rem;
+  min-height: 50rem;
+  flex-grow: 1;
+}
+
+.board-list-item-dnd {
+  align-items: center;
+  border: 0.2rem solid lightgrey;
+  border-radius: 50%;
+  display: flex;
+  height: 6rem;
+  justify-content: center;
+  margin-right: 0.6rem;
+  padding: 0.2rem;
+  width: 6rem;
+}

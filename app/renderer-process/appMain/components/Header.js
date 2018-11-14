@@ -15,7 +15,7 @@ export default class Header extends React.Component {
   }
 
   render = () => (
-    <header className="item-header header__container">
+    <header>
       <div>
         <button className="button button--header" onClick={ this.handleHomeButtonClick }>Home</button>
         <button className="button button--header" onClick={ this.handleCompletedButtonClick }>Completed Orders</button>
