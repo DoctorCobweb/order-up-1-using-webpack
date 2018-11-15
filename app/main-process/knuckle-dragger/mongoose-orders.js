@@ -214,8 +214,6 @@ const createOrderAndSave = (map, vals) => {
       // FINISH PROCESS OF ADDING THE ORDER TO MONGODB
       // console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
       // console.log(results)
-      // try populate the order
-      // populateAllOrders()
     })
     .catch(err => {
       throw err

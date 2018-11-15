@@ -51,7 +51,7 @@ export class NewOrdersList extends React.Component {
       <div className="new-orders-list-container">
         <h3>{ this.props.list.title } : { this.props.list.direction } </h3>
         <Droppable 
-          droppableId={ this.props.list.id }
+          droppableId={ this.props.list.nameId }
           direction={ this.props.list.direction }
         >
           { (provided, snapshot) => (

@@ -96,15 +96,12 @@ export class App extends React.Component {
         ...this.props.lists,
         lists: {
           ...this.props.lists.lists,
-          [newList.id]: newList, // the [] is a computed property name ES6
+          [newList.nameId]: newList, // the [] is a computed property name ES6
         },
       }
 
       this.props.startUpdateLists(newDndState)
 
-      // this.setState(() => ({
-      //   lists: newDndState
-      // }))
       return
     }
 
@@ -127,25 +124,14 @@ export class App extends React.Component {
       ...this.props.lists,
       lists: {
         ...this.props.lists.lists,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
+        [newStart.nameId]: newStart,
+        [newFinish.nameId]: newFinish,
       }
     }
     this.props.startUpdateLists(newDndState)
-    // this.setState(() => ({
-    //   lists: newDndState
-    // }))
   }
 
   render = () => {
-    console.log('blah')
-    console.log(this.props.lists)
-    console.log(this.props.lists.lists['new-orders'])
-    console.log(this.props.lists.lists['new-orders'].orderIds)
-    console.log(this.props.lists.lists['new-orders'].orderIds.length)
-    console.log(this.props.lists.lists['new-orders'].orderIds.map(orderId => this.props.lists.orders["1546fc80-e80e-11e8-8307-5911a9fa1d02"]))
-    console.log(this.props.lists.orders)
-
     return (
       <div>
         <Header />
@@ -156,21 +142,30 @@ export class App extends React.Component {
         >
           <div className="app-container">
             <NewOrdersList 
-              key={ this.props.lists.lists['new-orders'].id }
+              key={ this.props.lists.lists['new-orders'].nameId }
               list={ this.props.lists.lists['new-orders'] }
-              orders={ this.props.lists.lists['new-orders'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
+              orders={ 
+                this.props.lists.lists['new-orders'].orderIds
+                  .map(orderId => this.props.lists.orders[orderId]) 
+              }
               index={ 0 }
             />
             <BoardList 
-              key={ this.props.lists.lists['board-a'].id }
+              key={ this.props.lists.lists['board-a'].nameId }
               list={ this.props.lists.lists['board-a'] }
-              orders={ this.props.lists.lists['board-a'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
+              orders={
+                this.props.lists.lists['board-a'].orderIds
+                  .map(orderId => this.props.lists.orders[orderId])
+              }
               index={ 1 }
             />
             <BoardList 
-              key={ this.props.lists.lists['board-b'].id }
+              key={ this.props.lists.lists['board-b'].nameId }
               list={ this.props.lists.lists['board-b'] }
-              orders={ this.props.lists.lists['board-b'].orderIds.map(orderId => this.props.lists.orders[orderId]) }
+              orders={
+                this.props.lists.lists['board-b'].orderIds
+                  .map(orderId => this.props.lists.orders[orderId])
+              }
               index={ 2 }
             />
           </div>

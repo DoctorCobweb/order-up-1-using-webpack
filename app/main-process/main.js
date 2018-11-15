@@ -6,11 +6,14 @@ import SerialPort from 'serialport'
 import mongoose from 'mongoose'
 import mongodb from 'mongodb'
 const MongoClient = mongodb.MongoClient
+import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 import colors from 'colors'
 import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
 import { Order } from '../shared/models/order'
+import { List } from '../shared/models/list'
 import { startAddOrder } from '../shared/actions/orders'
+import { startAddOrderToLists } from '../shared/actions/lists'
 
 import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
@@ -87,7 +90,16 @@ const populateOrderChangeStream = (results) => {
         'MAIN PROCESS: change stream. new order avail, dispatching to startAddOrder actionas'
       )
     )
+
+    // 1. add the new order to the 'orders' redux state-slice
     store.dispatch(startAddOrder(newOrderId))
+
+    // 2. add the new order to the 'lists' redux state-slice
+    // use the _id to update the lists state
+    // 1. add id to state.lists.lists['new-orders'].orderIds
+    // 2. add the populated order to state.lists.orders
+    store.dispatch(startAddOrderToLists(newOrderId))
+
   } else if (results.operationType === 'deleted') {
     console.log('TODO: we deleted an order or many orders.'.red)
   } else {
@@ -95,30 +107,70 @@ const populateOrderChangeStream = (results) => {
   }
 }
 
+
 mongoose.set('bufferCommands', false)
 mongoose.connect('mongodb://localhost/orderUpDb?replicaSet=rs', { useNewUrlParser: true })
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
+  // console.log('db')
+  // console.log(db)
 
-  // start fresh, clear out collections of orders. dev only.
-  // db.collections.items.drop()
-  //   .then(() => {
-  //     return db.collections.courses.drop()
-  //   })
-  //   .then(() => {
-  //     return db.collections.orders.drop()
-  //   })
-  //   .then(() => {
-  //     console.log('dropped items, courses, then orders, calling knuckleDragger')
-  //     knuckleDragger(db)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //     console.log('error: calling knuckleDragger anyway')
-  //     knuckleDragger(db)
-  //   })
+  // console.log(db.collections)
+
+  // if(!Object.keys(db.collections).includes['lists']) {
+  //   console.log('need to create lists collection')
+
+  //   Order.find({})
+  //   // Order.find({ list: 'new-orders' })
+  //     .exec()
+  //     .then(orders => {
+  //       // needed to setup the new-orders list
+  //       console.log(orders[0])
+  //       const newOrderIds = orders.map( order => order._id )
+  //       console.log('newOrderIds')
+  //       console.log(newOrderIds)
+
+  //       // setup the all the List models if they're not already there
+  //       const newOrdersList = new List({
+  //         _id: uuidv1(),
+  //         nameId: 'new-orders',
+  //         title: 'NEW ORDERS',
+  //         direction: 'vertical',
+  //         orderIds: [],
+  //         // orderIds: newOrderIds,
+  //       })
+
+  //       const boardListA = new List({
+  //         _id: uuidv1(),
+  //         nameId: 'board-a',
+  //         title: 'BOARD A',
+  //         direction: 'horizontal',
+  //         orderIds: [],
+  //       })
+
+  //       const boardListB = new List({
+  //         _id: uuidv1(),
+  //         nameId: 'board-b',
+  //         title: 'BOARD B',
+  //         direction: 'horizontal',
+  //         orderIds: [],
+  //       })
+
+  //       return List.insertMany([ newOrdersList, boardListA, boardListB ])
+  //     })
+  //     .then(lists => {
+  //       console.log('lists')
+  //       console.log(lists)
+  //     })
+  //     .catch(err => {
+  //       throw err
+  //     })
+  // } else {
+  //   console.log('dont need to setup lists docs. they are already present')
+  // }
+
 
   // this sets up:
   // 0. mongodb
