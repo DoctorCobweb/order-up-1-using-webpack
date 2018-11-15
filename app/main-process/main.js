@@ -91,6 +91,8 @@ const populateOrderChangeStream = (results) => {
       )
     )
 
+    // every time a new order arrives we do 2 things:
+
     // 1. add the new order to the 'orders' redux state-slice
     store.dispatch(startAddOrder(newOrderId))
 
@@ -114,63 +116,6 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
-  // console.log('db')
-  // console.log(db)
-
-  // console.log(db.collections)
-
-  // if(!Object.keys(db.collections).includes['lists']) {
-  //   console.log('need to create lists collection')
-
-  //   Order.find({})
-  //   // Order.find({ list: 'new-orders' })
-  //     .exec()
-  //     .then(orders => {
-  //       // needed to setup the new-orders list
-  //       console.log(orders[0])
-  //       const newOrderIds = orders.map( order => order._id )
-  //       console.log('newOrderIds')
-  //       console.log(newOrderIds)
-
-  //       // setup the all the List models if they're not already there
-  //       const newOrdersList = new List({
-  //         _id: uuidv1(),
-  //         nameId: 'new-orders',
-  //         title: 'NEW ORDERS',
-  //         direction: 'vertical',
-  //         orderIds: [],
-  //         // orderIds: newOrderIds,
-  //       })
-
-  //       const boardListA = new List({
-  //         _id: uuidv1(),
-  //         nameId: 'board-a',
-  //         title: 'BOARD A',
-  //         direction: 'horizontal',
-  //         orderIds: [],
-  //       })
-
-  //       const boardListB = new List({
-  //         _id: uuidv1(),
-  //         nameId: 'board-b',
-  //         title: 'BOARD B',
-  //         direction: 'horizontal',
-  //         orderIds: [],
-  //       })
-
-  //       return List.insertMany([ newOrdersList, boardListA, boardListB ])
-  //     })
-  //     .then(lists => {
-  //       console.log('lists')
-  //       console.log(lists)
-  //     })
-  //     .catch(err => {
-  //       throw err
-  //     })
-  // } else {
-  //   console.log('dont need to setup lists docs. they are already present')
-  // }
-
 
   // this sets up:
   // 0. mongodb
