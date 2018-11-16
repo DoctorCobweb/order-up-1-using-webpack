@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ContainerCourseItem from './ContainerCourseItem'
-import { startAddNewInfo } from '../../../shared/actions/orders'
+// import { startAddNewInfo } from '../../../shared/actions/orders'
+import { startAddNewInfo } from '../../../shared/actions/lists'
 
 export class Course extends React.Component {
   state = {

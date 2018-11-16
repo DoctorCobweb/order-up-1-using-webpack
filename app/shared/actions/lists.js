@@ -147,6 +147,7 @@ const createTheListsInMongo = () => {
 const getTheListsInMongo = () => {
   let ordersForListData 
   return Order.find({}) 
+    .populate(orderPopulation)
     .exec()
     .then(orders => {
       ordersForListData = _.reduce(orders, (acc, order) => {
@@ -223,8 +224,8 @@ export const startSetupLists = () => {
   }
 }
 
-export const updateLists = (data) => ({
-  type: 'UPDATE_LISTS',
+export const updateOrderIdsInLists = (data) => ({
+  type: 'UPDATE_ORDER_IDS_IN_LISTS',
   payload: {
     data,
   }
@@ -233,7 +234,7 @@ export const updateLists = (data) => ({
 // TODO: incorporate Mongodb for persistence
 // this is called when an item in any of the lists gets
 // dragged to another position (either in the same or different list)
-export const startUpdateLists = (dndData) => {
+export const startUpdateOrderIdsInLists = (dndData) => {
   return (dispatch, getState) => {
     console.log('startUpdateLists, dndData is:')
     console.log(dndData)
@@ -257,7 +258,7 @@ export const startUpdateLists = (dndData) => {
     })
     .then(list => {
       
-      dispatch(updateLists(dndData))
+      dispatch(updateOrderIdsInLists(dndData))
 
     })
   }
@@ -296,5 +297,96 @@ export const startAddOrderToLists = (orderId) => {
       .catch(err => {
         throw err
       })
+  }
+}
+
+// FROM order.js actions.....
+
+export const addNewInfo = (
+  courseId,
+  orderId,
+  itemId,
+  newInfo,
+  quantity
+) => ({
+  type: 'ADD_NEW_INFO',
+  payload: {
+    courseId,
+    orderId,
+    itemId,
+    newInfo,
+    quantity
+  }
+})
+
+export const startAddNewInfo = ({
+  orderId,
+  courseId,
+  itemId,
+  quantity,
+  name
+} = {}, cb) => {
+  let newInfo
+  let newInfoLine 
+
+  return (dispatch, getState) => {
+    const infoLine = new InfoLine({
+      _id: uuidv1(),
+      name,
+      quantity: 1 //default for now
+    })
+    return infoLine.save()
+    .then(infoLine => {
+      console.log('created and saved a new InfoLine document')
+      console.log(infoLine.toJSON())
+
+      newInfoLine = infoLine.toJSON()
+
+      const info = new Info({
+        _id: uuidv1(),
+        completed: false,
+        quantity,
+        infoLines: [infoLine._id]
+      })
+      return info.save()
+    })
+    .then(info => {
+      console.log('created and saved a new Info document')
+      console.log(info.toJSON())
+      // and also append the new info doc _id to the corresponding
+      // item infos array
+      newInfo = info.toJSON()
+      newInfo.infoLines = [ newInfoLine ] // infoLines must be an array
+      return Item.findById(itemId).exec()
+    })
+    .then(item => {
+      console.log('found item doc. appending infos array with new info _id')
+      console.log(item.toJSON())
+
+      // update the infos array
+      item.infos.push(newInfo._id)
+
+      return item.save()
+    })
+    .then(item => {
+      console.log('updated the new item document')
+      console.log(item.toJSON())
+      console.log('newInfo is')
+      console.log(newInfo)
+
+      // now call dispatch
+      console.log('calling dispatch(addNewInfo())')
+      dispatch(addNewInfo(
+        courseId,
+        orderId,
+        itemId,
+        newInfo,
+        quantity
+      ))
+      cb()
+    })
+    .catch(err => {
+      throw err
+    })
   }
 }

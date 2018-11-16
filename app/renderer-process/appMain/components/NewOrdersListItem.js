@@ -30,7 +30,7 @@ export default class NewOrdersListItem extends React.Component {
   render() {
     return (
       <Draggable
-        draggableId={this.props.order.id}
+        draggableId={this.props.order._id}
         index={this.props.index}
       >
         {(provided, snapshot) => (
@@ -40,10 +40,10 @@ export default class NewOrdersListItem extends React.Component {
             ref={provided.innerRef} 
           >
             <button
-              id={ this.props.order.content._id } 
-              onClick={ () => { this.props.handleOrderClick(this.props.order.content._id) }}
+              id={ this.props.order._id } 
+              onClick={ () => { this.props.handleOrderClick(this.props.order._id) }}
             >
-              { this.props.order.content._id }
+              { this.props.order._id }
             </button>
             <div
               {...provided.dragHandleProps}

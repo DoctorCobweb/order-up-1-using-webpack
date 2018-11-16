@@ -10,9 +10,9 @@ import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 import colors from 'colors'
 import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
-import { Order } from '../shared/models/order'
-import { List } from '../shared/models/list'
-import { startAddOrder } from '../shared/actions/orders'
+// import { Order } from '../shared/models/order'
+// import { List } from '../shared/models/list'
+// import { startAddOrder } from '../shared/actions/orders'
 import { startAddOrderToLists } from '../shared/actions/lists'
 
 import stringify from 'json-stringify-pretty-compact'
@@ -93,8 +93,9 @@ const populateOrderChangeStream = (results) => {
 
     // every time a new order arrives we need todo 2 things:
 
+    // *** JETISON AWAY ***
     // 1. add the new order to the 'orders' redux state-slice
-    store.dispatch(startAddOrder(newOrderId))
+    // store.dispatch(startAddOrder(newOrderId))
 
     // 2. add the new order to the 'lists' redux state-slice
     // use the _id to update the lists state

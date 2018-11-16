@@ -1,4 +1,3 @@
-// **** JETTISON AWAY ****
 import _ from 'lodash'
 
 const coursesOrdered = [
@@ -14,8 +13,9 @@ const coursesOrdered = [
   "SIDES"
 ]
 
-export const findOrder = (ordersState, orderId) => {
-  return ordersState.filter(order => order._id === orderId)[0]
+export const findOrder = (orders, orderId) => {
+  const blah = orders[orderId].content
+  return orders[orderId].content
 }
 
 export const sortCoursesInOrder = (order) => {

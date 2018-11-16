@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import Course from './Course'
-import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
+// import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
+import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/lists'
 import { startToggleGoOnMains } from '../../../shared/actions/orders'
 import { history } from '../../../shared/routers/AppRouter'
 
@@ -62,7 +63,9 @@ export class Order extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  order: findOrder(state.orders, ownProps.orderId)
+  // order: findOrder(state.orders, ownProps.orderId),
+  // lists: state.lists,
+  order: findOrder(state.lists.orders, ownProps.orderId)
 })
 
 const mapDispatchToProps = (dispatch) => ({

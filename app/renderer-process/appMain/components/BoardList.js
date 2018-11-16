@@ -2,26 +2,18 @@ import React from 'react'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import BoardListItem from './BoardListItem'
 
+// SNAPSHOT STUFF
+// example draggable snapshot obj
+// const draggableSnapshot = {
+//   isDragging: true,
+//   draggingOver: 'column-1',
+// }
 
-// const Container = styled.div`
-//   margin: 8px;
-//   border: 1px solid lightgrey;
-//   background-color: white;
-//   border-radius: 2px;
-//   width: 220px;
-
-//   display: flex;
-//   flex-direction: column;
-// `
-// const Title = styled.h3`
-//   padding: 8px;
-// `
-// const TaskList = styled.div`
-//   background-color: ${props => (props.isDraggingOver ? 'skyblue': 'inherit')}
-//   padding: 8px;
-//   flex-grow: 1; // so row grows to full container height when no items present => can drop stuff on there still
-//   min-height: 100px;
-// `
+// and droppable snapshot obj
+// const droppableSnapshot = {
+//   isDraggingOver: true,
+//   draggingOverWith: 'task-1',
+// }
 
 export default class BoardList extends React.Component {
   render() {
@@ -40,7 +32,11 @@ export default class BoardList extends React.Component {
             >
               { this.props.orders
                   .map((order, index) => 
-                    <BoardListItem key={ order.id } order={ order } index={ index } />
+                    <BoardListItem
+                      key={ order.id }
+                      order={ order.content }
+                      index={ index }
+                    />
                   )
               }
               { provided.placeholder }
@@ -51,15 +47,3 @@ export default class BoardList extends React.Component {
     )
   }
 }
-
-// example draggable snapshot obj
-// const draggableSnapshot = {
-//   isDragging: true,
-//   draggingOver: 'column-1',
-// }
-
-// and droppable snapshot obj
-// const droppableSnapshot = {
-//   isDraggingOver: true,
-//   draggingOverWith: 'task-1',
-// }

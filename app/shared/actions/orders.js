@@ -26,12 +26,14 @@ const orderPopulation = {
   }
 }
 
+    // *** JETISON AWAY ***
 export const addOrder = (order) => ({
   type: 'ADD_ORDER',
   payload: order 
 })
 
 
+    // *** JETISON AWAY ***
 export const startAddOrder = (orderId = undefined) => {
   return (dispatch, getState) => {
     return Order.findById(orderId)
@@ -340,6 +342,7 @@ export const startAddNewInfoLine = ({
   }
 }
 
+    // *** JETISON AWAY ***
 export const addNewInfo = (
   courseId,
   orderId,
@@ -357,6 +360,7 @@ export const addNewInfo = (
   }
 })
 
+    // *** JETISON AWAY ***
 export const startAddNewInfo = ({
   orderId,
   courseId,
@@ -394,7 +398,7 @@ export const startAddNewInfo = ({
       // and also append the new info doc _id to the corresponding
       // item infos array
       newInfo = info.toJSON()
-      newInfo.infoLines = [newInfoLine]
+      newInfo.infoLines = [ newInfoLine ] // infoLines must be an array
       return Item.findById(itemId).exec()
     })
     .then(item => {
@@ -460,6 +464,7 @@ export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
   }
 }
 
+    // *** JETISON AWAY ***
 export const setOrders = (orders) => ({
   type: 'SET_ORDERS',
   payload: {
@@ -467,11 +472,11 @@ export const setOrders = (orders) => ({
   }
 })
 
+    // *** JETISON AWAY ***
 export const startSetOrders = () => {
   return (dispatch, getState) => {
     console.log('hello from startSetOrders@')
 
-    // { board: null } are all orders not on any board, ie they're new orders
     return Order.find({ list: 'new-orders'}) 
       .populate(orderPopulation)
       .exec()

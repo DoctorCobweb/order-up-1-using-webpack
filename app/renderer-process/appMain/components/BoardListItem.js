@@ -29,7 +29,7 @@ export default class BoardListItem extends React.Component {
   render() {
     return (
       <Draggable
-        draggableId={this.props.order.id}
+        draggableId={this.props.order._id}
         index={this.props.index}
       >
         {(provided, snapshot) => (
@@ -39,7 +39,7 @@ export default class BoardListItem extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {this.props.order.content._id}
+            {this.props.order._id}
           </div>
         )}
       </Draggable>

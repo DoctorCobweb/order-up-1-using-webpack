@@ -2,19 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { startSetOrders } from '../../../shared/actions/orders'
-import { startSetupLists, startUpdateLists } from '../../../shared/actions/lists'
-import OrderList from './OrderList'
+// import { startSetOrders } from '../../../shared/actions/orders'
+import { startSetupLists, startUpdateOrderIdsInLists } from '../../../shared/actions/lists'
+// import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
-import initialData from '../initial-data'
+// import initialData from '../initial-data'
 import NewOrdersList from './NewOrdersList'
 import BoardList from './BoardList'
 
 export class App extends React.Component {
   state = {
     selectedOrderId: undefined,
-    dndData: initialData
+    // dndData: initialData
   }
 
   handleOrderClick = (orderId) => {
@@ -28,9 +28,10 @@ export class App extends React.Component {
   }
 
   componentDidMount() {
+    // *** JETISON AWAY ***
     // fetch all the orders on app startup.
     // get from mongo, populate all orders, put in redux store
-    this.props.startSetOrders()
+    // this.props.startSetOrders()
 
     // this will setup the lists in using mongo & the state-slice of redux
     this.props.startSetupLists()
@@ -99,7 +100,7 @@ export class App extends React.Component {
         },
       }
 
-      this.props.startUpdateLists(newDndState)
+      this.props.startUpdateOrderIdsInLists(newDndState)
       return
     }
 
@@ -126,7 +127,7 @@ export class App extends React.Component {
         [newFinish.nameId]: newFinish,
       }
     }
-    this.props.startUpdateLists(newDndState)
+    this.props.startUpdateOrderIdsInLists(newDndState)
   }
 
   render = () => {
@@ -184,9 +185,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startSetOrders: () => dispatch(startSetOrders()),
+  // startSetOrders: () => dispatch(startSetOrders()),
   startSetupLists: () => dispatch(startSetupLists()),
-  startUpdateLists: (data) => dispatch(startUpdateLists(data)),
+  startUpdateOrderIdsInLists: (data) => dispatch(startUpdateOrderIdsInLists(data)),
 })
 
 const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)
