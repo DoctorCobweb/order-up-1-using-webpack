@@ -61,7 +61,12 @@ export class NewOrdersList extends React.Component {
             >
               { this.props.orders
                   .map((order, index) => 
-                    <NewOrdersListItem key={ order.id } order={ order } index={ index } />
+                    <NewOrdersListItem
+                      key={ order.id }
+                      order={ order }
+                      index={ index }
+                      handleOrderClick={ this.props.handleOrderClick }
+                    />
                   )
               }
               { provided.placeholder }

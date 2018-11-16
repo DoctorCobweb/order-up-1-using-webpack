@@ -26,6 +26,7 @@ import { Draggable } from 'react-beautiful-dnd'
 // `
 
 export default class NewOrdersListItem extends React.Component {
+
   render() {
     return (
       <Draggable
@@ -36,15 +37,45 @@ export default class NewOrdersListItem extends React.Component {
           <div
             className="new-orders-list-item-dnd"
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {this.props.order.content._id}
+            <button
+              id={ this.props.order.content._id } 
+              onClick={ () => { this.props.handleOrderClick(this.props.order.content._id) }}
+            >
+              { this.props.order.content._id }
+            </button>
+            <div
+              {...provided.dragHandleProps}
+            >
+              DRAG
+            </div>
           </div>
         )}
       </Draggable>
     )
   }
+
+  // WORKING VERSION
+  // render() {
+  //   return (
+  //     <Draggable
+  //       draggableId={this.props.order.id}
+  //       index={this.props.index}
+  //     >
+  //       {(provided, snapshot) => (
+  //         <div
+  //           className="new-orders-list-item-dnd"
+  //           {...provided.draggableProps}
+  //           {...provided.dragHandleProps}
+  //           ref={provided.innerRef} 
+  //         >
+  //           {this.props.order.content._id}
+  //         </div>
+  //       )}
+  //     </Draggable>
+  //   )
+  // }
 }
 
 // example draggable snapshot obj

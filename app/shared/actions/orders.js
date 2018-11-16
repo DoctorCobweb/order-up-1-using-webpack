@@ -429,15 +429,16 @@ export const startAddNewInfo = ({
   }
 }
 
-export const toggleGoOnMains = (orderId, goOnMainsBool) => ({
+export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   type: 'TOGGLE_GO_ON_MAINS',
   payload: {
     orderId,
-    goOnMainsBool
+    goOnMainsBool,
+    timestamp,
   }
 })
 
-export const startToggleGoOnMains = ({ orderId } = {}) => {
+export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
   let updatedGoOnMainsBool
   return (dispatch, getState) => {
     // find the order using orderId, updated the goOnMains field to goOnMains arg 
@@ -445,12 +446,13 @@ export const startToggleGoOnMains = ({ orderId } = {}) => {
     .then(order => {
       updatedGoOnMainsBool = !order.goOnMains
       order.goOnMains = updatedGoOnMainsBool
+      order.goOnMainsStartedAt = timestamp
       return order.save()
     })
     .then(order => {
-      console.log('updated order goOnMains value:')
+      console.log('updated order goOnMains')
       console.log(order.toJSON())
-      dispatch(toggleGoOnMains(orderId, updatedGoOnMainsBool))
+      dispatch(toggleGoOnMains(orderId, updatedGoOnMainsBool, timestamp))
     })
     .catch(err => {
       throw err

@@ -4,12 +4,12 @@ const Schema = mongoose.Schema
 const orderSchema = new Schema({
   _id: String,
   list: String, // 'A' | B' | 'new-orders'
-  listPosition: Number,
   completed: { type: Boolean, default: false },
   clerk: String,
   covers: Number,
   customerName: String,
   goOnMains: Boolean,
+  goOnMainsStartedAt: Date,
   location: String,
   orderSentAt: Date,
   orderReceivedAt: Date,

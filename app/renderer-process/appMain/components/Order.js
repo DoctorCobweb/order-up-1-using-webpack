@@ -9,10 +9,9 @@ import { history } from '../../../shared/routers/AppRouter'
 export class Order extends React.Component { 
 
   handleGoOnMainsClick = (e) => {
-    // playing around with history functionality
-    // history.push('/test')
     this.props.startToggleGoOnMains({
-      orderId: this.props.orderId
+      orderId: this.props.orderId,
+      timestamp: moment()
     })
   }
 
@@ -36,6 +35,13 @@ export class Order extends React.Component {
             <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
             :
             <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
+          }
+          {
+            (this.props.order.goOnMainsStartedAt && this.props.order.goOnMains) ?
+            <div>Away called at TODO need to put date here...</div>
+            :
+            ""
+
           }
         </div>
         { sortCoursesInOrder(this.props.order).courses

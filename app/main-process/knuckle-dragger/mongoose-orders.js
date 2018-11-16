@@ -193,13 +193,13 @@ const createOrderAndSave = (map, vals) => {
   const courseMetaData = map.get('order').metaData
   const orderDoc = new Order({
     _id: uuidv1(),
-    list: 'new-orders', // null means it's in new orders list
-    listPosition: null,
+    list: 'new-orders',
     completed: false,
     clerk: courseMetaData.clerk,
     covers: courseMetaData.covers,
     customerName: courseMetaData.customerName,
     goOnMains: courseMetaData.goOnMains,
+    goOnMainsStartedAt: null, 
     location: courseMetaData.location,
     orderReceivedAt: moment(),
     orderSentAt: moment(courseMetaData.orderSentAt, "DD-MM-YYYY HH:mm:ss"),

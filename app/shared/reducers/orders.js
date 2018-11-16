@@ -269,10 +269,12 @@ export default (state=ordersReducerDefaultState, action) => {
       const toggleGoOnMainsState = state.map(order => {
         const orderId = action.payload.orderId
         const goOnMainsBool = action.payload.goOnMainsBool
+        const timestamp = action.payload.timestamp
 
         if (order._id === orderId) {
           const orderClone = _.cloneDeep(order)
           orderClone.goOnMains = goOnMainsBool
+          orderClone.goOnMainsStartedAt = timestamp
           return orderClone
         } else {
           return order

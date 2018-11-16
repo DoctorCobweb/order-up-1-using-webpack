@@ -147,6 +147,7 @@ export class App extends React.Component {
                   .map(orderId => this.props.lists.orders[orderId]) 
               }
               index={ 0 }
+              handleOrderClick={ this.handleOrderClick }
             />
             <BoardList 
               key={ this.props.lists.lists['board-a'].nameId }
