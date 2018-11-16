@@ -39,7 +39,6 @@ import NewOrdersListItem from './NewOrdersListItem'
 export class NewOrdersList extends React.Component {
 
   componentDidMount() {
-    console.log('hello from NewOrdersList / componentDidMount()')
     // fetch all the orders on app startup.
     // get from mongodb, populate all orders, put in redux store
     // this.props.startSetOrders()

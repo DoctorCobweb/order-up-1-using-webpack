@@ -50,8 +50,8 @@ export default (db, buffer) => {
     .then(results => {
       //do somethine with the array of strings
       let data = sanitize(results)
-      console.log('pareser.js default func')
-      console.log(colors.blue(stringify(data)))
+      // console.log('pareser.js default func')
+      // console.log(colors.blue(stringify(data)))
       const zippedData = tokenizeData(data)
       // log.info(zippedData)
       const order = buildOrder(zippedData)

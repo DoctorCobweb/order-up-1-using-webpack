@@ -91,15 +91,22 @@ const populateOrderChangeStream = (results) => {
       )
     )
 
-    // every time a new order arrives we do 2 things:
+    // every time a new order arrives we need todo 2 things:
 
     // 1. add the new order to the 'orders' redux state-slice
     store.dispatch(startAddOrder(newOrderId))
 
     // 2. add the new order to the 'lists' redux state-slice
     // use the _id to update the lists state
-    // 1. add id to state.lists.lists['new-orders'].orderIds
-    // 2. add the populated order to state.lists.orders
+    //
+    // NB. order is already in mongodb when it gets here.
+    //    mongoose-orders.js has created and saved it to mongodb,
+    //    then the change stream is called above with the 'insert'
+    //    operationType. we say this because the first thing that
+    //    'startAddOrderToLists' func does is find the order in mongodb
+    //
+    // 1. add id to state.lists.lists['new-orders'].orderIds (mongo)
+    // 2. add the populated order to state.lists.orders (redux)
     store.dispatch(startAddOrderToLists(newOrderId))
 
   } else if (results.operationType === 'deleted') {

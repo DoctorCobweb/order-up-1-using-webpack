@@ -28,7 +28,6 @@ export class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('hello from App.js componentDidMount()')
     // fetch all the orders on app startup.
     // get from mongodb, populate all orders, put in redux store
     // this.props.startSetOrders()
@@ -101,7 +100,6 @@ export class App extends React.Component {
       }
 
       this.props.startUpdateLists(newDndState)
-
       return
     }
 
@@ -207,7 +205,6 @@ const mapDispatchToProps = (dispatch) => ({
   startSetOrders: () => dispatch(startSetOrders()),
   startSetupLists: () => dispatch(startSetupLists()),
   startUpdateLists: (data) => dispatch(startUpdateLists(data)),
-
 })
 
 const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)

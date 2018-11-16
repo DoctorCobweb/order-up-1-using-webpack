@@ -41,7 +41,6 @@ import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 //   listOrder: ['new-orders', 'board-a', 'board-b'],
 // }
 
-
 const orderPopulation = {
   path: 'courses',
   model: 'Course',
@@ -66,13 +65,8 @@ export const setupLists = (listsData) => ({
   }
 })
 
-
-// ------------------- WIP SECTION START ------------------
-
 const createTheListsInMongo = () => {
-
   let ordersForListData 
-
   // creating the lists means we're starting the app totally fresh.
   // that is, all orders in db should be allocated to the 'new-orders' list
   // => so get all orders and put them in the 'new-orders' list
@@ -80,9 +74,8 @@ const createTheListsInMongo = () => {
     .populate(orderPopulation)
     .exec()
     .then(orders => {
-      const ordersCleanedUp = _.map(orders, order => order.toJSON())
-      ordersForListData = _.reduce(ordersCleanedUp, (acc, val) => {
-        acc[val._id] = { id: val._id, content: val}
+      ordersForListData = _.reduce(orders, (acc, order) => {
+        acc[order._id] = { id: order._id, content: order.toJSON()}
         return acc
       }, {})
 
@@ -113,12 +106,11 @@ const createTheListsInMongo = () => {
       return List.insertMany([ newOrdersList, boardListA, boardListB ])
     })
     .then(lists => {
-      const listsJSON = lists.map(list => list.toJSON())
       const listsData = {}
       listsData.orders = ordersForListData
       listsData.listOrder = ['new-orders', 'board-a', 'board-b']
-      listsData.lists = _.reduce(listsJSON, (acc, list) => {
-        acc[list.nameId] = list
+      listsData.lists = _.reduce(lists, (acc, list) => {
+        acc[list.nameId] = list.toJSON()
         return acc
       }, {})
 
@@ -129,7 +121,7 @@ const createTheListsInMongo = () => {
       //     nameId: 'new-orders',
       //     title: 'NEW ORDERS',
       //     direction: 'vertical',
-      //     orderIds: [...Object.keys(ordersForListData)],
+      //     orderIds: ['abc', 'abbbcc',...],
       //   },
       //   'board-a': {
       //     _id: 'abc2',       
@@ -148,58 +140,29 @@ const createTheListsInMongo = () => {
       // }
       console.log('listsData')
       console.log(listsData)
-      
       return listsData
     })
 }
 
 const getTheListsInMongo = () => {
-
   let ordersForListData 
-
   return Order.find({}) 
     .exec()
-    .populate(orderPopulation)
     .then(orders => {
-      const ordersCleanedUp = _.map(orders, order => order.toJSON())
-      ordersForListData = _.reduce(ordersCleanedUp, (acc, val) => {
-        acc[val._id] = { id: val._id, content: val}
+      ordersForListData = _.reduce(orders, (acc, order) => {
+        acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
       }, {})
-
-      // const newOrdersList = new List({
-      //   _id: uuidv1(),
-      //   nameId: 'new-orders',
-      //   title: 'NEW ORDERS',
-      //   direction: 'vertical',
-      //   orderIds: [...Object.keys(ordersForListData)],
-      // })
-
-      // const boardListA = new List({
-      //   _id: uuidv1(),
-      //   nameId: 'board-a',
-      //   title: 'BOARD A',
-      //   direction: 'horizontal',
-      //   orderIds: [],
-      // })
-
-      // const boardListB = new List({
-      //   _id: uuidv1(),
-      //   nameId: 'board-b',
-      //   title: 'BOARD B',
-      //   direction: 'horizontal',
-      //   orderIds: [],
-      // })
-
       return List.find({})
     })
     .then(lists => {
-      const listsJSON = lists.map(list => list.toJSON())
       const listsData = {}
       listsData.orders = ordersForListData
+      // default for now to hard-coding listOrder. maybe change later
+      // to allow lists to move around
       listsData.listOrder = ['new-orders', 'board-a', 'board-b']
-      listsData.lists = _.reduce(listsJSON, (acc, list) => {
-        acc[list.nameId] = list
+      listsData.lists = _.reduce(lists, (acc, list) => {
+        acc[list.nameId] = list.toJSON()
         return acc
       }, {})
 
@@ -210,7 +173,7 @@ const getTheListsInMongo = () => {
       //     nameId: 'new-orders',
       //     title: 'NEW ORDERS',
       //     direction: 'vertical',
-      //     orderIds: [...Object.keys(ordersForListData)],
+      //     orderIds: ['abc', 'abbbcc',...],
       //   },
       //   'board-a': {
       //     _id: 'abc2',       
@@ -235,11 +198,9 @@ const getTheListsInMongo = () => {
 
 }
 
-// WIP VERSION
 export const startSetupLists = () => {
   return (dispatch, getState) => {
-
-    List.count().exec()
+    List.countDocuments().exec()
       .then(count => {
         if (count === 3) {
           // already have the lists setup
@@ -262,98 +223,6 @@ export const startSetupLists = () => {
   }
 }
 
-// ------------------- WIP SECTION END ------------------
-
-// WORKING VERSION
-// TODO: incorporate Mongodb for persistence
-// export const startSetupLists = () => {
-//   let ordersForListData 
-//   return (dispatch, getState) => {
-//     return Order.find({ list: 'new-orders'}) 
-//       .populate(orderPopulation)
-//       .exec()
-//       .then(orders => {
-
-//         const ordersCleanedUp = _.map(orders, order => order.toJSON())
-//         console.log(`found new-orders orders in mongodb. orders.length=${ordersCleanedUp.length}`)
-//         ordersForListData = _.reduce(ordersCleanedUp, (acc, val) => {
-//           acc[val._id] = { id: val._id, content: val}
-//           return acc
-//         }, {})
-
-//         // TODO: dont recreate the lists if they already exist
-
-//         const newOrdersList = new List({
-//           _id: uuidv1(),
-//           nameId: 'new-orders',
-//           title: 'NEW ORDERS',
-//           direction: 'vertical',
-//           orderIds: [...Object.keys(ordersForListData)],
-//         })
-
-//         const boardListA = new List({
-//           _id: uuidv1(),
-//           nameId: 'board-a',
-//           title: 'BOARD A',
-//           direction: 'horizontal',
-//           orderIds: [],
-//         })
-
-//         const boardListB = new List({
-//           _id: uuidv1(),
-//           nameId: 'board-b',
-//           title: 'BOARD B',
-//           direction: 'horizontal',
-//           orderIds: [],
-//         })
-
-//         return List.insertMany([ newOrdersList, boardListA, boardListB ])
-//       })
-//       .then(lists => {
-//         const listsJSON = lists.map(list => list.toJSON())
-//         const listsData = {}
-//         listsData.orders = ordersForListData
-//         listsData.listOrder = ['new-orders', 'board-a', 'board-b']
-//         listsData.lists = _.reduce(listsJSON, (acc, list) => {
-//           acc[list.nameId] = list
-//           return acc
-//         }, {})
-
-//         // IT SHOULD LOOK LIKE THIS:
-//         // listsData.lists = {
-//         //   'new-orders': {
-//         //     _id: 'abc1',       
-//         //     nameId: 'new-orders',
-//         //     title: 'NEW ORDERS',
-//         //     direction: 'vertical',
-//         //     orderIds: [...Object.keys(ordersForListData)],
-//         //   },
-//         //   'board-a': {
-//         //     _id: 'abc2',       
-//         //     nameId: 'board-a',
-//         //     title: 'BOARD A',
-//         //     direction: 'horizontal',
-//         //     orderIds: [],
-//         //   },
-//         //   'board-b': {
-//         //     _id: 'abc3',       
-//         //     nameId: 'board-b',
-//         //     title: 'BOARD B',
-//         //     direction: 'horizontal',
-//         //     orderIds: [],
-//         //   },
-//         // }
-//         console.log('listsData')
-//         console.log(listsData)
-
-//         dispatch(setupLists(listsData))
-//       })
-//       .catch(err => {
-//         throw err
-//       })
-//   }
-// }
-
 export const updateLists = (data) => ({
   type: 'UPDATE_LISTS',
   payload: {
@@ -364,9 +233,33 @@ export const updateLists = (data) => ({
 // TODO: incorporate Mongodb for persistence
 // this is called when an item in any of the lists gets
 // dragged to another position (either in the same or different list)
-export const startUpdateLists = (data) => {
+export const startUpdateLists = (dndData) => {
   return (dispatch, getState) => {
-    dispatch(updateLists(data))
+    console.log('startUpdateLists, dndData is:')
+    console.log(dndData)
+
+    return List.findOneAndUpdate(
+      { nameId: 'new-orders'},
+      { orderIds: dndData.lists['new-orders'].orderIds }).exec()
+
+    .then(list => {
+      return List.findOneAndUpdate(
+        { nameId: 'board-a'},
+        { orderIds: dndData.lists['board-a'].orderIds }).exec()
+
+    })
+    .then(list => {
+
+      return List.findOneAndUpdate(
+        { nameId: 'board-b'},
+        { orderIds: dndData.lists['board-b'].orderIds }).exec()
+
+    })
+    .then(list => {
+      
+      dispatch(updateLists(dndData))
+
+    })
   }
 }
 
@@ -378,14 +271,27 @@ export const addOrderToLists = (order) => ({
 })
 
 export const startAddOrderToLists = (orderId) => {
+  let newOrder
   return (dispatch, getState) => {
     return Order.findById(orderId)
       .populate(orderPopulation)
       .exec()
       .then(order => {
-        console.log('startAddOrderToLists(). order is')
-        console.log(order)
-        dispatch(addOrderToLists(order.toJSON()))
+        // console.log('startAddOrderToLists(). order is')
+        // console.log(order)
+        newOrder = order.toJSON()
+        return List.find({ nameId: 'new-orders'}).exec()
+      })
+      .then(list => {
+        console.log('list is')
+        console.log(list)
+        const [ newOrdersList ] = list
+
+        newOrdersList.orderIds.push(newOrder._id)
+        return newOrdersList.save()
+      })
+      .then(newOrdersList => {
+        dispatch(addOrderToLists(newOrder))
       })
       .catch(err => {
         throw err
