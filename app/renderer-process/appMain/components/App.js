@@ -29,10 +29,10 @@ export class App extends React.Component {
 
   componentDidMount() {
     // fetch all the orders on app startup.
-    // get from mongodb, populate all orders, put in redux store
-    // this.props.startSetOrders()
+    // get from mongo, populate all orders, put in redux store
+    this.props.startSetOrders()
 
-    // this will setup the lists state-slice of redux
+    // this will setup the lists in using mongo & the state-slice of redux
     this.props.startSetupLists()
   }
 
@@ -176,25 +176,6 @@ export class App extends React.Component {
       </div>
     )
   }
-
-  // WORKING OLD VERSION
-  // render = () => (
-  //   <div className="grid-container">
-  //     <Header />
-  //     <DragDropContext
-  //       onDragStart={ this.onDragStart }
-  //       onDragUpdate={ this.onDragUpdate }
-  //       onDragEnd={ this.onDragEnd }
-  //     >
-  //       <OrderList handleOrderClick={ this.handleOrderClick }/>
-  //       <BoardContainer />
-  //       <OrderModal
-  //         selectedOrderId={ this.state.selectedOrderId }
-  //         handleClearSelectedOrder={ this.handleClearSelectedOrder }
-  //       />
-  //     </DragDropContext>
-  //   </div>
-  // )
 }
 
 const mapStateToProps = (state) => ({
