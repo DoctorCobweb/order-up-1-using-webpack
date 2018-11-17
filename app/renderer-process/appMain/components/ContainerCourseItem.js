@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import {
   // startUpdateItemQuantity,
   // startUpdateItemAndInfoQuantity,
-  startUpdateInfoLine,
+  // startUpdateInfoLine,
   startAddNewInfoLine
 } from '../../../shared/actions/orders'
 
 import {
   startUpdateItemQuantity,
   startUpdateItemAndInfoQuantity,
+  startUpdateInfoLine,
 } from '../../../shared/actions/lists'
 
 import CourseItem from './CourseItem'

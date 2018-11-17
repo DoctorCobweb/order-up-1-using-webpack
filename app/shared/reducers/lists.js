@@ -121,8 +121,6 @@ export default (state=listsReducerDefaultState, action) => {
         }
       }
 
-
-
     case 'UPDATE_ITEM_AND_INFO_QUANTITY':
       const stateCloneForUpdateItemAndInfoQuantity = _.cloneDeep(state)
 
@@ -152,19 +150,93 @@ export default (state=listsReducerDefaultState, action) => {
           return course
         })
 
-        return {
-          ...stateCloneForUpdateItemAndInfoQuantity,
-          orders: {
-            ...stateCloneForUpdateItemAndInfoQuantity.orders,
-            [action.payload.orderId]: orderCloneForUpdateItemAndInfoQuantity  
-          }
+      return {
+        ...stateCloneForUpdateItemAndInfoQuantity,
+        orders: {
+          ...stateCloneForUpdateItemAndInfoQuantity.orders,
+          [action.payload.orderId]: orderCloneForUpdateItemAndInfoQuantity  
         }
+      }
 
 
 
+    case 'UPDATE_INFOLINE':
+      const stateCloneForUpdateInfoLine= _.cloneDeep(state)
 
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForUpdateInfoLine = 
+        stateCloneForUpdateInfoLine.orders[action.payload.orderId]
 
+      orderCloneForUpdateInfoLine.content.courses = 
+        orderCloneForUpdateInfoLine.content.courses.map(course => {
+          if (course._id === action.payload.courseId) {
+            course.items.map(item => {
+              if (item._id === action.payload.itemId) {
+                item.infos.map(info => {
+                  if (info._id === action.payload.infoId) {
+                    info.infoLines.map(infoLine => {
+                      if (infoLine._id === action.payload.infoLineId) {
+                        infoLine.quantity = action.payload.quantity
+                        infoLine.name = action.payload.name
+                      }
+                      return infoLine
+                    })
+                  }
+                  return info
+                })
+              }
+              return item
+            })
+          }
+          return course
+      })
 
+      return {
+        ...stateCloneForUpdateInfoLine,
+        orders: {
+          ...stateCloneForUpdateInfoLine.orders,
+          [action.payload.orderId]: orderCloneForUpdateInfoLine
+        }
+      }
+
+    case 'ADD_NEW_INFOLINE':
+      const stateCloneForAddNewInfoLine= _.cloneDeep(state)
+
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForAddNewInfoLine = 
+        stateCloneForAddNewInfoLine.orders[action.payload.orderId]
+
+      orderCloneForAddNewInfoLine.content.courses = 
+        orderCloneForAddNewInfoLine.content.courses.map(course => {
+          if (course._id === action.payload.courseId) {
+            course.items.map(item => {
+              if (item._id === action.payload.itemId) {
+                item.infos.map(info => {
+                  if (info._id === action.payload.infoId) {
+                    info.infoLines.push({
+                      _id: action.payload.newInfoLineId,
+                      quantity: action.payload.newInfoLineQuantity,
+                      name: action.payload.newInfoLineName,
+                    })
+                  }
+                  return info
+                })
+              }
+              return item
+            })
+          }
+          return course
+      })
+
+      return {
+        ...stateCloneForAddNewInfoLine,
+        orders: {
+          ...stateCloneForAddNewInfoLine.orders,
+          [action.payload.orderId]: orderCloneForAddNewInfoLine
+        }
+      }
 
     default:
       return state

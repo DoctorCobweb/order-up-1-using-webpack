@@ -213,6 +213,7 @@ export const startUpdateItemAndInfoQuantity = ({
   }
 }
 
+// *** JETISON AWAY ***
 export const updateInfoLine = (
   orderId,
   courseId,
@@ -234,6 +235,7 @@ export const updateInfoLine = (
   }
 })
 
+// *** JETISON AWAY ***
 // cb: is a callback which in its body calls this.setState()
 // to reset the state back to its defaults (not all of state's properties, though)
 export const startUpdateInfoLine = ({
@@ -273,6 +275,7 @@ export const startUpdateInfoLine = ({
   }
 }
 
+// *** JETISON AWAY ***
 export const addNewInfoLine = (
   orderId,
   courseId,
@@ -294,6 +297,7 @@ export const addNewInfoLine = (
   }
 })
 
+// *** JETISON AWAY ***
 // cb: is a callback which in its body calls this.setState()
 // to reset the state back to its defaults (not all of state's properties, though)
 export const startAddNewInfoLine = ({
@@ -437,6 +441,34 @@ export const startAddNewInfo = ({
   }
 }
 
+
+    // *** JETISON AWAY ***
+export const setOrders = (orders) => ({
+  type: 'SET_ORDERS',
+  payload: {
+    orders
+  }
+})
+
+    // *** JETISON AWAY ***
+export const startSetOrders = () => {
+  return (dispatch, getState) => {
+    console.log('hello from startSetOrders@')
+
+    return Order.find({ list: 'new-orders'}) 
+      .populate(orderPopulation)
+      .exec()
+      .then(orders => {
+        const ordersCleanedUp = _.map(orders, order => order.toJSON())
+        console.log(`found all orders in mongodb. orders.length=${ordersCleanedUp.length}`)
+        dispatch(setOrders(ordersCleanedUp))
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+
 // TODO
 export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   type: 'TOGGLE_GO_ON_MAINS',
@@ -467,33 +499,6 @@ export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
     .catch(err => {
       throw err
     })
-  }
-}
-
-    // *** JETISON AWAY ***
-export const setOrders = (orders) => ({
-  type: 'SET_ORDERS',
-  payload: {
-    orders
-  }
-})
-
-    // *** JETISON AWAY ***
-export const startSetOrders = () => {
-  return (dispatch, getState) => {
-    console.log('hello from startSetOrders@')
-
-    return Order.find({ list: 'new-orders'}) 
-      .populate(orderPopulation)
-      .exec()
-      .then(orders => {
-        const ordersCleanedUp = _.map(orders, order => order.toJSON())
-        console.log(`found all orders in mongodb. orders.length=${ordersCleanedUp.length}`)
-        dispatch(setOrders(ordersCleanedUp))
-      })
-      .catch(err => {
-        throw err
-      })
   }
 }
 
