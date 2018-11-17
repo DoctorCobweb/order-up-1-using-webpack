@@ -19,7 +19,7 @@ export default class BoardList extends React.Component {
   render() {
     return (
       <div className="board-list-container">
-        <h3>{ this.props.list.title } : { this.props.list.direction } </h3>
+        <h3 className="heading">{ this.props.list.title }</h3>
         <Droppable 
           droppableId={ this.props.list.nameId }
           direction={ this.props.list.direction }
@@ -36,6 +36,7 @@ export default class BoardList extends React.Component {
                       key={ order.id }
                       order={ order.content }
                       index={ index }
+                      handleOrderClick={ this.props.handleOrderClick }
                     />
                   )
               }

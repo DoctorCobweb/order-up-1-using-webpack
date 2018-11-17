@@ -15,6 +15,43 @@ import { Draggable } from 'react-beautiful-dnd'
 
 export default class NewOrdersListItem extends React.Component {
 
+  customizeButton = () => {
+    const location = this.props.order.location
+    if (location === 'RESTAURANT BAR') {
+      return (
+        <button 
+          id={ this.props.order._id }
+          className="button button--restaurant"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+      )
+    } else if (location === 'GAMING BAR') {
+      return (
+        <button
+          id={ this.props.order._id }
+          className="button button--gaming"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+      )
+    } else {
+      return (
+        <button
+          id={ this.props.order._id }
+          className="button button--bar"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+
+      )
+    }
+
+  }
+
   render() {
     return (
       <Draggable
@@ -27,12 +64,9 @@ export default class NewOrdersListItem extends React.Component {
             {...provided.draggableProps}
             ref={provided.innerRef} 
           >
-            <button
-              id={ this.props.order._id } 
-              onClick={ () => { this.props.handleOrderClick(this.props.order._id) }}
-            >
-              { this.props.order._id }
-            </button>
+            {
+              this.customizeButton()
+            }
             <div
               {...provided.dragHandleProps}
             >
@@ -43,4 +77,33 @@ export default class NewOrdersListItem extends React.Component {
       </Draggable>
     )
   }
+
+  // render() {
+  //   return (
+  //     <Draggable
+  //       draggableId={this.props.order._id}
+  //       index={this.props.index}
+  //     >
+  //       {(provided, snapshot) => (
+  //         <div
+  //           className="new-orders-list-item-dnd"
+  //           {...provided.draggableProps}
+  //           ref={provided.innerRef} 
+  //         >
+  //           <button
+  //             id={ this.props.order._id } 
+  //             onClick={ () => { this.props.handleOrderClick(this.props.order._id) }}
+  //           >
+  //             { this.props.order._id }
+  //           </button>
+  //           <div
+  //             {...provided.dragHandleProps}
+  //           >
+  //             DRAG
+  //           </div>
+  //         </div>
+  //       )}
+  //     </Draggable>
+  //   )
+  // }
 }

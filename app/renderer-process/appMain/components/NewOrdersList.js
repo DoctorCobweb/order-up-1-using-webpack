@@ -24,11 +24,20 @@ export class NewOrdersList extends React.Component {
     // this.props.startSetOrders()
   }
 
+  handleAddNewOrderClick = () => {
+    console.log('hello from handleAddNewOrderVlivk')
+  }
 
   render() {
     return (
       <div className="new-orders-list-container">
-        <h3>{ this.props.list.title } : { this.props.list.direction } </h3>
+        <h3 className="heading">{ this.props.list.title }</h3>
+        <button
+          className="button button--header"
+          onClick={ this.handleAddNewOrderClick }
+         >
+          + Add Order
+        </button>
         <Droppable 
           droppableId={ this.props.list.nameId }
           direction={ this.props.list.direction }

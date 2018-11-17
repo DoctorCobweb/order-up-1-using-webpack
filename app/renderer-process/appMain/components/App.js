@@ -141,24 +141,28 @@ export class App extends React.Component {
               index={ 0 }
               handleOrderClick={ this.handleOrderClick }
             />
-            <BoardList 
-              key={ this.props.lists.lists['board-a'].nameId }
-              list={ this.props.lists.lists['board-a'] }
-              orders={
-                this.props.lists.lists['board-a'].orderIds
-                  .map(orderId => this.props.lists.orders[orderId])
-              }
-              index={ 1 }
-            />
-            <BoardList 
-              key={ this.props.lists.lists['board-b'].nameId }
-              list={ this.props.lists.lists['board-b'] }
-              orders={
-                this.props.lists.lists['board-b'].orderIds
-                  .map(orderId => this.props.lists.orders[orderId])
-              }
-              index={ 2 }
-            />
+            <div className="boards-container">
+              <BoardList 
+                key={ this.props.lists.lists['board-a'].nameId }
+                list={ this.props.lists.lists['board-a'] }
+                orders={
+                  this.props.lists.lists['board-a'].orderIds
+                    .map(orderId => this.props.lists.orders[orderId])
+                }
+                index={ 1 }
+                handleOrderClick={ this.handleOrderClick }
+              />
+              <BoardList 
+                key={ this.props.lists.lists['board-b'].nameId }
+                list={ this.props.lists.lists['board-b'] }
+                orders={
+                  this.props.lists.lists['board-b'].orderIds
+                    .map(orderId => this.props.lists.orders[orderId])
+                }
+                index={ 2 }
+                handleOrderClick={ this.handleOrderClick }
+              />
+            </div>
           </div>
           <OrderModal
             selectedOrderId={ this.state.selectedOrderId }

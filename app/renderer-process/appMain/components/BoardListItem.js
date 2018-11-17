@@ -14,6 +14,43 @@ import { Draggable } from 'react-beautiful-dnd'
 // }
 
 export default class BoardListItem extends React.Component {
+
+  customizeButton = () => {
+    const location = this.props.order.location
+    if (location === 'RESTAURANT BAR') {
+      return (
+        <button 
+          id={ this.props.order._id }
+          className="button button--restaurant"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location[0]} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+      )
+    } else if (location === 'GAMING BAR') {
+      return (
+        <button
+          id={ this.props.order._id }
+          className="button button--gaming"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location[0]} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+      )
+    } else {
+      return (
+        <button
+          id={ this.props.order._id }
+          className="button button--bar"
+          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+        >
+          <div>{this.props.order.location[0]} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
+        </button>
+
+      )
+    }
+  }
+
   render() {
     return (
       <Draggable
@@ -27,7 +64,9 @@ export default class BoardListItem extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {this.props.order._id}
+            {
+              this.customizeButton()
+            }
           </div>
         )}
       </Draggable>
