@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import Course from './Course'
-// import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
-import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/lists'
-// import { startToggleGoOnMains } from '../../../shared/actions/orders'
 import { history } from '../../../shared/routers/AppRouter'
+import Course from './Course'
+import {
+  findOrder,
+  sortCoursesInOrder,
+} from '../../../shared/selectors/lists'
 
 export class Order extends React.Component { 
 
@@ -70,7 +71,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
+  // TODO:
+  // startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)

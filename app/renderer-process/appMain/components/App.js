@@ -2,19 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-// import { startSetOrders } from '../../../shared/actions/orders'
 import { startSetupLists, startUpdateOrderIdsInLists } from '../../../shared/actions/lists'
-// import OrderList from './OrderList'
 import OrderModal from './OrderModal'
 import Header from './Header'
-// import initialData from '../initial-data'
 import NewOrdersList from './NewOrdersList'
 import BoardList from './BoardList'
 
 export class App extends React.Component {
   state = {
     selectedOrderId: undefined,
-    // dndData: initialData
   }
 
   handleOrderClick = (orderId) => {
@@ -28,11 +24,6 @@ export class App extends React.Component {
   }
 
   componentDidMount() {
-    // *** JETISON AWAY ***
-    // fetch all the orders on app startup.
-    // get from mongo, populate all orders, put in redux store
-    // this.props.startSetOrders()
-
     // this will setup the lists in using mongo & the state-slice of redux
     this.props.startSetupLists()
   }
@@ -180,12 +171,10 @@ export class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  // orders: state.orders,
   lists: state.lists,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // startSetOrders: () => dispatch(startSetOrders()),
   startSetupLists: () => dispatch(startSetupLists()),
   startUpdateOrderIdsInLists: (data) => dispatch(startUpdateOrderIdsInLists(data)),
 })

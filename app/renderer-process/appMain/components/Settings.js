@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { history } from 'history/createBrowserHistory'
 import Header from './Header'
-import { startDeleteAllOrders } from '../../../shared/actions/orders'
+// import { startDeleteAllOrders } from '../../../shared/actions/orders'
+import { startDeleteAllOrders } from '../../../shared/actions/lists'
 
 export class Settings extends React.Component {
   handleDeleteAllOrders = () => {
-    console.log('deleting all orders: remove all documents from all collections in OrderUpDb')
     this.props.startDeleteAllOrders()
   }
 
@@ -16,9 +16,9 @@ export class Settings extends React.Component {
       <Header />
       <div>
         <h2>Start service with a fresh Board</h2>
+        <p>this will clear out mongodb collections and redux store => start from default state</p>
         <button onClick={ this.handleDeleteAllOrders }>Delete all orders</button>
       </div>
-      <p>Settings component</p>
     </div>
   )
 }

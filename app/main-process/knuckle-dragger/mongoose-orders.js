@@ -214,6 +214,9 @@ const createOrderAndSave = (map, vals) => {
       // FINISH PROCESS OF ADDING THE ORDER TO MONGODB
       // console.log('FINALLY! WE SHOULD HAVE OUR ORDER')
       // console.log(results)
+      //
+      // we DONT need todo anything else now. in react app, we're using mongo change streams
+      // to get notified of new orders being saved in db. => no need to call dispatch here.
     })
     .catch(err => {
       throw err

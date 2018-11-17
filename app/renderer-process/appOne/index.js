@@ -15,7 +15,6 @@ import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
 import App from './components/App'
 
-import ordersReducer from '../../shared/reducers/orders'
 import listsReducer from '../../shared/reducers/lists'
 const dbHost= config['DB_HOST']
 const dbPort = config['DB_PORT']
@@ -25,7 +24,6 @@ const dbTableName= config['DB_TABLE_NAME']
 const initialState = getInitialStateRenderer()
 const store = createStore(
   combineReducers({
-    orders: ordersReducer,
     lists: listsReducer,
   }),
   initialState,

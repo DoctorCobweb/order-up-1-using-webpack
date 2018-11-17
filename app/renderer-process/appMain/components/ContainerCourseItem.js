@@ -1,22 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
-import {
-  // startUpdateItemQuantity,
-  // startUpdateItemAndInfoQuantity,
-  // startUpdateInfoLine,
-  startAddNewInfoLine
-} from '../../../shared/actions/orders'
-
+import CourseItem from './CourseItem'
+import CourseItemInfo from './CourseItemInfo'
+import AddInfo from './AddInfo'
 import {
   startUpdateItemQuantity,
   startUpdateItemAndInfoQuantity,
   startUpdateInfoLine,
+  startAddNewInfoLine,
 } from '../../../shared/actions/lists'
-
-import CourseItem from './CourseItem'
-import CourseItemInfo from './CourseItemInfo'
-import AddInfo from './AddInfo'
 
 
 export class ContainerCourseItem extends React.Component {
@@ -185,7 +177,6 @@ export class ContainerCourseItem extends React.Component {
 
   handleNewItemInfoLineKeyDown = (e, infoId) => {
     e.persist()
-    // console.log(e.target.value)
     if (e.key === 'Enter') {
       e.target.blur()
       let newInfoLine = e.target.value
@@ -314,7 +305,6 @@ export class ContainerCourseItem extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  orders: state.orders
 })
 
 const mapDispatchToProps = (dispatch) => ({

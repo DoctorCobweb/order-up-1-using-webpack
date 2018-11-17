@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import ordersReducer from '../reducers/orders'
 import listsReducer from '../reducers/lists'
 import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redux'
 
@@ -13,7 +12,6 @@ import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redu
 export default() => {
   const store = createStore(
     combineReducers({
-      orders: ordersReducer,
       lists: listsReducer
     }),
     compose(applyMiddleware(thunk, forwardToRenderer)) // IMPORTANT: forwardToRenderer goes last

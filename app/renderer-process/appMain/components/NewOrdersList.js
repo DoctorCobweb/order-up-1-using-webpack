@@ -64,7 +64,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startSetOrders: () => dispatch(startSetOrders())
+  // startSetOrders: () => dispatch(startSetOrders())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewOrdersList)

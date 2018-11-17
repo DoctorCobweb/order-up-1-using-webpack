@@ -15,10 +15,6 @@ export class Header extends React.Component {
     history.push('/settings')
   }
 
-  handleLogOrdersStateButtonClick = () => {
-    console.log(this.props.orders)
-  }
-
   handleLogListsStateButtonClick = () => {
     console.log(this.props.lists)
   }
@@ -29,7 +25,6 @@ export class Header extends React.Component {
         <button className="button button--header" onClick={ this.handleHomeButtonClick }>Home</button>
         <button className="button button--header" onClick={ this.handleCompletedButtonClick }>Completed Orders</button>
         <button className="button button--header" onClick={ this.handleSettingsButtonClick }>Settings</button>
-        <button className="button button--header" onClick={ this.handleLogOrdersStateButtonClick }>Log state.orders</button>
         <button className="button button--header" onClick={ this.handleLogListsStateButtonClick }>Log state.lists</button>
       </div>
     </header>
@@ -37,7 +32,6 @@ export class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  orders: state.orders,
   lists: state.lists,
 })
 
