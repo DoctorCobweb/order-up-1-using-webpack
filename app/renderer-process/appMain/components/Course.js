@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import ContainerCourseItem from './ContainerCourseItem'
 import { startAddNewInfo } from '../../../shared/actions/lists'
 
@@ -43,10 +44,15 @@ export class Course extends React.Component {
         className="heading"
       >
         { this.props.courseName }
-        { (this.props.courseName === 'MAINS DINNER' || this.props.courseName === 'BAR MEALS')
-            &&
-          !this.props.goOnMains
-          ? ' (HOLD)' : ''
+        { 
+          this.props.goOnMains && this.props.courseName === 'MAINS DINNER' 
+            ? 
+            ` AWAY @${moment(this.props.goOnMainsStartedAt).format("HH:mm")}` 
+            :
+            (this.props.courseName === 'BAR MEALS' 
+               ? ` AWAY @${moment(this.props.goOnMainsStartedAT).format("HH:mm")}`
+               : ''
+            )
         }
       </h2>
       { this.props.courseItems.map(courseItem => (

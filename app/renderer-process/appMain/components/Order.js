@@ -28,10 +28,10 @@ export class Order extends React.Component {
           <div>{ this.props.order.orderTakenUsing }</div>
           <div>Clerk: { this.props.order.clerk }</div>
           <div>
-            Order sent at: { moment(this.props.order.orderSentAt).format("DD/MM/YYYY HH:mm:ss") }
+            Order sent @{ moment(this.props.order.orderSentAt).format("HH:mm") }
           </div>
           <div>
-            Order received at: { moment(this.props.order.orderReceivedAt).format("DD/MM/YYYY HH:mm:ss") }
+            Order received @{ moment(this.props.order.orderReceivedAt).format("HH:mm") }
           </div>
           { this.props.order.goOnMains ? 
             <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
@@ -40,7 +40,7 @@ export class Order extends React.Component {
           }
           {
             (this.props.order.goOnMains) ?
-            <div>Away called at .... { moment(this.props.order.goOnMainsStatedAt).format("DD/MM/YYYY HH:mm:ss")} </div>
+            <div>Mains called away @{ moment(this.props.order.goOnMainsStatedAt).format("HH:mm")} </div>
             :
             ""
 
@@ -55,6 +55,7 @@ export class Order extends React.Component {
                 courseId={ course._id }
                 courseItems={ course.items }
                 goOnMains={ this.props.order.goOnMains }
+                onOnMainsStartedAt={ this.props.order.goOnMainsStartedAt }
               />)
             )
         }
