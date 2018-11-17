@@ -1,11 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
 import {
-  startUpdateItemQuantity,
-  startUpdateItemAndInfoQuantity,
+  // startUpdateItemQuantity,
+  // startUpdateItemAndInfoQuantity,
   startUpdateInfoLine,
   startAddNewInfoLine
 } from '../../../shared/actions/orders'
+
+import {
+  startUpdateItemQuantity,
+  startUpdateItemAndInfoQuantity,
+} from '../../../shared/actions/lists'
+
 import CourseItem from './CourseItem'
 import CourseItemInfo from './CourseItemInfo'
 import AddInfo from './AddInfo'

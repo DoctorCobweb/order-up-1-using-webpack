@@ -4,16 +4,17 @@ import moment from 'moment'
 import Course from './Course'
 // import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/orders'
 import { findOrder, sortCoursesInOrder } from '../../../shared/selectors/lists'
-import { startToggleGoOnMains } from '../../../shared/actions/orders'
+// import { startToggleGoOnMains } from '../../../shared/actions/orders'
 import { history } from '../../../shared/routers/AppRouter'
 
 export class Order extends React.Component { 
 
   handleGoOnMainsClick = (e) => {
-    this.props.startToggleGoOnMains({
-      orderId: this.props.orderId,
-      timestamp: moment()
-    })
+    console.log('TODO: implement startToggleGoOnMains action/reducer')
+    // this.props.startToggleGoOnMains({
+    //   orderId: this.props.orderId,
+    //   timestamp: moment()
+    // })
   }
 
   render = () => {

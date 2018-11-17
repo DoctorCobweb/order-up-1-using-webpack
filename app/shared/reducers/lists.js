@@ -56,51 +56,110 @@ export default (state=listsReducerDefaultState, action) => {
       return stateCopy
 
 
+////////////////////////////////////////////////////////////
+//
+// FROM order.js actions.....
+//
+////////////////////////////////////////////////////////////
 
 
     case 'ADD_NEW_INFO':
-      const listsStateClone = _.cloneDeep(state)
-      listsStateClone.orders = listsStateClone.orders.map(order => {
-        const orderId = action.payload.orderId
-        const courseId = action.payload.courseId
-        const itemId = action.payload.itemId
-        const newInfo = action.payload.newInfo
-        const quantity = action.payload.quantity
+      const stateCloneForAddNewInfo = _.cloneDeep(state)
 
-        // an order looks like this in state.orders:
-        // order === <mongo _id> : { id: <the mongo _id>, content: <the populated Mongo Order> }
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForAddNewInfo = stateCloneForAddNewInfo.orders[action.payload.orderId]
 
-        if (order.id === orderId) {
-          const orderClone = _.cloneDeep(order)
-          const orderContentClone = _.cloneDeep(orderClone.content)
-          orderContentClone.courses = orderContentClone.courses.map(course => {
-            if (course._id === courseId) {
-              const courseCopy = _.cloneDeep(course)
-              courseCopy.items = courseCopy.items.map(item => {
-                if (item._id === itemId) {
-                  const itemCopy = _.cloneDeep(item)
-                  const infosCopy = _.cloneDeep(itemCopy.infos)
-                  infosCopy.push(newInfo)
-                  itemCopy.infos = infosCopy
-                  return itemCopy
-                } else {
-                  return item
-                }
-              })
-              return courseCopy
-            } else {
-              return course
-            }
-          })
-          orderClone.content = orderContentClone
-          return orderClone
-        } else {
-          return order
+      orderCloneForAddNewInfo.content.courses = 
+        orderCloneForAddNewInfo.content.courses.map(course => {
+          if (course._id === action.payload.courseId) {
+            course.items.map(item => {
+              if (item._id === action.payload.itemId) {
+                item.infos.push(action.payload.newInfo)
+              }
+              return item
+            })
+          }
+          return course
+        })
+
+      return {
+        ...stateCloneForAddNewInfo,
+        orders: {
+          ...stateCloneForAddNewInfo.orders,
+          [action.payload.orderId]: orderCloneForAddNewInfo
         }
-      }) 
-      // console.log('listsStateClone')
-      // console.log('listsStateClone)
-      return listsStateClone 
+      }
+
+    case 'UPDATE_ITEM_QUANTITY':
+      const stateCloneForUpdateItemQuantity = _.cloneDeep(state)
+
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForUpdateItemQuantity = 
+        stateCloneForUpdateItemQuantity.orders[action.payload.orderId]
+      
+      orderCloneForUpdateItemQuantity.content.courses = 
+        orderCloneForUpdateItemQuantity.content.courses.map(course => {
+          if (course._id === action.payload.courseId) {
+            course.items.map(item => {
+              if (item._id === action.payload.itemId) {
+                item.quantity += action.payload.amount
+                item.completed = action.payload.completed
+              }
+              return item
+            })
+          }
+          return course
+        })
+
+      return {
+        ...stateCloneForUpdateItemQuantity,
+        orders: {
+          ...stateCloneForUpdateItemQuantity.orders,
+          [action.payload.orderId]: orderCloneForUpdateItemQuantity
+        }
+      }
+
+
+
+    case 'UPDATE_ITEM_AND_INFO_QUANTITY':
+      const stateCloneForUpdateItemAndInfoQuantity = _.cloneDeep(state)
+
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForUpdateItemAndInfoQuantity = 
+        stateCloneForUpdateItemAndInfoQuantity.orders[action.payload.orderId]
+
+      orderCloneForUpdateItemAndInfoQuantity.content.courses =
+        orderCloneForUpdateItemAndInfoQuantity.content.courses.map(course => {
+          if (course._id === action.payload.courseId) {
+            course.items.map(item => {
+              if (item._id === action.payload.itemId) {
+                item.infos.map(info => {
+                  if (info._id === action.payload.infoId) {
+                    item.quantity += action.payload.amount
+                    item.completed = action.payload.itemCompleted
+                    info.quantity += action.payload.amount
+                    info.completed = action.payload.infoCompleted
+                  }
+                  return info
+                })
+              }
+              return item
+            })
+          }
+          return course
+        })
+
+        return {
+          ...stateCloneForUpdateItemAndInfoQuantity,
+          orders: {
+            ...stateCloneForUpdateItemAndInfoQuantity.orders,
+            [action.payload.orderId]: orderCloneForUpdateItemAndInfoQuantity  
+          }
+        }
+
 
 
 

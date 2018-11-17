@@ -68,6 +68,7 @@ export const startAddOrder = (orderId = undefined) => {
   }
 }
 
+// *** JETTISON AWAY ***
 export const updateItemQuantity = (
   orderId,
   courseId,
@@ -85,6 +86,7 @@ export const updateItemQuantity = (
   }
 })
 
+// *** JETTISON AWAY ***
 export const startUpdateItemQuantity = ({
   orderId,
   courseId,
@@ -126,6 +128,7 @@ export const startUpdateItemQuantity = ({
   }
 }
 
+// *** JETTISON AWAY ***
 export const updateItemAndInfoQuantity = (
   orderId,
   courseId,
@@ -147,6 +150,7 @@ export const updateItemAndInfoQuantity = (
   }
 })
 
+// *** JETTISON AWAY ***
 export const startUpdateItemAndInfoQuantity = ({
   orderId,
   courseId,
@@ -433,6 +437,7 @@ export const startAddNewInfo = ({
   }
 }
 
+// TODO
 export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   type: 'TOGGLE_GO_ON_MAINS',
   payload: {
@@ -442,6 +447,7 @@ export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   }
 })
 
+// TODO
 export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
   let updatedGoOnMainsBool
   return (dispatch, getState) => {

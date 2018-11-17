@@ -231,9 +231,6 @@ export const updateOrderIdsInLists = (data) => ({
   }
 })
 
-// TODO: incorporate Mongodb for persistence
-// this is called when an item in any of the lists gets
-// dragged to another position (either in the same or different list)
 export const startUpdateOrderIdsInLists = (dndData) => {
   return (dispatch, getState) => {
     console.log('startUpdateLists, dndData is:')
@@ -300,7 +297,11 @@ export const startAddOrderToLists = (orderId) => {
   }
 }
 
+////////////////////////////////////////////////////////////
+//
 // FROM order.js actions.....
+//
+////////////////////////////////////////////////////////////
 
 export const addNewInfo = (
   courseId,
@@ -388,5 +389,145 @@ export const startAddNewInfo = ({
     .catch(err => {
       throw err
     })
+  }
+}
+
+export const updateItemQuantity = (
+  orderId,
+  courseId,
+  itemId,
+  amount,
+  completed
+  ) => ({
+  type: 'UPDATE_ITEM_QUANTITY',
+  payload: {
+    orderId,
+    courseId,
+    itemId,
+    amount,
+    completed
+  }
+})
+
+export const startUpdateItemQuantity = ({
+  orderId,
+  courseId,
+  itemId,
+  amount
+} = {}) => {
+  return (dispatch, getState) => {
+    return Item.findById(itemId)
+      .exec()
+      .then(item => {
+        // console.log('updated Item document is:')
+        // console.log(item)
+        // console.log('updated item quantity. calling updateItemQuantity action')
+        item.quantity += amount
+        if (item.quantity <= 0) {
+          // item is completed
+          item.completed = true
+        } else {
+          item.completed = false
+        }
+
+        // now save the item to db
+        return item.save()
+      })
+      .then(item => {
+        dispatch(
+          updateItemQuantity(
+            orderId,
+            courseId,
+            itemId,
+            amount,
+            item.completed
+          )
+        )
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+
+export const updateItemAndInfoQuantity = (
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  amount,
+  itemCompleted,
+  infoCompleted
+  ) => ({
+  type: 'UPDATE_ITEM_AND_INFO_QUANTITY',
+  payload: {
+    orderId,
+    courseId,
+    itemId,
+    infoId,
+    amount,
+    itemCompleted,
+    infoCompleted
+  }
+})
+
+export const startUpdateItemAndInfoQuantity = ({
+  orderId,
+  courseId,
+  itemId,
+  infoId,
+  amount
+} = {}) => {
+  // need reference to item's completed field later on.
+  // => when we call dispatch 
+  let itemCompleted = false
+  return (dispatch, getState) => {
+    return Item.findById(itemId).exec()
+      .then(item => {
+        console.log('updated Item document is:')
+        console.log(item)
+
+        item.quantity += amount
+        if (item.quantity <= 0) {
+          itemCompleted = true
+          item.completed = true
+        } else {
+          item.completed = false
+        }
+
+        return item.save()
+      })
+      .then(item => {
+        // item has been updated and saved. now do the same for Info doc
+        return Info.findById(infoId).exec()
+      })
+      .then(info => {
+        info.quantity += amount
+        if (info.quantity <= 0) {
+          info.completed = true
+        } else {
+          info.completed = false
+        }
+        return info.save()
+      })
+      .then(info => {
+        console.log('updated Info document is:')
+        console.log(info)
+        console.log('calling updateItemAndInfoQuantity action')
+        dispatch(
+          updateItemAndInfoQuantity(
+            orderId,
+            courseId,
+            itemId,
+            infoId,
+            amount,
+            itemCompleted,
+            info.completed
+          )
+        )
+      })
+      .catch(err => {
+        throw err
+      })
   }
 }

@@ -14,7 +14,6 @@ const coursesOrdered = [
 ]
 
 export const findOrder = (orders, orderId) => {
-  const blah = orders[orderId].content
   return orders[orderId].content
 }
 

@@ -180,7 +180,7 @@ export class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  orders: state.orders,
+  // orders: state.orders,
   lists: state.lists,
 })
 
