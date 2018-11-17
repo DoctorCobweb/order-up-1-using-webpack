@@ -1,8 +1,9 @@
-import { Order, Course, Item, Info, InfoLine } from '../models/order'
-import { List } from '../models/list'
+import moment from 'moment'
 import stringify from 'json-stringify-pretty-compact'
 import colors from 'colors'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
+import { Order, Course, Item, Info, InfoLine } from '../models/order'
+import { List } from '../models/list'
 
 
 // startSetupLists/ setupLists should populate a state object like this.
@@ -658,6 +659,101 @@ export const startAddNewInfoLine = ({
         name
       ))
       cb()
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
+
+export const deleteAllOrders = () => ({
+  type: 'DELETE_ALL_ORDERS',
+  payload: {}
+})
+
+// TODO: learn more about change streams and removing collections
+//       when watchers are present on the collection
+// deleting all the documents from all the collections.
+// we won't lose the collections, just their count will be 0.
+// this is important because we have change stream watchers for
+// collection (s) and at this stage of development, im not sure
+// what will happen if you pull the proverbial rug out from underneath
+// the watcher's feet.
+export const startDeleteAllOrders = () => {
+
+  // 1. mongo stuff: delete all of collections:
+  // orders, courses, items, infos, infolines, lists
+  //
+  // 2. reset redux state to default
+
+  return (dispatch, getState) => {
+    return InfoLine.deleteMany({}).exec()
+    .then(() => {
+      console.log('deleted all docs in InfoLine collection')
+      return Info.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Info collection')
+      return Item.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Item collection')
+      return Course.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Course collection')
+      return Order.deleteMany({}).exec()
+    })
+    .then(() => {
+      console.log('deleted all docs in Order collection')
+      return List.deleteMany({}).exec()
+    })
+    .then(()=> {
+      console.log('deleted all docs in List collection')
+      console.log('calling dispatch to reset state.lists')
+      dispatch(deleteAllOrders())
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
+
+export const toggleGoOnMains = (orderId, goOnMains, goOnMainsStartedAt) => ({
+  type: 'TOGGLE_GO_ON_MAINS',
+  payload: {
+    orderId,
+    goOnMains,
+    goOnMainsStartedAt,
+  }
+})
+
+export const startToggleGoOnMains = ({ orderId } = {}) => {
+  return (dispatch, getState) => {
+    return Order.findById(orderId).exec()
+    .then(order => {
+      if (order.goOnMains) {
+        // before toggling db values, goOnMains is already true.
+        // toggling the button will want to change this to false
+        // => want to hold mains, so
+        // we should NOT go on mains
+        // => set values to false and null
+        order.goOnMains = false
+        order.goOnMainsStartedAt = null
+      } else {
+
+        // order has been holding on mains and now user
+        // want to go on mains
+        // => set values to true and set a timestamp
+        order.goOnMains = true
+        order.goOnMainsStartedAt = moment() 
+      }
+      return order.save()
+    })
+    .then(order => {
+      console.log('updated order goOnMains')
+      console.log(order.toJSON())
+      dispatch(toggleGoOnMains(orderId, order.goOnMains, order.goOnMainsStartedAt))
     })
     .catch(err => {
       throw err

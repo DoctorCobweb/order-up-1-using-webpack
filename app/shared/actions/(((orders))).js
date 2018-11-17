@@ -469,7 +469,7 @@ export const startSetOrders = () => {
   }
 }
 
-// TODO
+// *** JESTISON AWAY ****
 export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   type: 'TOGGLE_GO_ON_MAINS',
   payload: {
@@ -479,7 +479,7 @@ export const toggleGoOnMains = (orderId, goOnMainsBool, timestamp) => ({
   }
 })
 
-// TODO
+// *** JESTISON AWAY ****
 export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
   let updatedGoOnMainsBool
   return (dispatch, getState) => {
@@ -502,11 +502,13 @@ export const startToggleGoOnMains = ({ orderId, timestamp } = {}) => {
   }
 }
 
+// *** JESTISON AWAY ****
 export const deleteAllOrders = () => ({
   type: 'DELETE_ALL_ORDERS',
   payload: {}
 })
 
+// *** JESTISON AWAY ****
 // TODO: learn more about change streams and removing collections
 //       when watchers are present on the collection
 // deleting all the documents from all the collections.

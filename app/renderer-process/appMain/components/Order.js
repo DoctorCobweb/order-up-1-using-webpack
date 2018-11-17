@@ -7,15 +7,14 @@ import {
   findOrder,
   sortCoursesInOrder,
 } from '../../../shared/selectors/lists'
+import { startToggleGoOnMains } from '../../../shared/actions/lists'
 
 export class Order extends React.Component { 
 
   handleGoOnMainsClick = (e) => {
-    console.log('TODO: implement startToggleGoOnMains action/reducer')
-    // this.props.startToggleGoOnMains({
-    //   orderId: this.props.orderId,
-    //   timestamp: moment()
-    // })
+    this.props.startToggleGoOnMains({
+      orderId: this.props.orderId,
+    })
   }
 
   render = () => {
@@ -40,8 +39,8 @@ export class Order extends React.Component {
             <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
           }
           {
-            (this.props.order.goOnMainsStartedAt && this.props.order.goOnMains) ?
-            <div>Away called at TODO need to put date here...</div>
+            (this.props.order.goOnMains) ?
+            <div>Away called at .... { moment(this.props.order.goOnMainsStatedAt).format("DD/MM/YYYY HH:mm:ss")} </div>
             :
             ""
 
@@ -65,14 +64,11 @@ export class Order extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  // order: findOrder(state.orders, ownProps.orderId),
-  // lists: state.lists,
   order: findOrder(state.lists.orders, ownProps.orderId)
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // TODO:
-  // startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
+  startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)

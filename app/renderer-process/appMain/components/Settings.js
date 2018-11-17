@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { history } from 'history/createBrowserHistory'
 import Header from './Header'
-// import { startDeleteAllOrders } from '../../../shared/actions/orders'
 import { startDeleteAllOrders } from '../../../shared/actions/lists'
 
 export class Settings extends React.Component {
