@@ -32,14 +32,17 @@
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
+  height: 90rem;
   margin-left: 1rem;
+  min-height: 90rem;
   width: 40rem;
 }
 
 .new-orders-list {
   flex-grow: 1;
-  min-height: 50rem;
   padding: 2rem;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .new-orders-list-item-dnd {

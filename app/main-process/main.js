@@ -133,21 +133,21 @@ let winTwo
 const createWindow = () => {
   let winMain = new BrowserWindow({
     width: 1230,
-    height: 900,
-    x: 650,
-    y: 100
+    height: 1000,
+    x: 0,
+    y: 0 
   })
   let winOne = new BrowserWindow({
     width: 1230,
-    height: 450,
-    x: 2100,
-    y: 100
+    height: 1000,
+    x: 1235,
+    y: 0
   })
   let winTwo = new BrowserWindow({
     width: 1230,
-    height: 450,
-    x: 2100,
-    y: 550
+    height: 1000,
+    x: 2470,
+    y: 0
   })
 
   let appMainUrl = url.format({
