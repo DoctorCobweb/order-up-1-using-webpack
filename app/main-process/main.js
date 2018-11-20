@@ -17,11 +17,7 @@ import { startAddOrderToLists } from '../shared/actions/lists'
 import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
 
-
 log.transports.file.level = 'info'
-
-
-
 
 if (process.env.NODE_ENV === 'development') {
   console.log('in main.js and NODE_ENV is development')
@@ -132,38 +128,51 @@ db.once('open', () => {
 // To avoid being garbage collected
 let winMain
 let winOne
+let winTwo
 
-app.on('ready', () => {
-
+const createWindow = () => {
   let winMain = new BrowserWindow({
     width: 1230,
     height: 900,
     x: 650,
     y: 100
   })
-  // let winOne = new BrowserWindow({
-  //   width: 700,
-  //   height: 700,
-  //   x: 200,
-  //   y: 80
-  // })
+  let winOne = new BrowserWindow({
+    width: 1230,
+    height: 450,
+    x: 2100,
+    y: 100
+  })
+  let winTwo = new BrowserWindow({
+    width: 1230,
+    height: 450,
+    x: 2100,
+    y: 550
+  })
 
   let appMainUrl = url.format({
     pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
     protocol: 'file:',
     slashes: true
   })
-  // let appOneUrl = url.format({
-  //   pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // })
+  let appOneUrl = url.format({
+    pathname: path.join(__dirname, 'renderer-process', 'appOne', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  })
+  let appTwoUrl = url.format({
+    pathname: path.join(__dirname, 'renderer-process', 'appTwo', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  })
 
   winMain.loadURL(appMainUrl)
-  // winOne.loadURL(appOneUrl)
+  winOne.loadURL(appOneUrl)
+  winTwo.loadURL(appTwoUrl)
 
   winMain.webContents.openDevTools()
-  // winOne.webContents.openDevTools()
+  winOne.webContents.openDevTools()
+  winTwo.webContents.openDevTools()
 
   winMain.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -171,12 +180,22 @@ app.on('ready', () => {
     // when you should delete the corresponding element.
     winMain = null
   })
-  // winOne.on('closed', () => {
+  winOne.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    // winOne= null
-  // })
+    winOne= null
+  })
+  winTwo.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    winTwo= null
+  })
+}
+
+app.on('ready', () => {
+  createWindow()
 })
 
 // Quit when all windows are closed.
@@ -194,7 +213,10 @@ app.on('activate', () => {
   if (winMain === null) {
     createWindow()
   }
-  // if (winOne === null) {
-  //   createWindow()
-  // }
+  if (winOne === null) {
+    createWindow()
+  }
+  if (winTwo === null) {
+    createWindow()
+  }
 })

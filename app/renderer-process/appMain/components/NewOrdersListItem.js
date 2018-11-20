@@ -69,41 +69,12 @@ export default class NewOrdersListItem extends React.Component {
             }
             <div
               {...provided.dragHandleProps}
+              className="drag-handle"
             >
-              DRAG
             </div>
           </div>
         )}
       </Draggable>
     )
   }
-
-  // render() {
-  //   return (
-  //     <Draggable
-  //       draggableId={this.props.order._id}
-  //       index={this.props.index}
-  //     >
-  //       {(provided, snapshot) => (
-  //         <div
-  //           className="new-orders-list-item-dnd"
-  //           {...provided.draggableProps}
-  //           ref={provided.innerRef} 
-  //         >
-  //           <button
-  //             id={ this.props.order._id } 
-  //             onClick={ () => { this.props.handleOrderClick(this.props.order._id) }}
-  //           >
-  //             { this.props.order._id }
-  //           </button>
-  //           <div
-  //             {...provided.dragHandleProps}
-  //           >
-  //             DRAG
-  //           </div>
-  //         </div>
-  //       )}
-  //     </Draggable>
-  //   )
-  // }
 }

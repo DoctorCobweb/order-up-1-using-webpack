@@ -50,3 +50,13 @@
   margin-bottom: 1rem;
   padding: 0.2rem;
 }
+
+.drag-handle {
+  background: $grey;
+  border: none;
+  border-radius: $radius;
+  height: 4rem;
+  min-height: 4rem;
+  min-width: 4rem;
+  width: 4rem;
+}

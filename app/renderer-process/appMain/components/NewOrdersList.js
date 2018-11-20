@@ -24,17 +24,13 @@ export class NewOrdersList extends React.Component {
     // this.props.startSetOrders()
   }
 
-  handleAddNewOrderClick = () => {
-    console.log('hello from handleAddNewOrderVlivk')
-  }
-
   render() {
     return (
       <div className="new-orders-list-container">
         <h3 className="heading">{ this.props.list.title }</h3>
         <button
           className="button button--header"
-          onClick={ this.handleAddNewOrderClick }
+          onClick={ this.props.handleAddNewOrderClick }
          >
           + Add Order
         </button>

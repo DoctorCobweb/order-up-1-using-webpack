@@ -7,10 +7,12 @@ import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
 import BoardList from './BoardList'
+import AddOrderModal from './AddOrderModal'
 
 export class App extends React.Component {
   state = {
     selectedOrderId: undefined,
+    isAddingNewOrder: false,
   }
 
   handleOrderClick = (orderId) => {
@@ -22,6 +24,18 @@ export class App extends React.Component {
   handleClearSelectedOrder = () => {
     this.setState({ selectedOrderId: undefined })
   }
+  
+  handleAddNewOrderClick = () => {
+    this.setState(() => ({
+      isAddingNewOrder: true 
+    }))
+
+  }
+  
+  handleCancelAddNewOrder = () => {
+    this.setState({ isAddingNewOrder : false })
+  }
+
 
   componentDidMount() {
     // this will setup the lists in using mongo & the state-slice of redux
@@ -140,6 +154,7 @@ export class App extends React.Component {
               }
               index={ 0 }
               handleOrderClick={ this.handleOrderClick }
+              handleAddNewOrderClick = { this.handleAddNewOrderClick }
             />
             <div className="boards-container">
               <BoardList 
@@ -167,6 +182,11 @@ export class App extends React.Component {
           <OrderModal
             selectedOrderId={ this.state.selectedOrderId }
             handleClearSelectedOrder={ this.handleClearSelectedOrder }
+          />
+          <AddOrderModal
+            isAddingNewOrder={ this.state.isAddingNewOrder }
+            handleCancelAddNewOrder={ this.handleCancelAddNewOrder }
+            
           />
         </DragDropContext>
       </div>

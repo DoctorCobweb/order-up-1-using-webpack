@@ -11,7 +11,7 @@ const MongoClient = mongodb.MongoClient
 import { Order } from '../../shared/models/order'
 import config from '../../main-process/knuckle-dragger/knuckle-dragger-config'
 import '../../shared/styles/styles.scss'
-import AppOne from './components/AppOne'
+import AppTwo from './components/AppTwo'
 
 import listsReducer from '../../shared/reducers/lists'
 
@@ -96,7 +96,7 @@ db.once('open', () => {
 // all components in the app
 const jsx = (
   <Provider store={store}>
-    <AppOne />
+    <AppTwo />
   </Provider>
 )
 
