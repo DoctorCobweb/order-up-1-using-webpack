@@ -27,7 +27,17 @@ export class Order extends React.Component {
           <h2>Table: { this.props.order.tableNumber }</h2>
         </div>
         <div className="order-meta-details">
-          <div>{ this.props.order.orderTakenUsing }</div>
+          <button
+            onClick={ () => this.props.handleOrderCompletedClick(this.props.orderId) }
+            className="button"
+          >
+            Order Completed
+          </button>
+          { this.props.order.goOnMains ? 
+            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
+            :
+            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
+          }
           <div>Clerk: { this.props.order.clerk }</div>
           <div>
             Order sent @{ moment(this.props.order.orderSentAt).format("HH:mm") }
@@ -35,16 +45,6 @@ export class Order extends React.Component {
           <div>
             Order received @{ moment(this.props.order.orderReceivedAt).format("HH:mm") }
           </div>
-          <button
-            onClick={ () => this.props.handleOrderCompletedClick(this.props.orderId) }
-          >
-            Order Completed?
-          </button>
-          { this.props.order.goOnMains ? 
-            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
-            :
-            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
-          }
           {
             (this.props.order.goOnMains) ?
             <div>Mains called away @{ moment(this.props.order.goOnMainsStatedAt).format("HH:mm")} </div>

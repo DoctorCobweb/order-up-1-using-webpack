@@ -29,7 +29,7 @@ export class NewOrdersList extends React.Component {
       <div className="new-orders-list-container">
         <h3 className="heading">{ this.props.list.title }</h3>
         <button
-          className="button button--header"
+          className="button button--add-new-order"
           onClick={ this.props.handleAddNewOrderClick }
          >
           + Add Order

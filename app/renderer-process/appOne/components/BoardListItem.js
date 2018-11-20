@@ -14,7 +14,7 @@ const BoardListItem = props => (
     </div>
     {
       sortCoursesInOrder(props.order).courses
-        .map(course => <Course key={ course._id } course={ course } />)
+        .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
     }
     
   </div>
@@ -22,7 +22,34 @@ const BoardListItem = props => (
 
 const Course = (props) => (
   <div>
-    <h3>{ props.course.name }</h3>
+    <h3>
+      { props.course.name }
+
+      { 
+        props.course.name === 'MAINS DINNER' &&  props.order.goOnMains ?
+          ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
+            :
+          ''
+      }
+      { 
+        props.course.name === 'MAINS DINNER' &&  !props.order.goOnMains ?
+          ` (HOLD)`
+            :
+          ''
+      }
+      { 
+        props.course.name === 'BAR MEALS' &&  props.order.goOnMains ?
+          ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
+            :
+          ''
+      }
+      { 
+        props.course.name === 'BAR MEALS' &&  !props.order.goOnMains ?
+          ` (HOLD)`
+            :
+          ''
+      }
+    </h3>
     {
       props.course.items.map(item => <Item key={ item._id } item={ item }/>)
     }
@@ -40,10 +67,13 @@ const Item = (props) => (
 
 const Info = (props) => (
   <div>
-    {
-      props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
-    }
-    <div>------------</div>
+    <div>
+      <div>{ props.info.quantity }</div>
+      {
+        props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
+      }
+      <div>------------</div>
+    </div>
   </div>
 )
 

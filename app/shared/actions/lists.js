@@ -391,21 +391,15 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
     return Order.findById(orderId)
       .exec()
       .then(order => {
-        console.log('1')
-        console.log(order)
         order.completed = true
         return order.save()
       })
       .then(order => {
-        console.log('2')
-        console.log(order)
         // have to remove it from orderIds array in whatever list
         // contains that orderIds array..
         return List.find({orderIds: order._id}).exec()
       })
       .then(list => {
-        console.log('3')
-        console.log(list)
         // there orderId should only appear in ONE LIST by design.
         // we assume that this is always the case.
         const [ listContainingOrderId ] = list
@@ -422,8 +416,6 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
         return list.save()
       })
       .then(list => {
-        console.log('4')
-        console.log(list)
         dispatch(setOrderAsCompleted(orderId, listNameIdToDeleteOrderIdFrom))
       })
   }
