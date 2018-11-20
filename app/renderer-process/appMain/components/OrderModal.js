@@ -22,6 +22,7 @@ const OrderModal = (props) => {
           <Order 
             key={ props.selectedOrderId }
             orderId={ props.selectedOrderId }
+            handleOrderCompletedClick={ props.handleOrderCompletedClick }
           /> 
         }
       </div>

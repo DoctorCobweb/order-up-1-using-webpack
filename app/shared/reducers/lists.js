@@ -6,7 +6,7 @@ import moment from 'moment'
 // ... think so. look below at initialData structure
 const listsReducerDefaultState = {
   orders: {},
-  'completedOrders': {},
+  completedOrders: {},
   lists: {
     'new-orders': {
       nameId: 'new-orders',
@@ -63,6 +63,54 @@ export default (state=listsReducerDefaultState, action) => {
       stateCopy.lists['new-orders'].orderIds.push(newOrder._id)
 
       return stateCopy
+
+    case 'SET_ORDER_AS_COMPLETED':
+      // have todo:
+      // 1. remove the order from state.lists.orders
+      // 2. move order to state.lists.completedOrders
+      // 3. remove the orderId from the orderIds array in the list
+      //    which contains it
+
+      // clone the whole state
+      const stateCloneForCompletedOrder = _.cloneDeep(state)
+
+      // action.payload.orderId
+      // action.payload.listNameId
+
+      // find the order in state.orders, then clone it
+      const completedOrderClone = _.cloneDeep(stateCloneForCompletedOrder
+        .orders[ action.payload.orderId ])
+
+      // update the completed field 
+      completedOrderClone.content.completed = true
+
+      // put the clone completed order over to state.completedOrders object
+      stateCloneForCompletedOrder.completedOrders[action.payload.orderId ] = {
+        id: action.payload.orderId,
+        content: completedOrderClone.content, 
+      }
+
+      // put the completed orderId into the completed-order list
+      stateCloneForCompletedOrder.lists['completed-orders'].orderIds.push(action.payload.orderId)
+
+      // delete the completed order from state.orders
+      delete stateCloneForCompletedOrder.orders[ action.payload.orderId ]
+
+      // finally, delete the orderId from whatever list it was sitting in before being
+      // marked as complete
+      const deleteIdx = stateCloneForCompletedOrder
+        .lists[ action.payload.listNameId ].orderIds
+        .indexOf(action.payload.orderId)
+
+      stateCloneForCompletedOrder
+        .lists[ action.payload.listNameId ].orderIds
+        .splice(deleteIdx, 1)
+
+      // console.log('stateCloneForCompletedOrder')
+      // console.log(stateCloneForCompletedOrder)
+
+      return stateCloneForCompletedOrder
+      
 
 
 ////////////////////////////////////////////////////////////

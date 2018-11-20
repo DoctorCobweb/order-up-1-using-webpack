@@ -198,8 +198,8 @@ const getTheListsInMongo = () => {
     .populate(orderPopulation)
     .exec()
     .then(orders => {
-      console.log('here are the false completed orders')
-      console.log(orders)
+      // console.log('here are the false completed orders')
+      // console.log(orders)
       ordersForListData = _.reduce(orders, (acc, order) => {
         acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
@@ -255,8 +255,8 @@ const getTheListsInMongo = () => {
         .exec()
     })
     .then(completedOrders => {
-      console.log('here are the completed orders')
-      console.log(completedOrders)
+      // console.log('here are the completed orders')
+      // console.log(completedOrders)
       completedOrdersForListData = _.reduce(completedOrders, (acc, order) => {
         acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
@@ -371,6 +371,60 @@ export const startAddOrderToLists = (orderId) => {
       })
       .catch(err => {
         throw err
+      })
+  }
+}
+
+export const setOrderAsCompleted = (orderId, listNameId) => ({
+  type: 'SET_ORDER_AS_COMPLETED',
+  payload: {
+    orderId,
+    listNameId,
+  }
+})
+
+export const startSetOrderAsCompleted = ({ orderId }) => {
+  let listNameIdToDeleteOrderIdFrom
+  return (dispatch, getState) => {
+    // we dont need to populate it, as completed field is in Order model
+    // and not a subdocument
+    return Order.findById(orderId)
+      .exec()
+      .then(order => {
+        console.log('1')
+        console.log(order)
+        order.completed = true
+        return order.save()
+      })
+      .then(order => {
+        console.log('2')
+        console.log(order)
+        // have to remove it from orderIds array in whatever list
+        // contains that orderIds array..
+        return List.find({orderIds: order._id}).exec()
+      })
+      .then(list => {
+        console.log('3')
+        console.log(list)
+        // there orderId should only appear in ONE LIST by design.
+        // we assume that this is always the case.
+        const [ listContainingOrderId ] = list
+        listNameIdToDeleteOrderIdFrom = listContainingOrderId.nameId
+        const deleteIndex = listContainingOrderId.orderIds.indexOf(orderId)
+        listContainingOrderId.orderIds.splice(deleteIndex, 1)
+        return listContainingOrderId.save()
+      })
+      .then(list => {
+        return List.findOne({ nameId: 'completed-orders'}).exec()
+      })
+      .then(list => {
+        list.orderIds.push(orderId)
+        return list.save()
+      })
+      .then(list => {
+        console.log('4')
+        console.log(list)
+        dispatch(setOrderAsCompleted(orderId, listNameIdToDeleteOrderIdFrom))
       })
   }
 }
@@ -785,9 +839,13 @@ export const startDeleteAllOrders = () => {
       console.log('deleted all docs in Order collection')
       return List.deleteMany({}).exec()
     })
+    .then(() => {
+      return createTheListsInMongo()
+    })
     .then(()=> {
       console.log('deleted all docs in List collection')
       console.log('calling dispatch to reset state.lists')
+
       dispatch(deleteAllOrders())
     })
     .catch(err => {

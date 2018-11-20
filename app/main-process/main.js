@@ -171,8 +171,8 @@ const createWindow = () => {
   winTwo.loadURL(appTwoUrl)
 
   winMain.webContents.openDevTools()
-  winOne.webContents.openDevTools()
-  winTwo.webContents.openDevTools()
+  // winOne.webContents.openDevTools()
+  // winTwo.webContents.openDevTools()
 
   winMain.on('closed', () => {
     // Dereference the window object, usually you would store windows

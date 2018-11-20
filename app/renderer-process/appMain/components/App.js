@@ -2,7 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { startSetupLists, startUpdateOrderIdsInLists } from '../../../shared/actions/lists'
+import {
+  startSetupLists,
+  startUpdateOrderIdsInLists,
+  startSetOrderAsCompleted,
+} from '../../../shared/actions/lists'
 import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
@@ -34,6 +38,19 @@ export class App extends React.Component {
   
   handleCancelAddNewOrder = () => {
     this.setState({ isAddingNewOrder : false })
+  }
+
+  handleOrderCompletedClick = (orderId) => {
+    console.log('order to set as completed has _id')
+    console.log(orderId)
+
+    this.setState(() => ({
+      selectedOrderId: undefined,
+    }), () => {
+      this.props.startSetOrderAsCompleted({
+        orderId
+      })
+    })
   }
 
 
@@ -182,6 +199,7 @@ export class App extends React.Component {
           <OrderModal
             selectedOrderId={ this.state.selectedOrderId }
             handleClearSelectedOrder={ this.handleClearSelectedOrder }
+            handleOrderCompletedClick={ this.handleOrderCompletedClick }
           />
           <AddOrderModal
             isAddingNewOrder={ this.state.isAddingNewOrder }
@@ -201,6 +219,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startSetupLists: () => dispatch(startSetupLists()),
   startUpdateOrderIdsInLists: (data) => dispatch(startUpdateOrderIdsInLists(data)),
+  startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data))
 })
 
 const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)

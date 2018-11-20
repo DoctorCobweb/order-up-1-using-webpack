@@ -7,7 +7,9 @@ import {
   findOrder,
   sortCoursesInOrder,
 } from '../../../shared/selectors/lists'
-import { startToggleGoOnMains } from '../../../shared/actions/lists'
+import {
+  startToggleGoOnMains,
+} from '../../../shared/actions/lists'
 
 export class Order extends React.Component { 
 
@@ -33,6 +35,11 @@ export class Order extends React.Component {
           <div>
             Order received @{ moment(this.props.order.orderReceivedAt).format("HH:mm") }
           </div>
+          <button
+            onClick={ () => this.props.handleOrderCompletedClick(this.props.orderId) }
+          >
+            Order Completed?
+          </button>
           { this.props.order.goOnMains ? 
             <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
             :
@@ -43,7 +50,6 @@ export class Order extends React.Component {
             <div>Mains called away @{ moment(this.props.order.goOnMainsStatedAt).format("HH:mm")} </div>
             :
             ""
-
           }
         </div>
         { sortCoursesInOrder(this.props.order).courses
@@ -69,7 +75,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data))
+  startToggleGoOnMains: (data) => dispatch(startToggleGoOnMains(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)
