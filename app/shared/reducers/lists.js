@@ -5,7 +5,8 @@ import moment from 'moment'
 // TODO: different default state data structure?
 // ... think so. look below at initialData structure
 const listsReducerDefaultState = {
-  orders: { },
+  orders: {},
+  'completedOrders': {},
   lists: {
     'new-orders': {
       nameId: 'new-orders',
@@ -25,9 +26,16 @@ const listsReducerDefaultState = {
       direction: 'horizontal',
       orderIds: [],
     },
+    'completed-orders': {
+      nameId: 'completed-orders',
+      title: 'Completed Orders',
+      direction: 'vertical',
+      orderIds: [],
+
+    },
   },
   // faciliatate reordering of the orders ? 
-  listOrder: ['new-orders', 'board-a', 'board-b'],
+  listOrder: ['new-orders', 'board-a', 'board-b', 'completed-orders'],
 }
 
 

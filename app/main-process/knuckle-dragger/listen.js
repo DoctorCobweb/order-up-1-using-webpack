@@ -70,7 +70,7 @@ const startMockingOrders = () => {
 
   setInterval(() => {
     writeMockOrderToSerialPort()
-  }, 50000)
+  }, 20000)
 }
 
 export default (db) => {
