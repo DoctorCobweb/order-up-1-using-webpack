@@ -40,7 +40,7 @@ export default class BoardListItem extends React.Component {
             }
               onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
             >
-              T: {this.props.order.tableNumber}
+              {this.props.order.tableNumber}
             </div>
 
           </div>

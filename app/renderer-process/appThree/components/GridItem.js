@@ -26,22 +26,21 @@ const indexMapping = {
 }
 
 export const GridItem = (props) => (
-  <div className={`grid-item grid-item-${ props.index }`}>
-    <div>{ indexMapping[props.index]}</div>
-    <div>
-      <h3>{ props.order.tableNumber }</h3>
-      <h3
+  <div className={ `grid-item grid-item-${ props.index }` }>
+    <div className="grid-item-header__container">
+      <h1>{ indexMapping[props.index] }</h1>
+      <h1
         className={ props.order.location === "RESTAURANT BAR" ?
-          "heading-restaurant"
+          "heading-restaurant grid-item-header__table-number"
           :
           props.order.location === "GAMING BAR" ?
-          "heading-gaming"
+          "heading-gaming grid-item-header__table-number"
           :
-          "heading-bar"
+          "heading-bar grid-item-header__table-number"
         }
       >
-        { props.order.location }
-      </h3>
+      { props.order.tableNumber }
+      </h1>
     </div>
     {
       sortCoursesInOrder(props.order).courses

@@ -374,7 +374,6 @@ const calculateHoldMains = (order) => {
       console.log(`lineType: ${lineType}`.red)
 
     } else {
-      // TODO
       // have entrees but no mains. 
       console.log('have entrees but no mains'.red)
       lineType = 'dotted'
@@ -722,7 +721,7 @@ const extractFromVariableContent = (variableContent) => {
   if (!_.isEmpty(tableNumber)) {
     const splitTableNumber = tableNumber.line.split(/\s+/)
     if (splitTableNumber.length > 0 ) {
-      extractedVariables.tableNumber = splitTableNumber.slice(-1)[0]
+      extractedVariables.tableNumber = (splitTableNumber.slice(-1)[0]).split('*').join('')
       variableContent.splice(tableNumber.index, 1)
 
     }
