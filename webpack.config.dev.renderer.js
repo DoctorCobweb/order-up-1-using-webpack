@@ -43,6 +43,12 @@ let entries = {
     'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
     require.resolve('./app/renderer-process/appTwo/index.js')
   ],
+  appThree: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./app/renderer-process/appThree/index.js')
+  ],
 }
 
 module.exports = {

@@ -18,8 +18,8 @@ export default class NewOrdersListItem extends React.Component {
   render() {
     return (
       <Draggable
-        draggableId={this.props.order._id}
-        index={this.props.index}
+        draggableId={ this.props.order._id }
+        index={ this.props.index }
       >
         {(provided, snapshot) => (
           <div
@@ -30,18 +30,24 @@ export default class NewOrdersListItem extends React.Component {
           >
             <div
               id={ this.props.order._id }
-              className={ this.props.order.location === 'RESTAURANT BAR'
-                ? 
-                "new-orders-list-item-dnd button--restaurant" 
-                : 
-                  this.props.order.location === 'GAMING BAR' ?
+              className={
+                this.props.index > 19 
+                ?
+                "new-orders-list-item-dnd button--not-on-grid"
+                :
+                  this.props.order.location === 'RESTAURANT BAR'
+                  ? 
+                  "new-orders-list-item-dnd button--restaurant" 
+                  : 
+                    this.props.order.location === 'GAMING BAR'
+                    ?
                     "new-orders-list-item-dnd button--gaming"
                     :
                     "new-orders-list-item-dnd button--bar"
             }
-              onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
+              onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }
             >
-              T: {this.props.order.tableNumber} C: {this.props.order.covers}
+              T: { this.props.order.tableNumber } C: { this.props.order.covers }
             </div>
           </div>
         )}

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import BoardList from './BoardList'
 
+// AppOne is Board A: all orders in the 'board-a' list
+
 export class AppOne extends Component {
 
   render = () => (

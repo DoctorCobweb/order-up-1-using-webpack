@@ -129,6 +129,7 @@ db.once('open', () => {
 let winMain
 let winOne
 let winTwo
+let winThree
 
 const createWindow = () => {
   let winMain = new BrowserWindow({
@@ -149,6 +150,12 @@ const createWindow = () => {
     x: 2610,
     y: 0
   })
+  let winThree= new BrowserWindow({
+    width: 1915,
+    height: 1000,
+    x: 1925,
+    y: 0 
+  })
 
   let appMainUrl = url.format({
     pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
@@ -165,14 +172,21 @@ const createWindow = () => {
     protocol: 'file:',
     slashes: true
   })
+  let appThreeUrl = url.format({
+    pathname: path.join(__dirname, 'renderer-process', 'appThree', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  })
 
   winMain.loadURL(appMainUrl)
   winOne.loadURL(appOneUrl)
   winTwo.loadURL(appTwoUrl)
+  winThree.loadURL(appThreeUrl)
 
   winMain.webContents.openDevTools()
   // winOne.webContents.openDevTools()
   // winTwo.webContents.openDevTools()
+  winThree.webContents.openDevTools()
 
   winMain.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -191,6 +205,12 @@ const createWindow = () => {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     winTwo= null
+  })
+  winThree.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    winThree= null
   })
 }
 
@@ -217,6 +237,9 @@ app.on('activate', () => {
     createWindow()
   }
   if (winTwo === null) {
+    createWindow()
+  }
+  if (winThree === null) {
     createWindow()
   }
 })
