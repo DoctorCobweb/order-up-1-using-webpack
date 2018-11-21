@@ -15,43 +15,6 @@ import { Draggable } from 'react-beautiful-dnd'
 
 export default class NewOrdersListItem extends React.Component {
 
-  customizeButton = () => {
-    const location = this.props.order.location
-    if (location === 'RESTAURANT BAR') {
-      return (
-        <button 
-          id={ this.props.order._id }
-          className="button button--restaurant"
-          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
-        >
-          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
-        </button>
-      )
-    } else if (location === 'GAMING BAR') {
-      return (
-        <button
-          id={ this.props.order._id }
-          className="button button--gaming"
-          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
-        >
-          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
-        </button>
-      )
-    } else {
-      return (
-        <button
-          id={ this.props.order._id }
-          className="button button--bar"
-          onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
-        >
-          <div>{this.props.order.location} / T: {this.props.order.tableNumber} / C: {this.props.order.covers}</div>
-        </button>
-
-      )
-    }
-
-  }
-
   render() {
     return (
       <Draggable
@@ -62,15 +25,23 @@ export default class NewOrdersListItem extends React.Component {
           <div
             className="new-orders-list-item-dnd"
             {...provided.draggableProps}
+            {...provided.dragHandleProps}
             ref={provided.innerRef} 
           >
-            {
-              this.customizeButton()
-            }
             <div
-              {...provided.dragHandleProps}
-              className="drag-handle"
+              id={ this.props.order._id }
+              className={ this.props.order.location === 'RESTAURANT BAR'
+                ? 
+                "new-orders-list-item-dnd button--restaurant" 
+                : 
+                  this.props.order.location === 'GAMING BAR' ?
+                    "new-orders-list-item-dnd button--gaming"
+                    :
+                    "new-orders-list-item-dnd button--bar"
+            }
+              onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
             >
+              T: {this.props.order.tableNumber} C: {this.props.order.covers}
             </div>
           </div>
         )}

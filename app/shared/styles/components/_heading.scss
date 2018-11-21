@@ -1,3 +1,22 @@
 .heading {
   text-align: center;
 }
+
+.heading-restaurant {
+  background: $red;
+  color: $dark-grey;
+  padding: 0.4rem;
+  text-align: center;
+}
+
+.heading-bar {
+  background: $blue;
+  padding: 0.4rem;
+  text-align: center;
+}
+
+.heading-gaming {
+  background: $green;
+  padding: 0.4rem;
+  text-align: center;
+}

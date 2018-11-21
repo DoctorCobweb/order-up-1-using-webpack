@@ -46,12 +46,18 @@
 }
 
 .new-orders-list-item-dnd {
-  border: 0.2rem solid lightgrey;
+  align-items: center;
+  border: none;
   border-radius: $radius;
+  color: $off-white;
   display: flex;
+  height: 5rem;
   justify-content: center;
   margin-bottom: 1rem;
-  padding: 0.2rem;
+  min-height: 5rem;
+  min-width: 10rem;
+  padding: .5rem;
+  width: 31rem;
 }
 
 .drag-handle {

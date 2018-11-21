@@ -23,17 +23,18 @@
 
 .board-list-item-dnd {
   align-items: center;
-  border: 0.2rem solid lightgrey;
+  border: none;
   border-radius: 50%;
+  color: $off-white;
   display: flex;
-  flex-direction: rows;
+  flex-direction: row;
   height: 6rem;
   justify-content: center;
-  margin-right: 0.6rem;
-  min-height: 10rem;
-  min-width: 10rem;
+  margin: 0 0.5rem;
+  min-height: 15rem;
+  min-width: 15rem;
   padding: 0.2rem;
-  width: 6rem;
+  width: 5rem;
 }
 
 .board-list-a-container {

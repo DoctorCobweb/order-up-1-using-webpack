@@ -132,21 +132,21 @@ let winTwo
 
 const createWindow = () => {
   let winMain = new BrowserWindow({
-    width: 1230,
+    width: 1300,
     height: 1000,
     x: 0,
     y: 0 
   })
   let winOne = new BrowserWindow({
-    width: 1230,
+    width: 1300,
     height: 1000,
-    x: 1235,
+    x: 1305,
     y: 0
   })
   let winTwo = new BrowserWindow({
-    width: 1230,
+    width: 1200,
     height: 1000,
-    x: 2470,
+    x: 2610,
     y: 0
   })
 

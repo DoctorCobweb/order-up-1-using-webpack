@@ -727,7 +727,7 @@ const extractFromVariableContent = (variableContent) => {
 
     }
   } else {
-    extractedVariables.tableNumber = "NO TABLE NUMBER"
+    extractedVariables.tableNumber = "NONE"
   }
 
   // find customer name if present

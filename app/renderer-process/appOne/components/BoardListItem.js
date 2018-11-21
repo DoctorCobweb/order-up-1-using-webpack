@@ -7,7 +7,18 @@ const BoardListItem = props => (
     <div>
       <div className="board-list-a-item__heading">
         <h1 className="board-list-a-item__table-number">{ props.order.tableNumber }</h1>
-        <h1>{ props.order.location }</h1>
+        <h1
+          className={ props.order.location === "RESTAURANT BAR" ?
+            "heading-restaurant"
+            :
+            props.order.location === "GAMING BAR" ?
+            "heading-gaming"
+            :
+            "heading-bar"
+          }
+        >
+          { props.order.location }
+        </h1>
       </div>
       <div>Covers: { props.order.covers }</div>
       <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
@@ -22,7 +33,8 @@ const BoardListItem = props => (
 
 const Course = (props) => (
   <div>
-    <h3>
+    <h3
+    >
       { props.course.name }
 
       { 
