@@ -6,7 +6,7 @@ const BoardListItem = props => (
   <div className="board-list-b-item">
     <div>
       <div className="board-list-b-item__heading">
-        <h1 className="board-list-b-item__table-number">{ props.order.tableNumber }</h1>
+        <h1 className="board-list-b-item__table-number">{ `B${props.index}`}</h1>
         <h1
           className={ props.order.location === "RESTAURANT BAR" ?
             "heading-restaurant"
@@ -17,7 +17,7 @@ const BoardListItem = props => (
             "heading-bar"
           }
         >
-          { props.order.location }
+          { props.order.tableNumber}
         </h1>
       </div>
       <div>Covers: { props.order.covers }</div>

@@ -723,7 +723,6 @@ const extractFromVariableContent = (variableContent) => {
     if (splitTableNumber.length > 0 ) {
       extractedVariables.tableNumber = (splitTableNumber.slice(-1)[0]).split('*').join('')
       variableContent.splice(tableNumber.index, 1)
-
     }
   } else {
     extractedVariables.tableNumber = "NONE"

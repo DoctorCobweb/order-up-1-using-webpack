@@ -62,6 +62,26 @@
   margin-right: 2rem;
 }
 
+.board-list-a-item-header__container {
+  align-items: center;
+  background: $light-grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.board-list-a-item-header__table-number {
+  flex-grow: 2;
+  margin: 1rem;
+}
+
+.board-list-a-item-header__letter {
+  flex-grow: 1;
+  margin: 0.2rem;
+}
+
+
+
 .board-list-b-container {
   align-content: flex-start;
   display: flex;

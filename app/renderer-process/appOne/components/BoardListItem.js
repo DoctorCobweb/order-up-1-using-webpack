@@ -2,27 +2,26 @@ import React from 'react'
 import moment from 'moment'
 import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 
+
 const BoardListItem = props => (
   <div className="board-list-a-item">
-    <div>
-      <div className="board-list-a-item__heading">
-        <h1 className="board-list-a-item__table-number">{ props.order.tableNumber }</h1>
+    <div className="board-list-a-item-header__container">
+      <h1 className="board-list-a-item-header__letter">{ `A${props.index+1}`}</h1>
         <h1
           className={ props.order.location === "RESTAURANT BAR" ?
-            "heading-restaurant"
+            "heading-restaurant board-list-a-item-header__table-number"
             :
             props.order.location === "GAMING BAR" ?
-            "heading-gaming"
+            "heading-gaming board-list-a-item-header__table-number"
             :
-            "heading-bar"
+            "heading-bar board-list-a-item-header__table-number"
           }
         >
-          { props.order.location }
+          { props.order.tableNumber }
         </h1>
-      </div>
-      <div>Covers: { props.order.covers }</div>
-      <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
     </div>
+    <div>Covers: { props.order.covers }</div>
+    <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
     {
       sortCoursesInOrder(props.order).courses
         .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
