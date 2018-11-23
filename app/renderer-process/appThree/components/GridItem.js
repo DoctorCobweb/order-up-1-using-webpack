@@ -20,15 +20,17 @@ export const GridItem = (props) => (
         { props.order.tableNumber }
       </h1>
     </div>
-    {
-      sortCoursesInOrder(props.order).courses
-        .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
-    }
+    <div className="grid-item__course-container">
+      {
+        sortCoursesInOrder(props.order).courses
+          .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
+      }
+    </div>
   </div>
 )
 
 const Course = (props) => (
-  <div>
+  <div className="grid-item__course">
     <h4
     >
       { props.course.name }

@@ -185,7 +185,7 @@ const createWindow = () => {
 
   winMain.webContents.openDevTools()
   // winOne.webContents.openDevTools()
-  // winTwo.webContents.openDevTools()
+  winTwo.webContents.openDevTools()
   winThree.webContents.openDevTools()
 
   winMain.on('closed', () => {
