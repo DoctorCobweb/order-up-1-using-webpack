@@ -4,3 +4,9 @@
   margin: 0.5rem;
   padding: 0.4rem;
 }
+
+.order-meta-details__buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

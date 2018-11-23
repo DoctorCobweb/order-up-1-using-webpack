@@ -27,17 +27,30 @@ export class Order extends React.Component {
           <h2>Table: { this.props.order.tableNumber }</h2>
         </div>
         <div className="order-meta-details">
-          <button
-            onClick={ () => this.props.handleOrderCompletedClick(this.props.orderId) }
-            className="button"
-          >
-            Order Completed
-          </button>
-          { this.props.order.goOnMains ? 
-            <button className="button button--hold-course" onClick={ this.handleGoOnMainsClick }>Hold Mains</button>
-            :
-            <button className="button button--go-on-course" onClick={ this.handleGoOnMainsClick }>Go on Mains</button>
-          }
+          <div className="order-meta-details__buttons">
+            <button
+              onClick={ () => this.props.handleOrderCompletedClick(this.props.orderId) }
+              className="button"
+            >
+              Order Completed
+            </button>
+            { this.props.order.goOnMains
+                ? 
+                  <button
+                    className="button button--hold-course"
+                    onClick={ this.handleGoOnMainsClick }
+                  >
+                    Hold Mains
+                  </button>
+                :
+                  <button
+                    className="button button--go-on-course"
+                    onClick={ this.handleGoOnMainsClick }
+                  >
+                    Go on Mains
+                  </button>
+            }
+          </div>
           <div>Clerk: { this.props.order.clerk }</div>
           <div>
             Order sent @{ moment(this.props.order.orderSentAt).format("HH:mm") }

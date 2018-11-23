@@ -3,11 +3,14 @@
 }
 
 .modal {
+  align-items: center;
   background: $off-white;
   color: $dark-blue;
+  justify-content: center;
+  margin: 6rem 0;
   max-width: 60rem;
   outline: none;
-  padding: $l-size;
+  padding: 2rem;
   text-align: left;
 }
 
@@ -22,16 +25,11 @@
 }
 
 
-// .ReactModalPortal .ReactModal__Overlay {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   transition: opacity 200ms ease-in-out;
-//   padding-top: 20rem;
-// }
 
 .ReactModalPortal .ReactModal__Overlay--after-open {
   opacity: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .ReactModalPortal .ReactModal__Overlay--before-close {

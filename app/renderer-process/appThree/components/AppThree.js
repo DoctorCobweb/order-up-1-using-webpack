@@ -15,6 +15,8 @@ import Grid from './Grid'
 //    => need to do nothing
 // 2. only first 20 of them to display on grid
 
+const MAX_NUMBER_OF_GRID_ITEMS = 20
+
 
 export class AppThree extends Component {
 
@@ -25,10 +27,10 @@ export class AppThree extends Component {
 
     // only ever take the first 20 orders to display
     let cappedOrders
-    if (allNewOrders.length <= 20) {
+    if (allNewOrders.length <= MAX_NUMBER_OF_GRID_ITEMS) {
       cappedOrders = allNewOrders
     } else {
-      cappedOrders = allNewOrders.slice(0, 20)
+      cappedOrders = allNewOrders.slice(0, MAX_NUMBER_OF_GRID_ITEMS)
     }
 
 

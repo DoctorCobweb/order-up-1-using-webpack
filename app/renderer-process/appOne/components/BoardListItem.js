@@ -51,7 +51,7 @@ const Course = (props) => (
       }
       { 
         props.course.name === 'MAINS DINNER' &&  !props.order.goOnMains ?
-          ` (HOLD)`
+          ` ---------- HOLD ----------`
             :
           ''
       }
@@ -67,7 +67,7 @@ const Course = (props) => (
       }
       { 
         props.course.name === 'BAR MEALS' &&  !props.order.goOnMains ?
-          ` (HOLD)`
+          `----------`
             :
           ''
       }

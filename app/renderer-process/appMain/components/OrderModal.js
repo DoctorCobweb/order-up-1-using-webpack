@@ -14,9 +14,19 @@ const OrderModal = (props) => {
       contentLabel="Selected Order"
       // closeTimeoutMS={200}
       className="modal"
+      style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.75)'
+        }
+      }}
     >
       <div>
-        <button className="button" onClick={ props.handleClearSelectedOrder }>X</button>
+        <button
+          className="button button--header"
+          onClick={ props.handleClearSelectedOrder }
+        >
+          X
+        </button>
         { !!props.selectedOrderId
           && 
           <Order 
