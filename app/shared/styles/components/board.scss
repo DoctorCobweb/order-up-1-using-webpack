@@ -52,16 +52,6 @@
   padding: 2rem;
 }
 
-.board-list-a-item__heading {
-  align-content: flex-start;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.board-list-a-item__table-number {
-  margin-right: 2rem;
-}
-
 .board-list-a-item-header__container {
   align-items: center;
   background: $light-grey;
@@ -82,6 +72,25 @@
 
 
 
+
+
+.demo-fit-text {
+  font-size: .5vw;
+}
+
+.demo-course-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+
+
+
+
+
+
+
 .board-list-b-container {
   align-content: flex-start;
   display: flex;
@@ -96,12 +105,20 @@
   padding: 2rem;
 }
 
-.board-list-b-item__heading {
-  align-content: flex-start;
+.board-list-b-item-header__container {
+  align-items: center;
+  background: $light-grey;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.board-list-b-item__table-number {
-  margin-right: 2rem;
+.board-list-b-item-header__table-number {
+  flex-grow: 2;
+  margin: 1rem;
+}
+
+.board-list-b-item-header__letter {
+  flex-grow: 1;
+  margin: 0.2rem;
 }

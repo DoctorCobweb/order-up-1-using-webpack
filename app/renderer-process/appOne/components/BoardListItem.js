@@ -22,11 +22,12 @@ const BoardListItem = props => (
     </div>
     <div>Covers: { props.order.covers }</div>
     <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
-    {
-      sortCoursesInOrder(props.order).courses
-        .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
-    }
-    
+    <div className="demo-course-container">
+      {
+        sortCoursesInOrder(props.order).courses
+          .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
+      }
+    </div>
   </div>
 )
 
@@ -35,9 +36,12 @@ const Course = (props) => (
     <h3
     >
       { props.course.name }
-
       { 
-        props.course.name === 'MAINS DINNER' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'MAINS DINNER' &&
+          props.order.goOnMains && 
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''
@@ -49,7 +53,11 @@ const Course = (props) => (
           ''
       }
       { 
-        props.course.name === 'BAR MEALS' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'BAR MEALS' &&
+          props.order.goOnMains &&
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''

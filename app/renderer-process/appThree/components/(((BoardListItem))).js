@@ -36,7 +36,11 @@ const Course = (props) => (
     <h3>
       { props.course.name }
       { 
-        props.course.name === 'MAINS DINNER' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'MAINS DINNER' &&
+          props.order.goOnMains &&
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''
@@ -48,7 +52,11 @@ const Course = (props) => (
           ''
       }
       { 
-        props.course.name === 'BAR MEALS' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'BAR MEALS' &&
+          props.order.goOnMains &&
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''

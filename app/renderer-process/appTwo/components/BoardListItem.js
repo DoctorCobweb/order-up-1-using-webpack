@@ -4,30 +4,27 @@ import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 
 const BoardListItem = props => (
   <div className="board-list-b-item">
-    <div>
-      <div className="board-list-b-item__heading">
-        <h1 className="board-list-b-item__table-number">{ `B${props.index}`}</h1>
+    <div className="board-list-b-item-header__container">
+        <h1 className="board-list-b-item-header__letter">{ `B${props.index}`}</h1>
         <h1
           className={ props.order.location === "RESTAURANT BAR" ?
-            "heading-restaurant"
+            "heading-restaurant board-list-b-item-header__table-number"
             :
             props.order.location === "GAMING BAR" ?
-            "heading-gaming"
+            "heading-gaming board-list-b-item-header__table-number"
             :
-            "heading-bar"
+            "heading-bar board-list-b-item-header__table-number"
           }
         >
           { props.order.tableNumber}
         </h1>
-      </div>
-      <div>Covers: { props.order.covers }</div>
-      <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
     </div>
+    <div>Covers: { props.order.covers }</div>
+    <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
     {
       sortCoursesInOrder(props.order).courses
         .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
     }
-    
   </div>
 )
 
@@ -36,7 +33,11 @@ const Course = (props) => (
     <h3>
       { props.course.name }
       { 
-        props.course.name === 'MAINS DINNER' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'MAINS DINNER' &&
+          props.order.goOnMains &&
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''
@@ -48,7 +49,11 @@ const Course = (props) => (
           ''
       }
       { 
-        props.course.name === 'BAR MEALS' &&  props.order.goOnMains ?
+        (
+          props.course.name === 'BAR MEALS' &&
+          props.order.goOnMains &&
+          !!props.order.goOnMainsStartedAt
+        ) ?
           ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
             :
           ''
