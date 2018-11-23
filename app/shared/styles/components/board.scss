@@ -47,8 +47,11 @@
 
 .board-list-a-item {
   background: $off-white;
+  flex: 1 1 auto;
   font-size: 10px;
+  height: 95vh;
   margin-left: 2rem;
+  max-width: 20vw;
   padding: 2rem;
 }
 
@@ -58,38 +61,35 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.board-list-a-item-header__table-number {
-  flex-grow: 2;
-  margin: 1rem;
+  margin: 0 0.3rem 1.5rem 0.3rem;
 }
 
 .board-list-a-item-header__letter {
-  flex-grow: 1;
   margin: 0.2rem;
+  padding-left: 0.5rem;
 }
 
-
-
-
-
-.demo-fit-text {
-  font-size: .5vw;
+.board-list-a-item-header__table-number {
+  flex-grow: 1;
+  margin: 1rem;
 }
 
-.demo-course-container {
+.board-list-a-item-header__time {
+  padding-right: 0.5rem;
+}
+
+.board-list-a__course-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  height: 83vh;
 }
 
-
-
-
-
-
-
+.board-list-a__course {
+  background: $light-grey;
+  margin: .3rem;
+  padding: 0.7rem;
+}
 
 .board-list-b-container {
   align-content: flex-start;
@@ -100,8 +100,11 @@
 
 .board-list-b-item {
   background: $off-white;
+  flex: 1 1 auto;
   font-size: 10px;
+  height: 95vh;
   margin-left: 2rem;
+  max-width: 20vw;
   padding: 2rem;
 }
 
@@ -111,14 +114,32 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 0 0.3rem 1.5rem 0.3rem;
 }
 
 .board-list-b-item-header__table-number {
-  flex-grow: 2;
+  flex-grow: 1;
   margin: 1rem;
 }
 
 .board-list-b-item-header__letter {
-  flex-grow: 1;
   margin: 0.2rem;
+  padding-left: 0.5rem;
+}
+
+.board-list-b-item-header__time {
+  padding-right: 0.5rem;
+}
+
+.board-list-b__course-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 83vh;
+}
+
+.board-list-b__course {
+  background: $light-grey;
+  margin: .3rem;
+  padding: 0.7rem;
 }

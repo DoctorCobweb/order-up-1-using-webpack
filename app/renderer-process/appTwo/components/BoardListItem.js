@@ -18,18 +18,23 @@ const BoardListItem = props => (
         >
           { props.order.tableNumber}
         </h1>
+        <h1
+          className="board-list-b-item-header__time"
+        >
+          { moment(props.order.orderReceivedAt).format("HH:mm") }
+        </h1>
     </div>
-    <div>Covers: { props.order.covers }</div>
-    <div>Order Received: { moment(props.order.orderReceivedAt).format("HH:mm") }</div>
-    {
-      sortCoursesInOrder(props.order).courses
-        .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
-    }
+    <div className="board-list-b__course-container">
+      {
+        sortCoursesInOrder(props.order).courses
+          .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
+      }
+    </div>
   </div>
 )
 
 const Course = (props) => (
-  <div>
+  <div className="board-list-b__course">
     <h3>
       { props.course.name }
       { 
