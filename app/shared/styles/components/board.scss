@@ -9,16 +9,22 @@
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  height: 45rem;
-  margin-left: 1rem;
-  width: 90rem;
+  height: 45vh;
+  margin-bottom: 0.8rem;
+  margin-left: .7rem;
+  width: 80vw;
 }
 
 .board-list {
+  align-items: center;
   display: flex;
-  padding: 2rem;
-  min-height: 25rem;
+  height: 25rem;
   flex-grow: 1;
+  max-width: 80vw;
+  overflow-x: scroll;
+  padding-left: 0.5rem;
+  padding-bottom: 6rem;
+  width: 79.6vw;
 }
 
 .board-list-item-dnd {
@@ -28,14 +34,12 @@
   color: $off-white;
   display: flex;
   flex-direction: row;
-  font-size: 5rem;
-  height: 6rem;
+  font-size: 3rem;
+  height: 10rem;
   justify-content: center;
   margin: 0 0.5rem;
-  min-height: 15rem;
-  min-width: 15rem;
   padding: 0.2rem;
-  width: 5rem;
+  width: 10rem;
 }
 
 .board-list-a-container {

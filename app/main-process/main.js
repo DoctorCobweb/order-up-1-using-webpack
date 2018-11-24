@@ -133,27 +133,27 @@ let winThree
 
 const createWindow = () => {
   let winMain = new BrowserWindow({
-    width: 1300,
-    height: 1000,
-    x: 0,
+    width: 1280,
+    height: 800,
+    x: 3840,
     y: 0 
   })
   let winOne = new BrowserWindow({
-    width: 1300,
+    width: 1280,
     height: 1000,
-    x: 1305,
+    x: 0,
     y: 0
   })
   let winTwo = new BrowserWindow({
-    width: 1200,
+    width: 1280,
     height: 1000,
-    x: 2610,
+    x: 1281,
     y: 0
   })
   let winThree= new BrowserWindow({
-    width: 1915,
+    width: 1280,
     height: 1000,
-    x: 1925,
+    x: 2561,
     y: 0 
   })
 

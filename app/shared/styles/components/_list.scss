@@ -32,10 +32,9 @@
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  height: 90rem;
-  margin-left: 1rem;
-  min-height: 90rem;
-  width: 40rem;
+  height: 72.8rem;
+  min-height: 72.8rem;
+  width: 20vw;
 }
 
 .new-orders-list {
@@ -51,13 +50,11 @@
   border-radius: $radius;
   color: $off-white;
   display: flex;
-  height: 5rem;
   justify-content: center;
-  margin-bottom: 1rem;
-  min-height: 5rem;
+  margin-bottom: 0.4rem;
+  min-height: 4rem;
   min-width: 10rem;
-  padding: .5rem;
-  width: 31rem;
+  width: 19rem;
 }
 
 .drag-handle {

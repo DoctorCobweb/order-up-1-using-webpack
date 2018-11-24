@@ -20,7 +20,7 @@ export class Header extends React.Component {
   }
 
   render = () => (
-    <header>
+    <header className="header__container">
       <div>
         <button className="button button--header" onClick={ this.handleHomeButtonClick }>Home</button>
         <button className="button button--header" onClick={ this.handleCompletedButtonClick }>Completed Orders</button>

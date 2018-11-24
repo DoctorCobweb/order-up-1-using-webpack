@@ -20,7 +20,7 @@ const OrderModal = (props) => {
         }
       }}
     >
-      <div>
+      <div className="order-modal__container">
         <button
           className="button button--header"
           onClick={ props.handleClearSelectedOrder }
