@@ -14,6 +14,11 @@ const AddOrderModal = (props) => {
       contentLabel="Add New Order"
       // closeTimeoutMS={200}
       className="modal"
+      style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.75)'
+        }
+      }}
     >
       <div>
         <button className="button" onClick={ props.handleCancelAddNewOrder }>X</button>
