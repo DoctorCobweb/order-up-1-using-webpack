@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { startAddOrderBackToNewOrdersList } from '../../../shared/actions/lists'
 import Header from './Header'
+import CompletedOrderExpanded from './CompletedOrderExpanded'
 
 export class Completed extends React.Component {
 
@@ -14,8 +16,7 @@ export class Completed extends React.Component {
     this.setState({ searchTerm: e.target.value })
   }
 
-  handleRowClick = (orderId) => {
-    console.log(`handleRowClick ${orderId}`)
+  handleOrderClick = (orderId) => {
 
     const currentExpandedRows = this.state.expandedRows
     const isRowCurrentlyExpanded = currentExpandedRows.includes(orderId)
@@ -27,32 +28,25 @@ export class Completed extends React.Component {
     this.setState({ expandedRows: newExpandedRows })
   }
 
-  componentDidMount = () => {
-    console.log('hello from Completed componentDidMount')
+  handleAddOrderBackToNewOrdersClick = (orderId) => {
+    this.props.startAddOrderBackToNewOrdersList(orderId)
   }
 
   renderOrder = (order) => {
-    console.log('what is this?')
-    console.log(this)
-    console.log(this.state)
-    console.log(typeof this.state.expandedRows)
     if (this.state.expandedRows.includes(order.id)) {
       return (
-        <div
+        <CompletedOrderExpanded
           key={ order.id }
-          onClick={ () => this.handleRowClick(order.id) }
-        >
-          <h3>Expanded row</h3>
-          <div>
-            { order.content.location } { order.content.tableNumber } { order.content.clerk }
-          </div>
-        </div>
+          order={ order }
+          handleOrderClick={ this.handleOrderClick }
+          handleAddOrderBackToNewOrdersClick = { this.handleAddOrderBackToNewOrdersClick }
+        />
       )
     } else {
       return (
         <div
           key={ order.id }
-          onClick={ () => this.handleRowClick(order.id) }
+          onClick={ () => this.handleOrderClick(order.id) }
         >
           { order.content.location } { order.content.tableNumber }
         </div>
@@ -91,6 +85,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  startAddOrderBackToNewOrdersList: (orderId) => dispatch(startAddOrderBackToNewOrdersList(orderId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Completed)

@@ -184,9 +184,10 @@ const createTheListsInMongo = () => {
       //     orderIds: [],
       //   },
       // }
-      console.log('listsData')
-      console.log(listsData)
       return listsData
+    })
+    .catch(err => {
+      throw err
     })
 }
 
@@ -198,8 +199,6 @@ const getTheListsInMongo = () => {
     .populate(orderPopulation)
     .exec()
     .then(orders => {
-      // console.log('here are the false completed orders')
-      // console.log(orders)
       ordersForListData = _.reduce(orders, (acc, order) => {
         acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
@@ -247,16 +246,12 @@ const getTheListsInMongo = () => {
       //     orderIds: [],
       //   },
       // }
-      // console.log('listsData')
-      // console.log(listsData)
 
       return Order.find({ completed: true })
         .populate(orderPopulation)
         .exec()
     })
     .then(completedOrders => {
-      // console.log('here are the completed orders')
-      // console.log(completedOrders)
       completedOrdersForListData = _.reduce(completedOrders, (acc, order) => {
         acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
@@ -264,15 +259,15 @@ const getTheListsInMongo = () => {
 
       listsData.completedOrders = completedOrdersForListData
 
-      console.log('listsData')
-      console.log(listsData)
 
       return listsData
+    })
+    .catch(err => {
+      throw err
     })
 }
 
 export const startSetupLists = () => {
-  console.log('heeloofrom startSetupLists')
   return (dispatch, getState) => {
     List.countDocuments().exec()
       .then(count => {
@@ -284,17 +279,13 @@ export const startSetupLists = () => {
         // 4. completed-orders
         if (count === 4) {
           // already have the lists setup
-          console.log('already have lists setup. get them all from mongodb & setup data for lists-state')
           return getTheListsInMongo()
         } else {
           // no lists present. we need to set them up
-          console.log('no lists setup in mongo. create them & setup data for lists-state')
           return createTheListsInMongo()
         }
       })
       .then(listsData => {
-        console.log('calling dispatch setupLists with listsData:')
-        console.log(listsData)
         dispatch(setupLists(listsData))
       })
       .catch(err => {
@@ -312,8 +303,6 @@ export const updateOrderIdsInLists = (data) => ({
 
 export const startUpdateOrderIdsInLists = (dndData) => {
   return (dispatch, getState) => {
-    console.log('startUpdateLists, dndData is:')
-    console.log(dndData)
 
     return List.findOneAndUpdate(
       { nameId: 'new-orders'},
@@ -336,6 +325,9 @@ export const startUpdateOrderIdsInLists = (dndData) => {
     .then(list => {
       dispatch(updateOrderIdsInLists(dndData))
     })
+    .catch(err => {
+      throw err
+    })
   }
 }
 
@@ -353,14 +345,10 @@ export const startAddOrderToLists = (orderId) => {
       .populate(orderPopulation)
       .exec()
       .then(order => {
-        // console.log('startAddOrderToLists(). order is')
-        // console.log(order)
         newOrder = order.toJSON()
         return List.find({ nameId: 'new-orders'}).exec()
       })
       .then(list => {
-        console.log('list is')
-        console.log(list)
         const [ newOrdersList ] = list
 
         newOrdersList.orderIds.push(newOrder._id)
@@ -419,12 +407,67 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
       .then(list => {
         dispatch(setOrderAsCompleted(orderId, listNameIdToDeleteOrderIdFrom))
       })
+      .catch(err => {
+        throw err
+      })
   }
 }
 
+export const addOrderBackToNewOrdersList = (orderId) => ({
+  type: 'ADD_ORDER_BACK_TO_NEW_ORDERS_LIST',
+  payload: { orderId }
+})
+
+export const startAddOrderBackToNewOrdersList = (orderId) => {
+  return (dispatch, getState) => {
+    return Order.findById(orderId)
+      .exec()
+      .then(order => {
+        // update the order
+        order.completed = false
+        order.list = 'new-orders'
+
+        return order.save()
+      })
+      .then(order => {
+        // update the completed-orders orderIds array
+        return List.findOne({ nameId: 'completed-orders' }).exec()
+      })
+      .then(completedList => {
+        // remove the orderId from completedList's orderIds array
+        const orderIdsClone = _.cloneDeep(completedList.orderIds)
+        const orderIndex = orderIdsClone.indexOf(orderId)
+        orderIdsClone.splice(orderIndex, 1)
+        completedList.orderIds = orderIdsClone
+
+        return completedList.save()
+      })
+      .then(completedList => {
+        // update the new-orders orderIds array
+        return List.findOne({ nameId: 'new-orders' }).exec()
+      })
+      .then(newOrdersList => {
+        // take the orderId on at the end of orderIds
+        // => will show up at the bottom of NEW ORDERS list in UI
+        newOrdersList.orderIds.push(orderId)
+        return newOrdersList.save()
+      })
+      .then(newOrdersList => {
+        // dispatch to redux now
+
+        dispatch(addOrderBackToNewOrdersList(orderId))
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+
+
+
 ////////////////////////////////////////////////////////////
 //
-// FROM order.js actions.....
+// ORDER-ORIENTED ACTIONS: FROM order.js actions.....
 //
 ////////////////////////////////////////////////////////////
 
@@ -463,8 +506,6 @@ export const startAddNewInfo = ({
     })
     return infoLine.save()
     .then(infoLine => {
-      console.log('created and saved a new InfoLine document')
-      console.log(infoLine.toJSON())
 
       newInfoLine = infoLine.toJSON()
 
@@ -477,8 +518,6 @@ export const startAddNewInfo = ({
       return info.save()
     })
     .then(info => {
-      console.log('created and saved a new Info document')
-      console.log(info.toJSON())
       // and also append the new info doc _id to the corresponding
       // item infos array
       newInfo = info.toJSON()
@@ -486,8 +525,6 @@ export const startAddNewInfo = ({
       return Item.findById(itemId).exec()
     })
     .then(item => {
-      console.log('found item doc. appending infos array with new info _id')
-      console.log(item.toJSON())
 
       // update the infos array
       item.infos.push(newInfo._id)
@@ -495,13 +532,8 @@ export const startAddNewInfo = ({
       return item.save()
     })
     .then(item => {
-      console.log('updated the new item document')
-      console.log(item.toJSON())
-      console.log('newInfo is')
-      console.log(newInfo)
 
       // now call dispatch
-      console.log('calling dispatch(addNewInfo())')
       dispatch(addNewInfo(
         courseId,
         orderId,
@@ -544,9 +576,6 @@ export const startUpdateItemQuantity = ({
     return Item.findById(itemId)
       .exec()
       .then(item => {
-        // console.log('updated Item document is:')
-        // console.log(item)
-        // console.log('updated item quantity. calling updateItemQuantity action')
         item.quantity += amount
         if (item.quantity <= 0) {
           // item is completed
@@ -609,8 +638,6 @@ export const startUpdateItemAndInfoQuantity = ({
   return (dispatch, getState) => {
     return Item.findById(itemId).exec()
       .then(item => {
-        console.log('updated Item document is:')
-        console.log(item)
 
         item.quantity += amount
         if (item.quantity <= 0) {
@@ -636,9 +663,6 @@ export const startUpdateItemAndInfoQuantity = ({
         return info.save()
       })
       .then(info => {
-        console.log('updated Info document is:')
-        console.log(info)
-        console.log('calling updateItemAndInfoQuantity action')
         dispatch(
           updateItemAndInfoQuantity(
             orderId,
@@ -697,9 +721,6 @@ export const startUpdateInfoLine = ({
       return infoLine.save()
     })
     .then(infoLine => {
-      console.log('updated InfoLine document is:')
-      console.log(infoLine)
-      console.log('calling updateInfoLine action')
       dispatch(updateInfoLine(
         orderId,
         courseId,
@@ -757,22 +778,15 @@ export const startAddNewInfoLine = ({
     })
     return infoLine.save()
     .then(infoLine => {
-      console.log('created and saved a new InfoLine document')
-      console.log(infoLine)
       newInfoLineId = infoLine._id
       return Info.findById(infoId).exec()
     })
     .then(info => {
-      console.log('appending the new InfoLine doc which has _id')
-      console.log(newInfoLineId)
-      console.log('to info')
       info.infoLines.push(newInfoLineId)
 
       return info.save()
     })
     .then(info => {
-      console.log('saved the info with a new InfoLine attached:')
-      console.log(info)
       dispatch(addNewInfoLine(
         orderId,
         courseId,
@@ -813,31 +827,24 @@ export const startDeleteAllOrders = () => {
   return (dispatch, getState) => {
     return InfoLine.deleteMany({}).exec()
     .then(() => {
-      console.log('deleted all docs in InfoLine collection')
       return Info.deleteMany({}).exec()
     })
     .then(() => {
-      console.log('deleted all docs in Info collection')
       return Item.deleteMany({}).exec()
     })
     .then(() => {
-      console.log('deleted all docs in Item collection')
       return Course.deleteMany({}).exec()
     })
     .then(() => {
-      console.log('deleted all docs in Course collection')
       return Order.deleteMany({}).exec()
     })
     .then(() => {
-      console.log('deleted all docs in Order collection')
       return List.deleteMany({}).exec()
     })
     .then(() => {
       return createTheListsInMongo()
     })
     .then(()=> {
-      console.log('deleted all docs in List collection')
-      console.log('calling dispatch to reset state.lists')
 
       dispatch(deleteAllOrders())
     })
@@ -879,8 +886,6 @@ export const startToggleGoOnMains = ({ orderId } = {}) => {
       return order.save()
     })
     .then(order => {
-      console.log('updated order goOnMains')
-      console.log(order.toJSON())
       dispatch(toggleGoOnMains(orderId, order.goOnMains, order.goOnMainsStartedAt))
     })
     .catch(err => {

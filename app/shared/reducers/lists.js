@@ -2,8 +2,6 @@ import _ from 'lodash'
 import stringify from 'json-stringify-pretty-compact'
 import moment from 'moment'
 
-// TODO: different default state data structure?
-// ... think so. look below at initialData structure
 const listsReducerDefaultState = {
   orders: {},
   completedOrders: {},
@@ -111,6 +109,26 @@ export default (state=listsReducerDefaultState, action) => {
       // console.log(stateCloneForCompletedOrder)
 
       return stateCloneForCompletedOrder
+    case 'ADD_ORDER_BACK_TO_NEW_ORDERS_LIST':
+
+
+      // TODO: FINISH !!!
+      const stateCloneForAddOrderBackToNewOrdersList = _.cloneDeep(state)
+
+      // in state.orders, an order data strucure is like:
+      // <order _id>: { id: <order _id>, content: <order>}
+      const orderCloneForAddBackToNewOrdersList = 
+        stateCloneForAddOrderBackToNewOrdersList.orders[action.payload.orderId]
+
+      // update the completed field 
+      orderCloneForAddBackToNewOrdersList.content.completed = false
+      orderCloneForAddBackToNewOrdersList.content.list = 'new-orders' 
+
+      // put the clone completed order over to state.completedOrders object
+      stateCloneForAddOrderBackToNewOrdersList.orders[action.payload.orderId ] = {
+        id: action.payload.orderId,
+        content: completedOrderClone.content, 
+      }
       
 
 
