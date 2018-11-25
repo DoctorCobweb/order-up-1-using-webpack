@@ -26,6 +26,8 @@
       "dist/",
       "renderer-process/appMain/index.html",
       "renderer-process/appOne/index.html",
+      "renderer-process/appTwo/index.html",
+      "renderer-process/appThree/index.html",
       "node_modules/",
       "main.prod.js",
       "main.prod.js.map",

@@ -18,8 +18,6 @@ import webpack from 'webpack'
 // NOTE: for this to work, the libraryTarget: 'commonjs2' entry in 'output' was necessary. see below
 import { dependencies as externalDeps } from './app/package'
 
-const APP_MAIN = 'appMain'
-const APP_ONE = 'appOne'
 let entries = {
   appMain: [
     './app/renderer-process/appMain/index.js' // the acutal app's entry point
@@ -27,7 +25,15 @@ let entries = {
   appOne: [
     './app/renderer-process/appOne/index.js' // the acutal app's entry point
 
-  ]
+  ],
+  appTwo: [
+    './app/renderer-process/appTwo/index.js' // the acutal app's entry point
+
+  ],
+  appThree: [
+    './app/renderer-process/appThree/index.js' // the acutal app's entry point
+
+  ],
 }
 
 module.exports = {
