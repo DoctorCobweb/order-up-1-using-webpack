@@ -6,15 +6,58 @@ import Header from './Header'
 export class Completed extends React.Component {
 
   state = {
-    searchTerm: ''
+    searchTerm: '',
+    expandedRows: [],
   }
 
   handleSearchTermChange = (e) => {
     this.setState({ searchTerm: e.target.value })
   }
 
+  handleRowClick = (orderId) => {
+    console.log(`handleRowClick ${orderId}`)
+
+    const currentExpandedRows = this.state.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(orderId)
+
+    const newExpandedRows = isRowCurrentlyExpanded ?
+      currentExpandedRows.filter(id => id !== orderId) :
+      currentExpandedRows.concat(orderId)
+
+    this.setState({ expandedRows: newExpandedRows })
+  }
+
   componentDidMount = () => {
     console.log('hello from Completed componentDidMount')
+  }
+
+  renderOrder = (order) => {
+    console.log('what is this?')
+    console.log(this)
+    console.log(this.state)
+    console.log(typeof this.state.expandedRows)
+    if (this.state.expandedRows.includes(order.id)) {
+      return (
+        <div
+          key={ order.id }
+          onClick={ () => this.handleRowClick(order.id) }
+        >
+          <h3>Expanded row</h3>
+          <div>
+            { order.content.location } { order.content.tableNumber } { order.content.clerk }
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div
+          key={ order.id }
+          onClick={ () => this.handleRowClick(order.id) }
+        >
+          { order.content.location } { order.content.tableNumber }
+        </div>
+      )
+    }
   }
 
   render = () => (
@@ -27,16 +70,16 @@ export class Completed extends React.Component {
         onChange={ this.handleSearchTermChange }
       />
       {
-        _.values(this.props.completedOrders)
+        _.values(this.props.orders)
           .filter(
-            completedOrder =>
-              `${completedOrder.content.location} ${completedOrder.content.tableNumber}`
+            order =>
+              `${order.content.location} ${order.content.tableNumber}`
                 .toUpperCase()
                 .indexOf(this.state.searchTerm.toUpperCase()) >= 0
           )
           .map(
-            (completedOrder, index) =>
-              <p key={ completedOrder.id }>{ completedOrder.content.location } { completedOrder.content.tableNumber }</p>
+            (order, index) =>
+              this.renderOrder(order)
           )
       }
     </div>
@@ -44,7 +87,7 @@ export class Completed extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  completedOrders : state.lists.completedOrders,
+  orders : state.lists.completedOrders,
 })
 
 const mapDispatchToProps = (dispatch) => ({

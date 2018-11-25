@@ -392,6 +392,7 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
       .exec()
       .then(order => {
         order.completed = true
+        order.list = 'completed-orders'
         return order.save()
       })
       .then(order => {

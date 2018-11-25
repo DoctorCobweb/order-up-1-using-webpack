@@ -83,6 +83,7 @@ export default (state=listsReducerDefaultState, action) => {
 
       // update the completed field 
       completedOrderClone.content.completed = true
+      completedOrderClone.content.list = 'completed-orders' 
 
       // put the clone completed order over to state.completedOrders object
       stateCloneForCompletedOrder.completedOrders[action.payload.orderId ] = {

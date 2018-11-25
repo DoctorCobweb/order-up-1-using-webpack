@@ -47,9 +47,7 @@ export class App extends React.Component {
     this.setState(() => ({
       selectedOrderId: undefined,
     }), () => {
-      this.props.startSetOrderAsCompleted({
-        orderId
-      })
+      this.props.startSetOrderAsCompleted({ orderId })
     })
   }
 

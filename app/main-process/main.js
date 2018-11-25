@@ -185,8 +185,8 @@ const createWindow = () => {
 
   winMain.webContents.openDevTools()
   // winOne.webContents.openDevTools()
-  winTwo.webContents.openDevTools()
-  winThree.webContents.openDevTools()
+  // winTwo.webContents.openDevTools()
+  // winThree.webContents.openDevTools()
 
   winMain.on('closed', () => {
     // Dereference the window object, usually you would store windows
