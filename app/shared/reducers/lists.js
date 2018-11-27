@@ -118,19 +118,44 @@ export default (state=listsReducerDefaultState, action) => {
       // in state.orders, an order data strucure is like:
       // <order _id>: { id: <order _id>, content: <order>}
       const orderCloneForAddBackToNewOrdersList = 
-        stateCloneForAddOrderBackToNewOrdersList.orders[action.payload.orderId]
+        stateCloneForAddOrderBackToNewOrdersList.completedOrders[action.payload.orderId]
+      
+      console.log('state.completedOrders')
+      console.log(stateCloneForAddOrderBackToNewOrdersList.completedOrders)
+      console.log('orderCloneForAddBackToNewOrdersList')
+      console.log(orderCloneForAddBackToNewOrdersList)
 
       // update the completed field 
       orderCloneForAddBackToNewOrdersList.content.completed = false
       orderCloneForAddBackToNewOrdersList.content.list = 'new-orders' 
 
-      // put the clone completed order over to state.completedOrders object
+      // put the order back into the 'orders' dict
       stateCloneForAddOrderBackToNewOrdersList.orders[action.payload.orderId ] = {
         id: action.payload.orderId,
-        content: completedOrderClone.content, 
+        content: orderCloneForAddBackToNewOrdersList.content, 
       }
-      
 
+      // put the orderId into the 'new-orders' orderIds array
+      stateCloneForAddOrderBackToNewOrdersList
+        .lists['new-orders']
+        .orderIds.push(action.payload.orderId)
+
+      // delete the order from state.completedOrders dict
+      delete stateCloneForAddOrderBackToNewOrdersList.completedOrders[ action.payload.orderId ]
+
+      // delete the orderId from 'completed-orders' list
+      const deleteIdxCompletedOrder = stateCloneForAddOrderBackToNewOrdersList
+        .lists['completed-orders'].orderIds
+        .indexOf(action.payload.orderId)
+
+      stateCloneForAddOrderBackToNewOrdersList
+        .lists['completed-orders'].orderIds
+        .splice(deleteIdxCompletedOrder, 1)
+
+      console.log('stateCloneForAddOrderBackToNewOrdersList')
+      console.log(stateCloneForAddOrderBackToNewOrdersList)
+
+    return stateCloneForAddOrderBackToNewOrdersList
 
 ////////////////////////////////////////////////////////////
 //
