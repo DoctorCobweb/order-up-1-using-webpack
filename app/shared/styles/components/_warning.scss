@@ -1,0 +1,15 @@
+.warning {
+  color: $red;
+}
+
+.warning-modal__container {
+  border-radius: $radius;
+  padding: 1rem;
+}
+
+.warning-modal__button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+}

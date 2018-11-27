@@ -103,4 +103,3 @@ const mapDispatchToProps = (dispatch) => ({
 const CompletedConnected = connect(mapStateToProps, mapDispatchToProps)(Completed)
 
 export default hot(module)(CompletedConnected)
-// export default CompletedConnected
