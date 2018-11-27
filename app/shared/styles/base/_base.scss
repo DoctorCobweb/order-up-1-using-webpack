@@ -28,6 +28,10 @@ button:disabled {
   cursor: default;
 }
 
+input:focus {
+  outline: none;
+}
+
 .is-active {
   font-weight: bold;
 }

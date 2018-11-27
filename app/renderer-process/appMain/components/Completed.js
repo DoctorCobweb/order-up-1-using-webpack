@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { hot } from 'react-hot-loader'
 import _ from 'lodash'
 import { history } from '../../../shared/routers/AppRouter'
 import { startAddOrderBackToNewOrdersList } from '../../../shared/actions/lists'
 import Header from './Header'
 import CompletedOrderExpanded from './CompletedOrderExpanded'
+import CompletedOrder from './CompletedOrder'
 
 export class Completed extends React.Component {
 
@@ -42,19 +44,18 @@ export class Completed extends React.Component {
       return (
         <CompletedOrderExpanded
           key={ order.id }
-          order={ order }
+          order={ order.content }
           handleOrderClick={ this.handleOrderClick }
           handleAddOrderBackToNewOrdersClick = { this.handleAddOrderBackToNewOrdersClick }
         />
       )
     } else {
       return (
-        <div
-          key={ order.id }
-          onClick={ () => this.handleOrderClick(order.id) }
-        >
-          { order.content.location } { order.content.tableNumber }
-        </div>
+        <CompletedOrder
+          key={ order.id } 
+          order={ order }
+          handleOrderClick={ this.handleOrderClick }
+        />
       )
     }
   }
@@ -62,25 +63,31 @@ export class Completed extends React.Component {
   render = () => (
     <div>
       <Header />
-      <input
-        type="text"
-        placeholder="Search"
-        value={ this.state.searchTerm }
-        onChange={ this.handleSearchTermChange }
-      />
-      {
-        _.values(this.props.orders)
-          .filter(
-            order =>
-              `${order.content.location} ${order.content.tableNumber}`
-                .toUpperCase()
-                .indexOf(this.state.searchTerm.toUpperCase()) >= 0
-          )
-          .map(
-            (order, index) =>
-              this.renderOrder(order)
-          )
-      }
+      <div className="completed-content__container">
+        <h1 className="heading">Completed Orders</h1>
+        <input
+          className="completed-search-input"
+          type="text"
+          placeholder="Search"
+          value={ this.state.searchTerm }
+          onChange={ this.handleSearchTermChange }
+        />
+        <div className="completed-content__container">
+          {
+            _.values(this.props.orders)
+              .filter(
+                order =>
+                  `${order.content.location} ${order.content.tableNumber}`
+                    .toUpperCase()
+                    .indexOf(this.state.searchTerm.toUpperCase()) >= 0
+              )
+              .map(
+                (order, index) =>
+                  this.renderOrder(order)
+              )
+          }
+        </div>
+      </div>
     </div>
   )
 }
@@ -93,4 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   startAddOrderBackToNewOrdersList: (orderId, cb) => dispatch(startAddOrderBackToNewOrdersList(orderId, cb))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Completed)
+const CompletedConnected = connect(mapStateToProps, mapDispatchToProps)(Completed)
+
+export default hot(module)(CompletedConnected)
+// export default CompletedConnected

@@ -31,12 +31,12 @@ export default class BoardListItem extends React.Component {
               id={ this.props.order._id }
               className={ this.props.order.location === 'RESTAURANT BAR'
                 ? 
-                "board-list-item-dnd button--restaurant" 
+                "board-list-item-dnd button--red" 
                 : 
                   this.props.order.location === 'GAMING BAR' ?
-                    "board-list-item-dnd button--gaming"
+                    "board-list-item-dnd button--green"
                     :
-                    "board-list-item-dnd button--bar"
+                    "board-list-item-dnd button--blue"
             }
               onClick={() => { this.props.handleOrderClick(this.props.order._id) }}
             >

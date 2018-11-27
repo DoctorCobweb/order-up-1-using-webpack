@@ -37,13 +37,13 @@ export default class NewOrdersListItem extends React.Component {
                 :
                   this.props.order.location === 'RESTAURANT BAR'
                   ? 
-                  "new-orders-list-item-dnd button--restaurant" 
+                  "new-orders-list-item-dnd button--red" 
                   : 
                     this.props.order.location === 'GAMING BAR'
                     ?
-                    "new-orders-list-item-dnd button--gaming"
+                    "new-orders-list-item-dnd button--green"
                     :
-                    "new-orders-list-item-dnd button--bar"
+                    "new-orders-list-item-dnd button--blue"
             }
               onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }
             >
