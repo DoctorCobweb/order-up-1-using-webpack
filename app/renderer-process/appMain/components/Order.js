@@ -59,7 +59,7 @@ export class Order extends React.Component {
             Order received @{ moment(this.props.order.orderReceivedAt).format("HH:mm") }
           </div>
           {
-            (this.props.order.goOnMains) ?
+            (this.props.order.goOnMains && !!this.props.order.goOnMainsStartedAt) ?
             <div>Mains called away @{ moment(this.props.order.goOnMainsStatedAt).format("HH:mm")} </div>
             :
             ""

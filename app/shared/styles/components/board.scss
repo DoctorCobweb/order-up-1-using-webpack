@@ -54,8 +54,9 @@
   flex: 1 1 auto;
   font-size: 10px;
   height: 95vh;
-  margin-left: 2rem;
-  max-width: 20vw;
+  margin-left: 1rem;
+  max-width: 8vw;
+  min-width: 8vw;
   padding: 2rem;
 }
 
@@ -90,6 +91,7 @@
 }
 
 .board-list-a__course {
+  background: $off-white;
   border: 1px solid $grey;
   font-size: $font-size-docket;
   margin: .3rem;
@@ -108,8 +110,9 @@
   flex: 1 1 auto;
   font-size: 10px;
   height: 95vh;
-  margin-left: 2rem;
-  max-width: 20vw;
+  margin-left: 1rem;
+  max-width: 8vw;
+  min-width: 8vw;
   padding: 2rem;
 }
 
@@ -144,8 +147,21 @@
 }
 
 .board-list-b__course {
+  background: $off-white;
   border: 1px solid $grey;
   font-size: $font-size-docket;
   margin: .3rem;
   padding: 0.7rem;
+}
+
+.border-red {
+  border: 0.2rem solid $red;
+}
+
+.border-blue {
+  border: 0.2rem solid $blue;
+}
+
+.border-green {
+  border: 0.2rem solid $green;
 }

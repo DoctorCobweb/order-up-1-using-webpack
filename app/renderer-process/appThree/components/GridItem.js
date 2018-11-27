@@ -6,7 +6,7 @@ import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 export const GridItem = (props) => (
   <div className={ `grid-item grid-item-${ props.index }` }>
     <div className="grid-item-header__container">
-      <h1 className="grid-item-header__grid_letter">{ `C${props.index}`}</h1>
+      <h1 className="grid-item-header__grid_letter">{ `C${props.index + 1}`}</h1>
       <h1
         className={ props.order.location === "RESTAURANT BAR" ?
           "heading-restaurant grid-item-header__table-number"
@@ -30,7 +30,16 @@ export const GridItem = (props) => (
 )
 
 const Course = (props) => (
-  <div className="grid-item__course">
+  <div
+    className={ props.order.location === "RESTAURANT BAR" ?
+      "grid-item__course border-red"
+      :
+      props.order.location === "GAMING BAR" ?
+      "grid-item__course border-green"
+      :
+      "grid-item__course border-blue"
+    }
+  >
     <h4
     >
       { props.course.name }

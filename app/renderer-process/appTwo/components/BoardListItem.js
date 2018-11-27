@@ -5,7 +5,7 @@ import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 const BoardListItem = props => (
   <div className="board-list-b-item">
     <div className="board-list-b-item-header__container">
-        <h1 className="board-list-b-item-header__letter">{ `B${props.index}`}</h1>
+        <h1 className="board-list-b-item-header__letter">{ `B${props.index + 1}`}</h1>
         <h1
           className={ props.order.location === "RESTAURANT BAR" ?
             "heading-restaurant board-list-b-item-header__table-number"
@@ -34,7 +34,16 @@ const BoardListItem = props => (
 )
 
 const Course = (props) => (
-  <div className="board-list-b__course">
+  <div
+    className={ props.order.location === "RESTAURANT BAR" ?
+      "board-list-b__course border-red"
+      :
+      props.order.location === "GAMING BAR" ?
+      "board-list-b__course border-green"
+      :
+      "board-list-b__course border-blue"
+    }
+  >
     <h3>
       { props.course.name }
       { 

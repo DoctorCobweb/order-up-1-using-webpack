@@ -28,14 +28,29 @@ const BoardListItem = props => (
     <div className="board-list-a__course-container">
       {
         sortCoursesInOrder(props.order).courses
-          .map(course => <Course key={ course._id } course={ course } order={ props.order }/>)
+          .map(course => 
+            <Course
+              key={ course._id }
+              course={ course }
+              order={ props.order }
+            />
+          )
       }
     </div>
   </div>
 )
 
 const Course = (props) => (
-  <div className="board-list-a__course">
+  <div
+    className={ props.order.location === "RESTAURANT BAR" ?
+      "board-list-a__course border-red"
+      :
+      props.order.location === "GAMING BAR" ?
+      "board-list-a__course border-green"
+      :
+      "board-list-a__course border-blue"
+    }
+  >
     <h3
     >
       { props.course.name }

@@ -418,7 +418,7 @@ export const addOrderBackToNewOrdersList = (orderId) => ({
   payload: { orderId }
 })
 
-export const startAddOrderBackToNewOrdersList = (orderId) => {
+export const startAddOrderBackToNewOrdersList = (orderId, cb) => {
   return (dispatch, getState) => {
     return Order.findById(orderId)
       .exec()
@@ -455,7 +455,8 @@ export const startAddOrderBackToNewOrdersList = (orderId) => {
       .then(newOrdersList => {
         // dispatch to redux now
 
-        dispatch(addOrderBackToNewOrdersList(orderId))
+        dispatch(addOrderBackToNewOrdersList(orderId, cb))
+        cb()
       })
       .catch(err => {
         throw err

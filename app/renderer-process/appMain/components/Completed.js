@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { history } from '../../../shared/routers/AppRouter'
 import { startAddOrderBackToNewOrdersList } from '../../../shared/actions/lists'
 import Header from './Header'
 import CompletedOrderExpanded from './CompletedOrderExpanded'
@@ -29,7 +30,11 @@ export class Completed extends React.Component {
   }
 
   handleAddOrderBackToNewOrdersClick = (orderId) => {
-    this.props.startAddOrderBackToNewOrdersList(orderId)
+    this.props.startAddOrderBackToNewOrdersList(orderId, () => {
+      alert('Success. Order has now been moved to the bottom of the New Orders list.')
+      history.push('/home')
+    })
+
   }
 
   renderOrder = (order) => {
@@ -85,7 +90,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  startAddOrderBackToNewOrdersList: (orderId) => dispatch(startAddOrderBackToNewOrdersList(orderId))
+  startAddOrderBackToNewOrdersList: (orderId, cb) => dispatch(startAddOrderBackToNewOrdersList(orderId, cb))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Completed)
