@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal'
-import AddOrder from './AddOrder'
+import AddOrderForm from './AddOrderForm'
 
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root')
@@ -23,7 +23,7 @@ const AddOrderModal = (props) => {
       <div>
         <button className="button" onClick={ props.handleCancelAddNewOrder }>X</button>
         <h1>Add New Order</h1>
-        <AddOrder />
+        <AddOrderForm />
       </div>
     </Modal>
   )
