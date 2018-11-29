@@ -88,7 +88,11 @@ export default class AddOrderForm extends React.Component {
             <Field type="text" name="dessertInformation" />
             <ErrorMessage name="dessertInformation" component="div>"/>
           </div>
-          <button type="submit" disabled={ isSubmitting }>
+          <button
+            className="button"
+            type="submit"
+            disabled={ isSubmitting }
+          >
             Submit
           </button>
         </Form>

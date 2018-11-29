@@ -54,3 +54,25 @@
   margin-bottom: 1rem;
   padding-left: 1rem;
 }
+
+.completed-order__item {
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.completed-order-info-quantity__container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.completed-order-info-quantity__quantity {
+  border: 1px solid $grey;
+  border-radius: $radius;
+  padding: 0.4rem;
+}
+
+.completed-order-info-quantity__info {
+  padding-left: 1rem;
+}

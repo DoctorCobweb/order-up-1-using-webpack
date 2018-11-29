@@ -5,7 +5,7 @@ import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 export const CompletedOrderExpanded = (props) => {
   return (
     <div className="completed-order-expanded__container">
-      <h2>
+      <h2 className="heading-completed-order__expanded">
         { props.order.location } { props.order.tableNumber } -- Completed
       </h2>
       <div className="completed-order-expanded__buttons-container">
@@ -53,7 +53,7 @@ const Course = (props) => (
       }
       { 
         props.course.name === 'MAINS DINNER' &&  !props.order.goOnMains ?
-          ` ---------- HOLD ----------`
+          ` (HOLD)`
             :
           ''
       }
@@ -69,7 +69,7 @@ const Course = (props) => (
       }
       { 
         props.course.name === 'BAR MEALS' &&  !props.order.goOnMains ?
-          `----------`
+          ` (HOLD)`
             :
           ''
       }
@@ -82,7 +82,7 @@ const Course = (props) => (
 
 const Item = (props) => (
   <div>
-    <div>{ props.item.quantity } { props.item.name }</div>
+    <div className="completed-order__item">{ props.item.quantity } { props.item.name }</div>
     {
       props.item.infos.map(info => <Info key={ info._id } info={ info }/>)
     }
@@ -91,13 +91,15 @@ const Item = (props) => (
 
 const Info = (props) => (
   <div>
-    <div>
-      <div>{ props.info.quantity }</div>
-      {
-        props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
-      }
-      <div>------------</div>
+    <div className="completed-order-info-quantity__container">
+      <div className="completed-order-info-quantity__quantity">{ props.info.quantity }</div>
+      <div className="completed-order-info-quantity__info" >
+        {
+          props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
+        }
+      </div>
     </div>
+    <div>------------------------</div>
   </div>
 )
 

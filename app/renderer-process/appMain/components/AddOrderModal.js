@@ -20,7 +20,7 @@ const AddOrderModal = (props) => {
         }
       }}
     >
-      <div>
+      <div className="add-order-modal__container">
         <button className="button" onClick={ props.handleCancelAddNewOrder }>X</button>
         <h1>Add New Order</h1>
         <AddOrderForm />
