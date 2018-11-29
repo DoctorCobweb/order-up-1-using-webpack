@@ -100,6 +100,7 @@
   padding: 0.7rem;
 }
 
+//
 .board-list-a__item-container-done {
   visibility: hidden;
 }
@@ -124,6 +125,10 @@
 
 .board-list-a-item-info-quantity__info {
   padding-left: 1rem;
+}
+
+.board-list-a__info-container-done {
+  visibility: hidden;
 }
 
 // ------ BOARD B -------
@@ -183,6 +188,38 @@
   padding: 0.7rem;
 }
 
+//
+.board-list-b__item-container-done {
+  visibility: hidden;
+}
+
+.board-list-b__item {
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.board-list-b-item-info-quantity__container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.board-list-b-item-info-quantity__quantity {
+  border: 1px solid $grey;
+  border-radius: $radius;
+  padding: 0.4rem;
+}
+
+.board-list-b-item-info-quantity__info {
+  padding-left: 1rem;
+}
+
+.board-list-b__info-container-done {
+  visibility: hidden;
+}
+//
+
 // ------ BOARD C -------
 
 .board-list-c-container {
@@ -238,6 +275,36 @@
   font-size: $font-size-docket;
   margin: .3rem;
   padding: 0.7rem;
+}
+
+.board-list-c__item-container-done {
+  visibility: hidden;
+}
+
+.board-list-c__item {
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.board-list-c-item-info-quantity__container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.board-list-c-item-info-quantity__quantity {
+  border: 1px solid $grey;
+  border-radius: $radius;
+  padding: 0.4rem;
+}
+
+.board-list-c-item-info-quantity__info {
+  padding-left: 1rem;
+}
+
+.board-list-c__info-container-done {
+  visibility: hidden;
 }
 
 .border-red {

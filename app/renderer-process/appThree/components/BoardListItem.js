@@ -86,8 +86,8 @@ const Course = (props) => (
 )
 
 const Item = (props) => (
-  <div>
-    <div>{ props.item.quantity } { props.item.name }</div>
+  <div className={ props.item.quantity === 0 ? "board-list-c__item-container-done" : "" }>
+    <div className="board-list-c__item">{ props.item.quantity } { props.item.name }</div>
     {
       props.item.infos.map(info => <Info key={ info._id } info={ info }/>)
     }
@@ -95,11 +95,16 @@ const Item = (props) => (
 )
 
 const Info = (props) => (
-  <div>
-    {
-      props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
-    }
-    <div>------------</div>
+  <div className={ props.info.quantity === 0 ? "board-list-c__info-container-done" : "" }>
+    <div className="board-list-c-item-info-quantity__container">
+      <div className="board-list-c-item-info-quantity__quantity">{ props.info.quantity }</div>
+      <div className="board-list-c-item-info-quantity__info" >
+        {
+          props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
+        }
+      </div>
+    </div>
+    <div>------------------------</div>
   </div>
 )
 

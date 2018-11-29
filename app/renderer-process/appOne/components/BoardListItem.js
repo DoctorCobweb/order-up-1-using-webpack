@@ -103,7 +103,7 @@ const Item = (props) => (
 )
 
 const Info = (props) => (
-  <div>
+  <div className={ props.info.quantity === 0 ? "board-list-a__info-container-done" : "" }>
     <div className="board-list-a-item-info-quantity__container">
       <div className="board-list-a-item-info-quantity__quantity">{ props.info.quantity }</div>
       <div className="board-list-a-item-info-quantity__info" >
