@@ -64,7 +64,7 @@ export class App extends React.Component {
   }
 
   onDragEnd = result => {
-    console.log(result)
+    // console.log(result)
     // typical result obj
     // const result = {
     //   draggableId: 'task-1',
@@ -119,6 +119,7 @@ export class App extends React.Component {
           [newList.nameId]: newList, // the [] is a computed property name ES6
         },
       }
+
 
       this.props.startUpdateOrderIdsInLists(newDndState)
       return

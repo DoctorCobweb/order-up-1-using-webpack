@@ -49,6 +49,12 @@ let entries = {
     'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
     require.resolve('./app/renderer-process/appThree/index.js')
   ],
+  appGrid: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8181/',
+    'webpack/hot/only-dev-server', // "only" prevent reload on syntax errors
+    require.resolve('./app/renderer-process/appGrid/index.js')
+  ],
 }
 
 module.exports = {

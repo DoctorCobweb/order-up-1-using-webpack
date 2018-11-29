@@ -34,6 +34,10 @@ let entries = {
     './app/renderer-process/appThree/index.js' // the acutal app's entry point
 
   ],
+  appGrid: [
+    './app/renderer-process/appGrid/index.js' // the acutal app's entry point
+
+  ],
 }
 
 module.exports = {
@@ -91,9 +95,6 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin([
-        // TODO: add more folders here once more react apps are made
-        // 'app/appMain',
-        // 'app/appOne',
         'release'
     ]),
     new webpack.DefinePlugin({

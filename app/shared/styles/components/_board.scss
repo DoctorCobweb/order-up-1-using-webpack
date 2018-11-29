@@ -1,3 +1,4 @@
+// ------ BOARD GENERIC - DND -------
 .boards-container {
   width: 100%;
 
@@ -35,12 +36,14 @@
   display: flex;
   flex-direction: row;
   font-size: 3rem;
-  height: 10rem;
+  height: 9rem;
   justify-content: center;
   margin: 0 0.5rem;
   padding: 0.2rem;
-  width: 10rem;
+  width: 9rem;
 }
+
+// ------ BOARD A -------
 
 .board-list-a-container {
   align-content: flex-start;
@@ -55,9 +58,8 @@
   font-size: 10px;
   height: 95vh;
   margin-left: 1rem;
-  max-width: 8vw;
-  min-width: 8vw;
-  padding: 2rem;
+  max-width: 10vw;
+  padding: 2rem 0.5rem;
 }
 
 .board-list-a-item-header__container {
@@ -98,6 +100,8 @@
   padding: 0.7rem;
 }
 
+// ------ BOARD B -------
+
 .board-list-b-container {
   align-content: flex-start;
   display: flex;
@@ -111,8 +115,7 @@
   font-size: 10px;
   height: 95vh;
   margin-left: 1rem;
-  max-width: 8vw;
-  min-width: 8vw;
+  max-width: 10vw;
   padding: 2rem;
 }
 
@@ -147,6 +150,62 @@
 }
 
 .board-list-b__course {
+  background: $off-white;
+  border: 1px solid $grey;
+  font-size: $font-size-docket;
+  margin: .3rem;
+  padding: 0.7rem;
+}
+
+// ------ BOARD C -------
+
+.board-list-c-container {
+  align-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.board-list-c-item {
+  background: $off-white;
+  flex: 1 1 auto;
+  font-size: 10px;
+  height: 95vh;
+  max-width: 10vw;
+  padding: 2rem 0.5rem;
+}
+
+.board-list-c-item-header__container {
+  align-items: center;
+  background: $light-grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 0.3rem 1.5rem 0.3rem;
+}
+
+.board-list-c-item-header__table-number {
+  flex-grow: 1;
+  margin: 1rem;
+}
+
+.board-list-c-item-header__letter {
+  margin: 0.2rem;
+  padding-left: 0.5rem;
+}
+
+.board-list-c-item-header__time {
+  padding-right: 0.5rem;
+}
+
+.board-list-c__course-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 83vh;
+}
+
+.board-list-c__course {
   background: $off-white;
   border: 1px solid $grey;
   font-size: $font-size-docket;

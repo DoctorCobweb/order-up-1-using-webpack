@@ -13,6 +13,8 @@ import { Draggable } from 'react-beautiful-dnd'
 //   draggingOverWith: 'task-1',
 // }
 
+const MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C = 9
+
 export default class NewOrdersListItem extends React.Component {
 
   render() {
@@ -31,7 +33,7 @@ export default class NewOrdersListItem extends React.Component {
             <div
               id={ this.props.order._id }
               className={
-                this.props.index > 19 
+                this.props.index > MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C
                 ?
                 "new-orders-list-item-dnd button--not-on-grid"
                 :

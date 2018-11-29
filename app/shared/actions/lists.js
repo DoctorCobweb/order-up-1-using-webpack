@@ -303,7 +303,6 @@ export const updateOrderIdsInLists = (data) => ({
 
 export const startUpdateOrderIdsInLists = (dndData) => {
   return (dispatch, getState) => {
-
     return List.findOneAndUpdate(
       { nameId: 'new-orders'},
       { orderIds: dndData.lists['new-orders'].orderIds }).exec()
