@@ -100,6 +100,32 @@
   padding: 0.7rem;
 }
 
+.board-list-a__item-container-done {
+  visibility: hidden;
+}
+
+.board-list-a__item {
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.board-list-a-item-info-quantity__container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.board-list-a-item-info-quantity__quantity {
+  border: 1px solid $grey;
+  border-radius: $radius;
+  padding: 0.4rem;
+}
+
+.board-list-a-item-info-quantity__info {
+  padding-left: 1rem;
+}
+
 // ------ BOARD B -------
 
 .board-list-b-container {
