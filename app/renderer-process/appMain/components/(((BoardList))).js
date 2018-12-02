@@ -1,6 +1,6 @@
 import React from 'react'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import BoardListItem from './BoardListItem'
+import BoardListItem from './(((BoardListItem)))'
 
 // SNAPSHOT STUFF
 // example draggable snapshot obj

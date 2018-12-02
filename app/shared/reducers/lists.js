@@ -9,18 +9,6 @@ const listsReducerDefaultState = {
     'new-orders': {
       nameId: 'new-orders',
       title: 'NEW ORDERS',
-      direction: 'vertical',
-      orderIds: [],
-    },
-    'board-a': {
-      nameId: 'board-a',
-      title: 'BOARD A',
-      direction: 'horizontal',
-      orderIds: [],
-    },
-    'board-b': {
-      nameId: 'board-b',
-      title: 'BOARD B',
       direction: 'horizontal',
       orderIds: [],
     },
@@ -33,7 +21,7 @@ const listsReducerDefaultState = {
     },
   },
   // faciliatate reordering of the orders ? 
-  listOrder: ['new-orders', 'board-a', 'board-b', 'completed-orders'],
+  listOrder: ['new-orders', 'completed-orders'],
 }
 
 
@@ -42,10 +30,7 @@ export default (state=listsReducerDefaultState, action) => {
   switch(action.type) {
 
     case 'SETUP_LISTS': 
-      // console.log('SETUP_LISTS')
-      // console.log(action.payload.listsData)
       return action.payload.listsData
-      // return state
 
     case 'UPDATE_ORDER_IDS_IN_LISTS': 
       return action.payload.data

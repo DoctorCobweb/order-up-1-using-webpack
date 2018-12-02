@@ -5,10 +5,17 @@ import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 import { Order, Course, Item, Info, InfoLine } from '../models/order'
 import { List } from '../models/list'
 
+const NUMBER_OF_LISTS = 2
+
 
 // startSetupLists/ setupLists should populate a state object like this.
 // populate orders: {with all orders in db that are in the new-orders lists => list='new-orders'}
 // const listsReducerDefaultState = {
+//   completedOrders: {
+//     '_id-x': { id: '_id-x', content: 'orderx'},
+//     '_id-y': { id: '_id-y', content: 'ordery'},
+//     '_id-z': { id: '_id-z', content: 'orderz'},
+//   },
 //   orders: {
 //     '_id-1': { id: '_id-1', content: 'order1'},
 //     '_id-2': { id: '_id-2', content: 'order2'},
@@ -23,20 +30,6 @@ import { List } from '../models/list'
 //       direction: 'vertical',
 //       orderIds: ['_id-1', '_id-2', '_id-3', '_id-4'],
 //     },
-//     'board-a': {
-//       _id: 'abc2',
-//       nameId: 'board-a',
-//       title: 'BOARD A',
-//       direction: 'horizontal',
-//       orderIds: [],
-//     },
-//     'board-b': {
-//       _id: 'abc3',
-//       nameId: 'board-b',
-//       title: 'BOARD B',
-//       direction: 'horizontal',
-//       orderIds: [],
-//     },
 //     'completed-orders': {
 //       _id: 'abc4',
 //       nameId: 'completed-orders',
@@ -46,7 +39,7 @@ import { List } from '../models/list'
 //     },
 //   },
 //   // faciliatate reordering of the orders ? 
-//   listOrder: ['new-orders', 'board-a', 'board-b', 'completed-orders'],
+//   listOrder: ['new-orders', 'completed-orders'],
 // }
 
 const orderPopulation = {
@@ -76,7 +69,8 @@ export const setupLists = (listsData) => ({
 const createTheListsInMongo = () => {
   let newOrdersForListData
   let completedOrdersForListData
-  let mongoLists
+  let mongoLists = []
+  let newOrdersList
   // creating the lists means we're starting the app totally fresh.
   // that is, all orders in db should be allocated to the 'new-orders' list
   // => so get all orders and put them in the 'new-orders' list
@@ -93,42 +87,20 @@ const createTheListsInMongo = () => {
         _id: uuidv1(),
         nameId: 'new-orders',
         title: 'NEW ORDERS',
-        direction: 'vertical',
+        direction: 'horizontal',
         orderIds: [...Object.keys(newOrdersForListData)],
       })
 
-      const boardListA = new List({
-        _id: uuidv1(),
-        nameId: 'board-a',
-        title: 'BOARD A',
-        direction: 'horizontal',
-        orderIds: [],
-      })
-
-      const boardListB = new List({
-        _id: uuidv1(),
-        nameId: 'board-b',
-        title: 'BOARD B',
-        direction: 'horizontal',
-        orderIds: [],
-      })
-
-      return (
-        List.insertMany([
-          newOrdersList,
-          boardListA,
-          boardListB
-        ])
-      )
+      return List.create(newOrdersList)
     })
-    .then(lists => {
-      mongoLists = lists
+    .then(list => {
+      mongoLists.push(list)
       return Order.find({ completed: true})
         .populate(orderPopulation)
         .exec()
     })
-    .then(newOrders => {
-      completedOrdersForListData = _.reduce(newOrders, (acc, order) => {
+    .then(completedOrders => {
+      completedOrdersForListData = _.reduce(completedOrders, (acc, order) => {
         acc[order._id] = { id: order._id, content: order.toJSON()}
         return acc
       }, {})
@@ -147,7 +119,7 @@ const createTheListsInMongo = () => {
       const listsData = {}
       listsData.orders = newOrdersForListData
       listsData.completedOrders = completedOrdersForListData
-      listsData.listOrder = ['new-orders', 'board-a', 'board-b', 'completed-orders']
+      listsData.listOrder = ['new-orders', 'completed-orders']
       listsData.lists = _.reduce(mongoLists, (acc, list) => {
         acc[list.nameId] = list.toJSON()
         return acc
@@ -159,22 +131,8 @@ const createTheListsInMongo = () => {
       //     _id: 'abc1',       
       //     nameId: 'new-orders',
       //     title: 'NEW ORDERS',
-      //     direction: 'vertical',
+      //     direction: 'horizontal',
       //     orderIds: ['abc', 'abbbcc',...],
-      //   },
-      //   'board-a': {
-      //     _id: 'abc2',       
-      //     nameId: 'board-a',
-      //     title: 'BOARD A',
-      //     direction: 'horizontal',
-      //     orderIds: [],
-      //   },
-      //   'board-b': {
-      //     _id: 'abc3',       
-      //     nameId: 'board-b',
-      //     title: 'BOARD B',
-      //     direction: 'horizontal',
-      //     orderIds: [],
       //   },
       //   'completed': {
       //     _id: 'abc4',       
@@ -209,7 +167,7 @@ const getTheListsInMongo = () => {
       listsData.orders = ordersForListData
       // default for now to hard-coding listOrder. maybe change later
       // to allow lists to move around
-      listsData.listOrder = ['new-orders', 'board-a', 'board-b', 'completed-orders']
+      listsData.listOrder = ['new-orders', 'completed-orders']
       listsData.lists = _.reduce(lists, (acc, list) => {
         acc[list.nameId] = list.toJSON()
         return acc
@@ -221,22 +179,8 @@ const getTheListsInMongo = () => {
       //     _id: 'abc1',       
       //     nameId: 'new-orders',
       //     title: 'NEW ORDERS',
-      //     direction: 'vertical',
+      //     direction: 'horizontal',
       //     orderIds: ['abc', 'abbbcc',...],
-      //   },
-      //   'board-a': {
-      //     _id: 'abc2',       
-      //     nameId: 'board-a',
-      //     title: 'BOARD A',
-      //     direction: 'horizontal',
-      //     orderIds: [],
-      //   },
-      //   'board-b': {
-      //     _id: 'abc3',       
-      //     nameId: 'board-b',
-      //     title: 'BOARD B',
-      //     direction: 'horizontal',
-      //     orderIds: [],
       //   },
       //   'completed-orders': {
       //     _id: 'abc4',       
@@ -259,7 +203,6 @@ const getTheListsInMongo = () => {
 
       listsData.completedOrders = completedOrdersForListData
 
-
       return listsData
     })
     .catch(err => {
@@ -272,12 +215,10 @@ export const startSetupLists = () => {
     List.countDocuments().exec()
       .then(count => {
 
-        // there are 4 lists, only should only ever be 4. they correspond to:
+        // there are 2 lists, only should only ever be 4. they correspond to:
         // 1. new-orders
-        // 2. board-a
-        // 3. board-b
-        // 4. completed-orders
-        if (count === 4) {
+        // 2. completed-orders
+        if (count === NUMBER_OF_LISTS) {
           // already have the lists setup
           return getTheListsInMongo()
         } else {

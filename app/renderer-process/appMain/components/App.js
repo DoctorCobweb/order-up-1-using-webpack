@@ -10,8 +10,7 @@ import {
 import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
-import BoardList from './BoardList'
-import AddOrderModal from './AddOrderModal'
+// import BoardList from './(((BoardList)))'
 
 export class App extends React.Component {
   state = {
@@ -172,6 +171,7 @@ export class App extends React.Component {
               handleOrderClick={ this.handleOrderClick }
               handleAddNewOrderClick = { this.handleAddNewOrderClick }
             />
+            { /*
             <div className="boards-container">
               <BoardList 
                 key={ this.props.lists.lists['board-a'].nameId }
@@ -194,16 +194,12 @@ export class App extends React.Component {
                 handleOrderClick={ this.handleOrderClick }
               />
             </div>
+            */}
           </div>
           <OrderModal
             selectedOrderId={ this.state.selectedOrderId }
             handleClearSelectedOrder={ this.handleClearSelectedOrder }
             handleOrderCompletedClick={ this.handleOrderCompletedClick }
-          />
-          <AddOrderModal
-            isAddingNewOrder={ this.state.isAddingNewOrder }
-            handleCancelAddNewOrder={ this.handleCancelAddNewOrder }
-            
           />
         </DragDropContext>
       </div>

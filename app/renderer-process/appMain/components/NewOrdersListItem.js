@@ -13,7 +13,7 @@ import { Draggable } from 'react-beautiful-dnd'
 //   draggingOverWith: 'task-1',
 // }
 
-const MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C = 9
+const MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C = 29
 
 export default class NewOrdersListItem extends React.Component {
 
@@ -49,7 +49,7 @@ export default class NewOrdersListItem extends React.Component {
             }
               onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }
             >
-              T: { this.props.order.tableNumber } C: { this.props.order.covers }
+              { this.props.order.tableNumber }
             </div>
           </div>
         )}

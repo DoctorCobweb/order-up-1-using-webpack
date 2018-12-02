@@ -19,21 +19,11 @@ import NewOrdersListItem from './NewOrdersListItem'
 export class NewOrdersList extends React.Component {
 
   componentDidMount() {
-    // fetch all the orders on app startup.
-    // get from mongodb, populate all orders, put in redux store
-    // this.props.startSetOrders()
   }
 
   render() {
     return (
       <div className="new-orders-list-container">
-        <h3 className="heading">{ this.props.list.title }</h3>
-        <button
-          className="button button--add-new-order"
-          onClick={ this.props.handleAddNewOrderClick }
-         >
-          + Add Order
-        </button>
         <Droppable 
           droppableId={ this.props.list.nameId }
           direction={ this.props.list.direction }

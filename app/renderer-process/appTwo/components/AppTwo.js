@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import BoardList from './BoardList'
 
-// AppTwo is Board B: all orders in the 'board-b' list
+// AppTwo displays orders 11-20
 
 export class AppTwo extends Component {
 
   render = () => (
     <BoardList
-      orders={ this.props.lists.lists['board-b'].orderIds
-        .map(orderId => this.props.lists.orders[orderId])
+      orders={
+        this.props.lists.lists['new-orders'].orderIds
+          .map(orderId => this.props.lists.orders[orderId]).slice(10,20)
       }
     />
   )

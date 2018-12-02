@@ -16,22 +16,14 @@ import BoardList from './BoardList'
 const MAX_NUMBER_OF_ITEMS_DISPLAYED = 10
 
 export class AppThree extends Component {
-
-  render = () => {
-
-    const allNewOrders = this.props.lists.lists['new-orders'].orderIds
-    .map(orderId => this.props.lists.orders[orderId])
-
-    // only ever take the first 20 orders to display
-    let cappedOrders
-    if (allNewOrders.length <= MAX_NUMBER_OF_ITEMS_DISPLAYED) {
-      cappedOrders = allNewOrders
-    } else {
-      cappedOrders = allNewOrders.slice(0, MAX_NUMBER_OF_ITEMS_DISPLAYED)
-    }
-
-    return <BoardList orders= { cappedOrders } />
-  }
+  render = () => (
+      <BoardList
+        orders= {
+          this.props.lists.lists['new-orders'].orderIds
+            .map(orderId => this.props.lists.orders[orderId]).slice(20,30)
+        }
+      />
+    )
 }
 
 const mapStateToProps = (state) => ({

@@ -35,14 +35,16 @@
   height: 71.4rem;
   min-height: 71.4rem;
   padding-bottom: 1rem;
-  width: 20vw;
+  width: 99vw;
 }
 
 .new-orders-list {
   flex-grow: 1;
+  display: flex;
   padding: 2rem;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  width: 95vw;
 }
 
 .new-orders-list-item-dnd {
@@ -55,6 +57,7 @@
   margin-bottom: 0.4rem;
   min-height: 4rem;
   min-width: 10rem;
+  margin-right: 1rem;
   width: 19rem;
 }
 
