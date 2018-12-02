@@ -12,7 +12,7 @@ import knuckleDragger from './knuckle-dragger/main'
 import configureStore from '../shared/store/configure-store'
 // import { Order } from '../shared/models/order'
 // import { List } from '../shared/models/list'
-import { startAddOrderToLists } from '../shared/actions/lists'
+import { startAddOrderToList } from '../shared/actions/lists'
 
 import stringify from 'json-stringify-pretty-compact'
 // import startServer from '../server/server'
@@ -96,7 +96,7 @@ const populateOrderChangeStream = (results) => {
     //
     // 1. add id to state.lists.lists['new-orders'].orderIds (mongo)
     // 2. add the populated order to state.lists.orders (redux)
-    store.dispatch(startAddOrderToLists(newOrderId))
+    store.dispatch(startAddOrderToList(newOrderId))
 
   } else if (results.operationType === 'deleted') {
     console.log('TODO: we deleted an order or many orders.'.red)

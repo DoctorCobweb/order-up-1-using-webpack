@@ -32,10 +32,10 @@ export default (state=listsReducerDefaultState, action) => {
     case 'SETUP_LISTS': 
       return action.payload.listsData
 
-    case 'UPDATE_ORDER_IDS_IN_LISTS': 
+    case 'UPDATE_ORDER_IDS_IN_LIST': 
       return action.payload.data
 
-    case 'ADD_ORDER_TO_LISTS':
+    case 'ADD_ORDER_TO_LIST':
       const stateCopy = _.cloneDeep(state)
       const newOrder = action.payload.order
       
@@ -83,21 +83,21 @@ export default (state=listsReducerDefaultState, action) => {
       // finally, delete the orderId from whatever list it was sitting in before being
       // marked as complete
       const deleteIdx = stateCloneForCompletedOrder
-        .lists[ action.payload.listNameId ].orderIds
+        .lists['new-orders'].orderIds
         .indexOf(action.payload.orderId)
 
       stateCloneForCompletedOrder
-        .lists[ action.payload.listNameId ].orderIds
+        .lists['new-orders'].orderIds
         .splice(deleteIdx, 1)
 
       // console.log('stateCloneForCompletedOrder')
       // console.log(stateCloneForCompletedOrder)
 
       return stateCloneForCompletedOrder
+
     case 'ADD_ORDER_BACK_TO_NEW_ORDERS_LIST':
 
 
-      // TODO: FINISH !!!
       const stateCloneForAddOrderBackToNewOrdersList = _.cloneDeep(state)
 
       // in state.orders, an order data strucure is like:
@@ -105,10 +105,10 @@ export default (state=listsReducerDefaultState, action) => {
       const orderCloneForAddBackToNewOrdersList = 
         stateCloneForAddOrderBackToNewOrdersList.completedOrders[action.payload.orderId]
       
-      console.log('state.completedOrders')
-      console.log(stateCloneForAddOrderBackToNewOrdersList.completedOrders)
-      console.log('orderCloneForAddBackToNewOrdersList')
-      console.log(orderCloneForAddBackToNewOrdersList)
+      // console.log('state.completedOrders')
+      // console.log(stateCloneForAddOrderBackToNewOrdersList.completedOrders)
+      // console.log('orderCloneForAddBackToNewOrdersList')
+      // console.log(orderCloneForAddBackToNewOrdersList)
 
       // update the completed field 
       orderCloneForAddBackToNewOrdersList.content.completed = false
@@ -137,8 +137,8 @@ export default (state=listsReducerDefaultState, action) => {
         .lists['completed-orders'].orderIds
         .splice(deleteIdxCompletedOrder, 1)
 
-      console.log('stateCloneForAddOrderBackToNewOrdersList')
-      console.log(stateCloneForAddOrderBackToNewOrdersList)
+      // console.log('stateCloneForAddOrderBackToNewOrdersList')
+      // console.log(stateCloneForAddOrderBackToNewOrdersList)
 
     return stateCloneForAddOrderBackToNewOrdersList
 

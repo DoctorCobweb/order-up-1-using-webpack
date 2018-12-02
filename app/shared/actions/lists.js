@@ -27,7 +27,7 @@ const NUMBER_OF_LISTS = 2
 //       _id: 'abc1',
 //       nameId: 'new-orders',
 //       title: 'NEW ORDERS',
-//       direction: 'vertical',
+//       direction: 'horizontal',
 //       orderIds: ['_id-1', '_id-2', '_id-3', '_id-4'],
 //     },
 //     'completed-orders': {
@@ -235,35 +235,35 @@ export const startSetupLists = () => {
   }
 }
 
-export const updateOrderIdsInLists = (data) => ({
-  type: 'UPDATE_ORDER_IDS_IN_LISTS',
+export const updateOrderIdsInList = (data) => ({
+  type: 'UPDATE_ORDER_IDS_IN_LIST',
   payload: {
     data,
   }
 })
 
-export const startUpdateOrderIdsInLists = (dndData) => {
+export const startUpdateOrderIdsInList = (dndData) => {
   return (dispatch, getState) => {
     return List.findOneAndUpdate(
       { nameId: 'new-orders'},
       { orderIds: dndData.lists['new-orders'].orderIds }).exec()
+    // .then(list => {
+    //   return List.findOneAndUpdate(
+    //     { nameId: 'board-a'},
+    //     { orderIds: dndData.lists['board-a'].orderIds }).exec()
+    // })
+    // .then(list => {
+    //   return List.findOneAndUpdate(
+    //     { nameId: 'board-b'},
+    //     { orderIds: dndData.lists['board-b'].orderIds }).exec()
+    // })
+    // .then(list => {
+    //   return List.findOneAndUpdate(
+    //     { nameId: 'completed-orders'},
+    //     { orderIds: dndData.lists['completed-orders'].orderIds }).exec()
+    // })
     .then(list => {
-      return List.findOneAndUpdate(
-        { nameId: 'board-a'},
-        { orderIds: dndData.lists['board-a'].orderIds }).exec()
-    })
-    .then(list => {
-      return List.findOneAndUpdate(
-        { nameId: 'board-b'},
-        { orderIds: dndData.lists['board-b'].orderIds }).exec()
-    })
-    .then(list => {
-      return List.findOneAndUpdate(
-        { nameId: 'completed-orders'},
-        { orderIds: dndData.lists['completed-orders'].orderIds }).exec()
-    })
-    .then(list => {
-      dispatch(updateOrderIdsInLists(dndData))
+      dispatch(updateOrderIdsInList(dndData))
     })
     .catch(err => {
       throw err
@@ -271,14 +271,14 @@ export const startUpdateOrderIdsInLists = (dndData) => {
   }
 }
 
-export const addOrderToLists = (order) => ({
-  type: 'ADD_ORDER_TO_LISTS',
+export const addOrderToList = (order) => ({
+  type: 'ADD_ORDER_TO_LIST',
   payload: {
     order,
   }
 })
 
-export const startAddOrderToLists = (orderId) => {
+export const startAddOrderToList = (orderId) => {
   let newOrder
   return (dispatch, getState) => {
     return Order.findById(orderId)
@@ -295,7 +295,7 @@ export const startAddOrderToLists = (orderId) => {
         return newOrdersList.save()
       })
       .then(newOrdersList => {
-        dispatch(addOrderToLists(newOrder))
+        dispatch(addOrderToList(newOrder))
       })
       .catch(err => {
         throw err
@@ -303,16 +303,14 @@ export const startAddOrderToLists = (orderId) => {
   }
 }
 
-export const setOrderAsCompleted = (orderId, listNameId) => ({
+export const setOrderAsCompleted = (orderId) => ({
   type: 'SET_ORDER_AS_COMPLETED',
   payload: {
     orderId,
-    listNameId,
   }
 })
 
 export const startSetOrderAsCompleted = ({ orderId }) => {
-  let listNameIdToDeleteOrderIdFrom
   return (dispatch, getState) => {
     // we dont need to populate it, as completed field is in Order model
     // and not a subdocument
@@ -324,18 +322,13 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
         return order.save()
       })
       .then(order => {
-        // have to remove it from orderIds array in whatever list
-        // contains that orderIds array..
-        return List.find({orderIds: order._id}).exec()
+        // have to remove it from orderIds array in new-orders orderIds array
+        return List.findOne({ nameId: 'new-orders'}).exec()
       })
       .then(list => {
-        // there orderId should only appear in ONE LIST by design.
-        // we assume that this is always the case.
-        const [ listContainingOrderId ] = list
-        listNameIdToDeleteOrderIdFrom = listContainingOrderId.nameId
-        const deleteIndex = listContainingOrderId.orderIds.indexOf(orderId)
-        listContainingOrderId.orderIds.splice(deleteIndex, 1)
-        return listContainingOrderId.save()
+        const deleteIndex = list.orderIds.indexOf(orderId)
+        list.orderIds.splice(deleteIndex, 1)
+        return list.save()
       })
       .then(list => {
         return List.findOne({ nameId: 'completed-orders'}).exec()
@@ -345,7 +338,7 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
         return list.save()
       })
       .then(list => {
-        dispatch(setOrderAsCompleted(orderId, listNameIdToDeleteOrderIdFrom))
+        dispatch(setOrderAsCompleted(orderId))
       })
       .catch(err => {
         throw err
@@ -366,36 +359,33 @@ export const startAddOrderBackToNewOrdersList = (orderId, cb) => {
         // update the order
         order.completed = false
         order.list = 'new-orders'
-
         return order.save()
       })
       .then(order => {
         // update the completed-orders orderIds array
         return List.findOne({ nameId: 'completed-orders' }).exec()
       })
-      .then(completedList => {
+      .then(list => {
         // remove the orderId from completedList's orderIds array
-        const orderIdsClone = _.cloneDeep(completedList.orderIds)
-        const orderIndex = orderIdsClone.indexOf(orderId)
-        orderIdsClone.splice(orderIndex, 1)
-        completedList.orderIds = orderIdsClone
-
-        return completedList.save()
+        // const orderIdsClone = _.cloneDeep(list.orderIds)
+        const orderIndex = list.orderIds.indexOf(orderId)
+        list.orderIds.splice(orderIndex, 1)
+        return list.save()
       })
-      .then(completedList => {
+      .then(list => {
         // update the new-orders orderIds array
         return List.findOne({ nameId: 'new-orders' }).exec()
       })
-      .then(newOrdersList => {
+      .then(list => {
         // take the orderId on at the end of orderIds
         // => will show up at the bottom of NEW ORDERS list in UI
-        newOrdersList.orderIds.push(orderId)
-        return newOrdersList.save()
+        list.orderIds.push(orderId)
+        return list.save()
       })
-      .then(newOrdersList => {
+      .then(list => {
         // dispatch to redux now
-
         dispatch(addOrderBackToNewOrdersList(orderId, cb))
+        // for UI confirmation/guidance/redirection
         cb()
       })
       .catch(err => {

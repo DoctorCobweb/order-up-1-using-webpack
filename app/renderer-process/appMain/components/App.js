@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import {
   startSetupLists,
-  startUpdateOrderIdsInLists,
+  startUpdateOrderIdsInList,
   startSetOrderAsCompleted,
 } from '../../../shared/actions/lists'
 import OrderModal from './OrderModal'
@@ -95,59 +95,83 @@ export class App extends React.Component {
     }
 
     const start = this.props.lists.lists[source.droppableId]
-    const finish = this.props.lists.lists[destination.droppableId]
 
-    if (start === finish) {
-      const newOrderIds = Array.from(start.orderIds)
-      // remove 1 item from source.index
-      newOrderIds.splice(source.index, 1)
+    // for handling drags between different lists. no longer needed. read comments below
+    // const finish = this.props.lists.lists[destination.droppableId]
 
-      // at destination.index, dont remove anything, insert draggableId there
-      newOrderIds.splice(destination.index, 0, draggableId)
+    const newOrderIds = Array.from(start.orderIds)
+    // remove 1 item from source.index
+    newOrderIds.splice(source.index, 1)
 
-      // now create a new list 
-      const newList = {
-        ...start,
-        orderIds: newOrderIds,
-      }
+    // at destination.index, dont remove anything, insert draggableId there
+    newOrderIds.splice(destination.index, 0, draggableId)
 
-      const newDndState = {
-        ...this.props.lists,
-        lists: {
-          ...this.props.lists.lists,
-          [newList.nameId]: newList, // the [] is a computed property name ES6
-        },
-      }
-
-
-      this.props.startUpdateOrderIdsInLists(newDndState)
-      return
-    }
-
-    // moving from one list to another
-    const startOrderIds = Array.from(start.orderIds)
-    startOrderIds.splice(source.index, 1)
-    const newStart = {
+    // now create a new list 
+    const newList = {
       ...start,
-      orderIds: startOrderIds,
-    }
-
-    const finishOrderIds = Array.from(finish.orderIds)
-    finishOrderIds.splice(destination.index, 0, draggableId)
-    const newFinish = {
-      ...finish,
-      orderIds: finishOrderIds,
+      orderIds: newOrderIds,
     }
 
     const newDndState = {
       ...this.props.lists,
       lists: {
         ...this.props.lists.lists,
-        [newStart.nameId]: newStart,
-        [newFinish.nameId]: newFinish,
-      }
+        [newList.nameId]: newList, // the [] is a computed property name ES6
+      },
     }
-    this.props.startUpdateOrderIdsInLists(newDndState)
+    this.props.startUpdateOrderIdsInList(newDndState)
+
+    // NO LONGER NEED THIS CODE: it's for handle drags between different lists.
+    // => since we only have the new-orders list, we dont have to do the stuff below
+    // if (start === finish) {
+    //   const newOrderIds = Array.from(start.orderIds)
+    //   // remove 1 item from source.index
+    //   newOrderIds.splice(source.index, 1)
+
+    //   // at destination.index, dont remove anything, insert draggableId there
+    //   newOrderIds.splice(destination.index, 0, draggableId)
+
+    //   // now create a new list 
+    //   const newList = {
+    //     ...start,
+    //     orderIds: newOrderIds,
+    //   }
+
+    //   const newDndState = {
+    //     ...this.props.lists,
+    //     lists: {
+    //       ...this.props.lists.lists,
+    //       [newList.nameId]: newList, // the [] is a computed property name ES6
+    //     },
+    //   }
+    //   this.props.startUpdateOrderIdsInLists(newDndState)
+    //   return
+    // }
+
+    // moving from one list to another
+    // const startOrderIds = Array.from(start.orderIds)
+    // startOrderIds.splice(source.index, 1)
+    // const newStart = {
+    //   ...start,
+    //   orderIds: startOrderIds,
+    // }
+
+    // const finishOrderIds = Array.from(finish.orderIds)
+    // finishOrderIds.splice(destination.index, 0, draggableId)
+    // const newFinish = {
+    //   ...finish,
+    //   orderIds: finishOrderIds,
+    // }
+
+    // const newDndState = {
+    //   ...this.props.lists,
+    //   lists: {
+    //     ...this.props.lists.lists,
+    //     [newStart.nameId]: newStart,
+    //     [newFinish.nameId]: newFinish,
+    //   }
+    // }
+    // this.props.startUpdateOrderIdsInLists(newDndState)
   }
 
   render = () => {
