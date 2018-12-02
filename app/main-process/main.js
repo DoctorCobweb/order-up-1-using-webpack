@@ -156,12 +156,6 @@ const createWindow = () => {
     x: 2561,
     y: 0
   })
-  // let winGrid = new BrowserWindow({
-  //   width: 1280,
-  //   height: 1000,
-  //   x: 2561,
-  //   y: 0 
-  // })
 
   let appMainUrl = url.format({
     pathname: path.join(__dirname, 'renderer-process', 'appMain', 'index.html'),
@@ -183,23 +177,16 @@ const createWindow = () => {
     protocol: 'file:',
     slashes: true
   })
-  // let appGridUrl = url.format({
-  //   pathname: path.join(__dirname, 'renderer-process', 'appGrid', 'index.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // })
 
   winMain.loadURL(appMainUrl)
   winOne.loadURL(appOneUrl)
   winTwo.loadURL(appTwoUrl)
   winThree.loadURL(appThreeUrl)
-  // winGrid.loadURL(appGridUrl)
 
   winMain.webContents.openDevTools()
-  // winOne.webContents.openDevTools()
+  winOne.webContents.openDevTools()
   // winTwo.webContents.openDevTools()
   winThree.webContents.openDevTools()
-  // winGrid.webContents.openDevTools()
 
   winMain.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -225,12 +212,6 @@ const createWindow = () => {
     // when you should delete the corresponding element.
     winThree = null
   })
-  // winGrid.on('closed', () => {
-  //   // Dereference the window object, usually you would store windows
-  //   // in an array if your app supports multi windows, this is the time
-  //   // when you should delete the corresponding element.
-  //   winGrid = null
-  // })
 }
 
 app.on('ready', () => {
@@ -261,7 +242,4 @@ app.on('activate', () => {
   if (winThree === null) {
     createWindow()
   }
-  // if (winGrid === null) {
-  //   createWindow()
-  // }
 })

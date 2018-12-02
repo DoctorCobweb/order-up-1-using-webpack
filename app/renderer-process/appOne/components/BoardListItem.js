@@ -3,42 +3,55 @@ import moment from 'moment'
 import { sortCoursesInOrder } from '../../../shared/selectors/lists'
 
 
-const BoardListItem = props => (
-  <div className="board-list-a-item">
-    <div className="board-list-a-item-header__container">
-      <h1 className="board-list-a-item-header__letter">{ `A${props.index+1}`}</h1>
-        <h1
-          className={ props.order.location === "RESTAURANT BAR" ?
-            "heading-restaurant board-list-a-item-header__table-number"
-            :
-            props.order.location === "GAMING BAR" ?
-            "heading-gaming board-list-a-item-header__table-number"
-            :
-            "heading-bar board-list-a-item-header__table-number"
-          }
-        >
-          { props.order.tableNumber }
-        </h1>
-        <h1
-          className="board-list-a-item-header__time"
-        >
-            { moment(props.order.orderReceivedAt).format("HH:mm") }
-        </h1>
+class BoardListItem extends React.Component {
+  state = {
+    minutesSinceReceived: 0
+  }
+
+  componentDidMount = () => {
+    setInterval(() => {
+      this.setState((prevState) => ({ minutesSinceReceived: prevState.minutesSinceReceived + 1 }))
+    }, 60000)
+  }
+
+  render = () => (
+    <div className="board-list-a-item">
+      <div className="board-list-a-item-header__container">
+        <h1 className="board-list-a-item-header__letter">{ `A${this.props.index+1}`}</h1>
+          <h1
+            className={ this.props.order.location === "RESTAURANT BAR" ?
+              "heading-restaurant board-list-a-item-header__table-number"
+              :
+              this.props.order.location === "GAMING BAR" ?
+              "heading-gaming board-list-a-item-header__table-number"
+              :
+              "heading-bar board-list-a-item-header__table-number"
+            }
+          >
+            { this.props.order.tableNumber }
+          </h1>
+          <h1
+            className="board-list-a-item-header__time"
+          >
+              { moment(this.props.order.orderReceivedAt).format("HH:mm") }
+          </h1>
+          <h1> { this.state.minutesSinceReceived } </h1>
+      </div>
+      <div className="board-list-a__course-container">
+        {
+          sortCoursesInOrder(this.props.order).courses
+            .map(course => 
+              <Course
+                key={ course._id }
+                course={ course }
+                order={ this.props.order }
+              />
+            )
+        }
+      </div>
     </div>
-    <div className="board-list-a__course-container">
-      {
-        sortCoursesInOrder(props.order).courses
-          .map(course => 
-            <Course
-              key={ course._id }
-              course={ course }
-              order={ props.order }
-            />
-          )
-      }
-    </div>
-  </div>
-)
+  )
+}
 
 const Course = (props) => (
   <div
