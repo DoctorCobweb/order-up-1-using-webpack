@@ -202,7 +202,6 @@ const getTheListsInMongo = () => {
       }, {})
 
       listsData.completedOrders = completedOrdersForListData
-
       return listsData
     })
     .catch(err => {
@@ -214,7 +213,6 @@ export const startSetupLists = () => {
   return (dispatch, getState) => {
     List.countDocuments().exec()
       .then(count => {
-
         // there are 2 lists, only should only ever be 4. they correspond to:
         // 1. new-orders
         // 2. completed-orders
@@ -247,21 +245,6 @@ export const startUpdateOrderIdsInList = (dndData) => {
     return List.findOneAndUpdate(
       { nameId: 'new-orders'},
       { orderIds: dndData.lists['new-orders'].orderIds }).exec()
-    // .then(list => {
-    //   return List.findOneAndUpdate(
-    //     { nameId: 'board-a'},
-    //     { orderIds: dndData.lists['board-a'].orderIds }).exec()
-    // })
-    // .then(list => {
-    //   return List.findOneAndUpdate(
-    //     { nameId: 'board-b'},
-    //     { orderIds: dndData.lists['board-b'].orderIds }).exec()
-    // })
-    // .then(list => {
-    //   return List.findOneAndUpdate(
-    //     { nameId: 'completed-orders'},
-    //     { orderIds: dndData.lists['completed-orders'].orderIds }).exec()
-    // })
     .then(list => {
       dispatch(updateOrderIdsInList(dndData))
     })
@@ -290,7 +273,6 @@ export const startAddOrderToList = (orderId) => {
       })
       .then(list => {
         const [ newOrdersList ] = list
-
         newOrdersList.orderIds.push(newOrder._id)
         return newOrdersList.save()
       })
@@ -393,8 +375,6 @@ export const startAddOrderBackToNewOrdersList = (orderId, cb) => {
       })
   }
 }
-
-
 
 ////////////////////////////////////////////////////////////
 //

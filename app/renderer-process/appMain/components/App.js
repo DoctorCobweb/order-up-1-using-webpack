@@ -10,12 +10,16 @@ import {
 import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
-// import BoardList from './(((BoardList)))'
 
 export class App extends React.Component {
   state = {
     selectedOrderId: undefined,
     isAddingNewOrder: false,
+  }
+
+  componentDidMount() {
+    // this will setup the lists in using mongo & the state-slice of redux
+    this.props.startSetupLists()
   }
 
   handleOrderClick = (orderId) => {
@@ -32,7 +36,6 @@ export class App extends React.Component {
     this.setState(() => ({
       isAddingNewOrder: true 
     }))
-
   }
   
   handleCancelAddNewOrder = () => {
@@ -40,20 +43,11 @@ export class App extends React.Component {
   }
 
   handleOrderCompletedClick = (orderId) => {
-    console.log('order to set as completed has _id')
-    console.log(orderId)
-
     this.setState(() => ({
       selectedOrderId: undefined,
     }), () => {
       this.props.startSetOrderAsCompleted({ orderId })
     })
-  }
-
-
-  componentDidMount() {
-    // this will setup the lists in using mongo & the state-slice of redux
-    this.props.startSetupLists()
   }
 
   onDragStart = start => {
@@ -96,9 +90,6 @@ export class App extends React.Component {
 
     const start = this.props.lists.lists[source.droppableId]
 
-    // for handling drags between different lists. no longer needed. read comments below
-    // const finish = this.props.lists.lists[destination.droppableId]
-
     const newOrderIds = Array.from(start.orderIds)
     // remove 1 item from source.index
     newOrderIds.splice(source.index, 1)
@@ -120,58 +111,6 @@ export class App extends React.Component {
       },
     }
     this.props.startUpdateOrderIdsInList(newDndState)
-
-    // NO LONGER NEED THIS CODE: it's for handle drags between different lists.
-    // => since we only have the new-orders list, we dont have to do the stuff below
-    // if (start === finish) {
-    //   const newOrderIds = Array.from(start.orderIds)
-    //   // remove 1 item from source.index
-    //   newOrderIds.splice(source.index, 1)
-
-    //   // at destination.index, dont remove anything, insert draggableId there
-    //   newOrderIds.splice(destination.index, 0, draggableId)
-
-    //   // now create a new list 
-    //   const newList = {
-    //     ...start,
-    //     orderIds: newOrderIds,
-    //   }
-
-    //   const newDndState = {
-    //     ...this.props.lists,
-    //     lists: {
-    //       ...this.props.lists.lists,
-    //       [newList.nameId]: newList, // the [] is a computed property name ES6
-    //     },
-    //   }
-    //   this.props.startUpdateOrderIdsInLists(newDndState)
-    //   return
-    // }
-
-    // moving from one list to another
-    // const startOrderIds = Array.from(start.orderIds)
-    // startOrderIds.splice(source.index, 1)
-    // const newStart = {
-    //   ...start,
-    //   orderIds: startOrderIds,
-    // }
-
-    // const finishOrderIds = Array.from(finish.orderIds)
-    // finishOrderIds.splice(destination.index, 0, draggableId)
-    // const newFinish = {
-    //   ...finish,
-    //   orderIds: finishOrderIds,
-    // }
-
-    // const newDndState = {
-    //   ...this.props.lists,
-    //   lists: {
-    //     ...this.props.lists.lists,
-    //     [newStart.nameId]: newStart,
-    //     [newFinish.nameId]: newFinish,
-    //   }
-    // }
-    // this.props.startUpdateOrderIdsInLists(newDndState)
   }
 
   render = () => {
@@ -195,30 +134,6 @@ export class App extends React.Component {
               handleOrderClick={ this.handleOrderClick }
               handleAddNewOrderClick = { this.handleAddNewOrderClick }
             />
-            { /*
-            <div className="boards-container">
-              <BoardList 
-                key={ this.props.lists.lists['board-a'].nameId }
-                list={ this.props.lists.lists['board-a'] }
-                orders={
-                  this.props.lists.lists['board-a'].orderIds
-                    .map(orderId => this.props.lists.orders[orderId])
-                }
-                index={ 1 }
-                handleOrderClick={ this.handleOrderClick }
-              />
-              <BoardList 
-                key={ this.props.lists.lists['board-b'].nameId }
-                list={ this.props.lists.lists['board-b'] }
-                orders={
-                  this.props.lists.lists['board-b'].orderIds
-                    .map(orderId => this.props.lists.orders[orderId])
-                }
-                index={ 2 }
-                handleOrderClick={ this.handleOrderClick }
-              />
-            </div>
-            */}
           </div>
           <OrderModal
             selectedOrderId={ this.state.selectedOrderId }
@@ -237,7 +152,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   startSetupLists: () => dispatch(startSetupLists()),
-  startUpdateOrderIdsInLists: (data) => dispatch(startUpdateOrderIdsInLists(data)),
+  startUpdateOrderIdsInList: (data) => dispatch(startUpdateOrderIdsInList(data)),
   startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data))
 })
 
