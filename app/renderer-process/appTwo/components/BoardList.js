@@ -3,7 +3,7 @@ import BoardListItem from './BoardListItem'
 
 const BoardList = props => (
   <div>
-    <div className="board-list-b-container">
+    <div className="board-list-container">
       { props.orders
           .map((order, index) =>
             <BoardListItem

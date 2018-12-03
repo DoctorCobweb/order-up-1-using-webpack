@@ -1,33 +1,4 @@
-// ------ BOARD GENERIC - DND -------
-.boards-container {
-  width: 100%;
-
-}
-
-.board-list-container {
-  background: $off-white;
-  border: 0.2rem solid lightgrey;
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  height: 44vh;
-  margin-bottom: 0.8rem;
-  margin-left: .7rem;
-  width: 80vw;
-}
-
-.board-list {
-  align-items: center;
-  display: flex;
-  height: 25rem;
-  flex-grow: 1;
-  max-width: 80vw;
-  overflow-x: scroll;
-  padding-left: 0.5rem;
-  padding-bottom: 6rem;
-  width: 79.6vw;
-}
-
+// -- REACT-BEAUTIFUL-DND -------
 .board-list-item-dnd {
   align-items: center;
   border: none;
@@ -43,16 +14,15 @@
   width: 9rem;
 }
 
-// ------ BOARD A -------
-
-.board-list-a-container {
+// ------ BOARD GENERIC --------
+.board-list-container {
   align-content: flex-start;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
 
-.board-list-a-item {
+.board-list-item {
   background: $off-white;
   flex: 1 1 auto;
   font-size: 10px;
@@ -62,7 +32,7 @@
   padding: 2rem 0.5rem;
 }
 
-.board-list-a-item-header__container {
+.board-list-item-header__container {
   align-items: center;
   background: $light-grey;
   display: flex;
@@ -71,28 +41,35 @@
   margin: 0 0.3rem 1.5rem 0.3rem;
 }
 
-.board-list-a-item-header__letter {
+.board-list-item-header__letter {
   margin: 0.2rem;
   padding-left: 0.5rem;
 }
 
-.board-list-a-item-header__table-number {
+.board-list-item-header__table-number {
   flex-grow: 1;
   margin: 1rem;
 }
 
-.board-list-a-item-header__time {
+.board-list-item-header__time-container {
+  display: flex;
+  flex-direction: column;
   padding-right: 0.5rem;
 }
 
-.board-list-a__course-container {
+.board-list-item-header__time {
+  margin: 0;
+  text-align: end;
+}
+
+.board-list__course-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   height: 83vh;
 }
 
-.board-list-a__course {
+.board-list__course {
   background: $off-white;
   border: 1px solid $grey;
   font-size: $font-size-docket;
@@ -100,210 +77,33 @@
   padding: 0.7rem;
 }
 
-//
-.board-list-a__item-container-done {
+.board-list__item-container-done {
   visibility: hidden;
 }
 
-.board-list-a__item {
+.board-list__item {
   font-weight: 600;
   margin-bottom: .4rem;
 }
 
-.board-list-a-item-info-quantity__container {
+.board-list-item-info-quantity__container {
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: left;
 }
 
-.board-list-a-item-info-quantity__quantity {
+.board-list-item-info-quantity__quantity {
   border: 1px solid $grey;
   border-radius: $radius;
   padding: 0.4rem;
 }
 
-.board-list-a-item-info-quantity__info {
+.board-list-item-info-quantity__info {
   padding-left: 1rem;
 }
 
-.board-list-a__info-container-done {
-  visibility: hidden;
-}
-
-// ------ BOARD B -------
-
-.board-list-b-container {
-  align-content: flex-start;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.board-list-b-item {
-  background: $off-white;
-  flex: 1 1 auto;
-  font-size: 10px;
-  height: 95vh;
-  margin-left: 1rem;
-  max-width: 10vw;
-  padding: 2rem;
-}
-
-.board-list-b-item-header__container {
-  align-items: center;
-  background: $light-grey;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 0.3rem 1.5rem 0.3rem;
-}
-
-.board-list-b-item-header__table-number {
-  flex-grow: 1;
-  margin: 1rem;
-}
-
-.board-list-b-item-header__letter {
-  margin: 0.2rem;
-  padding-left: 0.5rem;
-}
-
-.board-list-b-item-header__time {
-  padding-right: 0.5rem;
-}
-
-.board-list-b__course-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 83vh;
-}
-
-.board-list-b__course {
-  background: $off-white;
-  border: 1px solid $grey;
-  font-size: $font-size-docket;
-  margin: .3rem;
-  padding: 0.7rem;
-}
-
-.board-list-b__item-container-done {
-  visibility: hidden;
-}
-
-//
-.board-list-b__item {
-  font-weight: 600;
-  margin-bottom: .4rem;
-}
-
-.board-list-b-item-info-quantity__container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-}
-
-.board-list-b-item-info-quantity__quantity {
-  border: 1px solid $grey;
-  border-radius: $radius;
-  padding: 0.4rem;
-}
-
-.board-list-b-item-info-quantity__info {
-  padding-left: 1rem;
-}
-
-.board-list-b__info-container-done {
-  visibility: hidden;
-}
-//
-
-// ------ BOARD C -------
-
-.board-list-c-container {
-  align-content: flex-start;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.board-list-c-item {
-  background: $off-white;
-  flex: 1 1 auto;
-  font-size: 10px;
-  height: 95vh;
-  margin-left: 1rem;
-  max-width: 10vw;
-  padding: 2rem 0.5rem;
-}
-
-.board-list-c-item-header__container {
-  align-items: center;
-  background: $light-grey;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 0.3rem 1.5rem 0.3rem;
-}
-
-.board-list-c-item-header__table-number {
-  flex-grow: 1;
-  margin: 1rem;
-}
-
-.board-list-c-item-header__letter {
-  margin: 0.2rem;
-  padding-left: 0.5rem;
-}
-
-.board-list-c-item-header__time {
-  padding-right: 0.5rem;
-}
-
-.board-list-c__course-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 83vh;
-}
-
-.board-list-c__course {
-  background: $off-white;
-  border: 1px solid $grey;
-  font-size: $font-size-docket;
-  margin: .3rem;
-  padding: 0.7rem;
-}
-
-.board-list-c__item-container-done {
-  visibility: hidden;
-}
-
-.board-list-c__item {
-  font-weight: 600;
-  margin-bottom: .4rem;
-}
-
-.board-list-c-item-info-quantity__container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-}
-
-.board-list-c-item-info-quantity__quantity {
-  border: 1px solid $grey;
-  border-radius: $radius;
-  padding: 0.4rem;
-}
-
-.board-list-c-item-info-quantity__info {
-  padding-left: 1rem;
-}
-
-.board-list-c__info-container-done {
+.board-list__info-container-done {
   visibility: hidden;
 }
 
