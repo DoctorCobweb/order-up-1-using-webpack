@@ -80,7 +80,9 @@ const Course = (props) => (
       "board-list__course border-blue"
     }
   >
-    <h3>
+    <h3
+      className={ props.course.items.every( item => item.quantity === 0 ) ? "board-list__course-name": "" }
+    >
       { props.course.name }
       { 
         (

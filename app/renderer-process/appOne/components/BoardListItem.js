@@ -24,7 +24,7 @@ class BoardListItem extends React.Component {
         <h1
           className="board-list-item-header__letter"
         >
-          { `A${this.props.index+1}`}
+          { `A${this.props.index+1}` }
         </h1>
         <h1
           className={ this.props.order.location === "RESTAURANT BAR" ?
@@ -81,10 +81,11 @@ const Course = (props) => (
     }
   >
     <h3
+      className={ props.course.items.every( item => item.quantity === 0 ) ? "board-list__course-name": "" }
     >
       { props.course.name }
       { 
-        (
+        ( 
           props.course.name === 'MAINS DINNER' &&
           props.order.goOnMains && 
           !!props.order.goOnMainsStartedAt
