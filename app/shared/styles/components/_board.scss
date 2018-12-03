@@ -77,7 +77,12 @@
   padding: 0.7rem;
 }
 
-.board-list__course-name {
+.board-list__course-name__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.board-list__course-name-hide {
   visibility: hidden;
 }
 
@@ -121,4 +126,24 @@
 
 .border-green {
   border: 0.2rem solid $green;
+}
+
+.hold-mains {
+  height: 1rem;
+  width: 1rem;
+  margin-left: 1rem;
+  margin-top: 0.3rem;
+}
+
+.away-on-mains {
+  height: 1rem;
+  width: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.3rem;
+}
+
+.away-on-mains__container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
 }
