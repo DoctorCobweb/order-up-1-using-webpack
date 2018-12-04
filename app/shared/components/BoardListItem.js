@@ -1,21 +1,34 @@
 import React from 'react'
 import moment from 'moment'
-import { sortCoursesInOrder } from '../../../shared/selectors/lists'
+import { sortCoursesInOrder } from '../selectors/lists'
+import greenDot from '../assets/green-dot.png'
+import redDot from '../assets/red-dot.png'
+import HoldOrAwayOnMains from './HoldOrAwayOnMains'
 
 class BoardListItem extends React.Component {
   state = {
-    timeElapsed: 0,
+    orderAgeInMinutes: 0,
   }
 
   componentDidMount = () => {
     this.setState(() => ({
-      timeElapsed: moment().diff(moment(this.props.order.orderReceivedAt), 'minutes')
+      orderAgeInMinutes: moment().diff(moment(this.props.order.orderReceivedAt), 'minutes')
     }))
-    setInterval(() => {
-      this.setState(() => ({
-        timeElapsed: moment().diff(moment(this.props.order.orderReceivedAt), 'minutes')
-      }))
-    }, 60100)
+
+    this.timerID = setInterval(
+      () => this.tick(),
+      60100
+    )
+  }
+
+  componenWillUnmount = () => {
+    clearInterval(this.timerID)
+  }
+
+  tick = () => {
+    this.setState(() => ({
+      orderAgeInMinutes: moment().diff(moment(this.props.order.orderReceivedAt), 'minutes')
+    }))
   }
 
   render = () => (
@@ -24,7 +37,7 @@ class BoardListItem extends React.Component {
         <h1
           className="board-list-item-header__letter"
         >
-          { `C${this.props.index + 1}`}
+          { `${this.props.screenID}${this.props.index+1}` }
         </h1>
         <h1
           className={ this.props.order.location === "RESTAURANT BAR" ?
@@ -36,7 +49,7 @@ class BoardListItem extends React.Component {
             "heading-bar board-list-item-header__table-number"
           }
         >
-          { this.props.order.tableNumber}
+          { this.props.order.tableNumber }
         </h1>
         <div
           className="board-list-item-header__time-container"
@@ -49,14 +62,14 @@ class BoardListItem extends React.Component {
           <h1
             className="board-list-item-header__time"
           >
-            { this.state.timeElapsed }
+            { this.state.orderAgeInMinutes }mins
           </h1>
         </div>
       </div>
       <div className="board-list__course-container">
         {
           sortCoursesInOrder(this.props.order).courses
-            .map(course =>
+            .map(course => 
               <Course
                 key={ course._id }
                 course={ course }
@@ -81,41 +94,19 @@ const Course = (props) => (
     }
   >
     <h3
-      className={ props.course.items.every( item => item.quantity === 0 ) ? "board-list__course-name": "" }
+      className={ 
+        props.course.items.every( item => item.quantity === 0 )
+        ?
+          "board-list__course-name-hide"
+        :
+          "board-list__course-name__container"
+      }
     >
       { props.course.name }
-      { 
-        (
-          props.course.name === 'MAINS DINNER' &&
-          props.order.goOnMains &&
-          !!props.order.goOnMainsStartedAt
-        ) ?
-          ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
-            :
-          ''
-      }
-      { 
-        props.course.name === 'MAINS DINNER' &&  !props.order.goOnMains ?
-          ` (HOLD)`
-            :
-          ''
-      }
-      { 
-        (
-          props.course.name === 'BAR MEALS' &&
-          props.order.goOnMains &&
-          !!props.order.goOnMainsStartedAt
-        ) ?
-          ` (AWAY @${moment(props.order.goOnMainsStartedAt).format("HH:mm")})`
-            :
-          ''
-      }
-      { 
-        props.course.name === 'BAR MEALS' &&  !props.order.goOnMains ?
-          ` (HOLD)`
-            :
-          ''
-      }
+      <HoldOrAwayOnMains 
+        order={ props.order }
+        course={ props.course }
+      />
     </h3>
     {
       props.course.items.map(item => <Item key={ item._id } item={ item }/>)
@@ -123,8 +114,9 @@ const Course = (props) => (
   </div>
 )
 
+
 const Item = (props) => (
-  <div className={ props.item.quantity === 0 ? "board-list__item-container-done" : "" }>
+  <div className={ props.item.quantity === 0 ? "board-list__item-container-done" : ""}>
     <div className="board-list__item">{ props.item.quantity } { props.item.name }</div>
     {
       props.item.infos.map(info => <Info key={ info._id } info={ info }/>)

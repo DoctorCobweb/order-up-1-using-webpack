@@ -10,6 +10,7 @@ const BoardList = props => (
               key={ order.id }
               order={ order.content }
               index={ index }
+              screenID={ props.screenID }
             />
           )
       }
