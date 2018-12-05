@@ -33,12 +33,13 @@ class BoardListItem extends React.Component {
 
   render = () => (
     <div className="board-list-item">
+
       <div className="board-list-item-header__container">
-        <h1
-          className="board-list-item-header__letter"
-        >
+
+        <h1 className="board-list-item-header__letter">
           { `${this.props.screenID}${this.props.index+1}` }
         </h1>
+
         <h1
           className={ this.props.order.location === "RESTAURANT BAR" ?
             "heading-restaurant board-list-item-header__table-number"
@@ -51,21 +52,18 @@ class BoardListItem extends React.Component {
         >
           { this.props.order.tableNumber }
         </h1>
-        <div
-          className="board-list-item-header__time-container"
-        >
-          <h1
-            className="board-list-item-header__time"
-          >
+
+        <div className="board-list-item-header__time-container">
+          <h1 className="board-list-item-header__time">
             { moment(this.props.order.orderReceivedAt).format("HH:mm") }
           </h1>
-          <h1
-            className="board-list-item-header__time"
-          >
+          <h1 className="board-list-item-header__time">
             { this.state.orderAgeInMinutes }mins
           </h1>
         </div>
+
       </div>
+
       <div className="board-list__course-container">
         {
           sortCoursesInOrder(this.props.order).courses

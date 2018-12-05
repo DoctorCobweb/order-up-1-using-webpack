@@ -1,34 +1,33 @@
-.order-list {
-  background: $grey;
-  border-radius: $radius;
-  color: $dark-grey;
-  display: flex;
-  flex-direction: column;
-  height: 77rem;
-  justify-content: flex-start;
-  margin-top: 2rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 2rem;
-}
+// .order-list {
+//   background: $grey;
+//   border-radius: $radius;
+//   color: $dark-grey;
+//   display: flex;
+//   flex-direction: column;
+//   height: 77rem;
+//   justify-content: flex-start;
+//   margin-top: 2rem;
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//   padding: 0 2rem;
+// }
 
-.list-item {
-  background: $off-white;
-  display: flex;
-  padding: 0.1rem;
-  flex-direction: row;
-  justify-content: space-between;
-}
+// .list-item {
+//   background: $off-white;
+//   display: flex;
+//   padding: 0.1rem;
+//   flex-direction: row;
+//   justify-content: space-between;
+// }
 
-.list__heading {
-  color: $off-white;
-  font-weight: 300;
-  text-align: center;
-}
+// .list__heading {
+//   color: $off-white;
+//   font-weight: 300;
+//   text-align: center;
+// }
 
 .new-orders-list-container {
   background: $light-grey;
-  border: 0.2rem solid lightgrey;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -44,7 +43,7 @@
   padding: 2rem;
   overflow: hidden;
   overflow-x: scroll;
-  width: 95vw;
+  width: 98vw;
 }
 
 .new-orders-list-item-dnd {
@@ -69,16 +68,131 @@
   padding: 2rem 0.5rem;
 }
 
-.blah {
-  margin-right: 1rem;
+
+// .drag-handle {
+//   background: $grey;
+//   border: none;
+//   border-radius: $radius;
+//   height: 4rem;
+//   min-height: 4rem;
+//   min-width: 4rem;
+//   width: 4rem;
+// }
+
+
+
+// .board-list-container {
+//   align-content: flex-start;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: flex-start;
+// }
+
+.new-orders-list-item {
+  background: $off-white;
+  flex: 1 1 auto;
+  font-size: 10px;
+  height: 85vh;
+  margin-left: 1rem;
+  min-width: 20vw;
+  overflow-x: scroll;
+  padding: 2rem 0.5rem;
 }
 
-.drag-handle {
-  background: $grey;
-  border: none;
+.new-orders-list-item-header__container {
+  align-items: center;
+  background: $light-grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 0.3rem 1.5rem 0.3rem;
+}
+
+.new-orders-list-item-header__letter {
+  margin: 0.2rem;
+  padding-left: 0.5rem;
+}
+
+.new-orders-list-item-header__table-number {
+  flex-grow: 1;
+  margin: 1rem;
+}
+
+.new-orders-list-item-header__time-container {
+  display: flex;
+  flex-direction: column;
+  padding-right: 0.5rem;
+}
+
+.new-orders-list-item-header__time {
+  margin: 0;
+  text-align: end;
+}
+
+.new-orders-list__course-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.new-orders-list__course {
+  background: $off-white;
+  border: 1px solid $grey;
+  font-size: $font-size-docket;
+  margin: .3rem;
+  padding: 0.7rem;
+}
+
+.new-orders-list__course-name__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.new-orders-list__course-name-hide {
+  visibility: hidden;
+}
+
+.new-orders-list__item-container-done {
+  visibility: hidden;
+}
+
+.new-orders-list__item {
+  font-weight: 600;
+  margin-bottom: .4rem;
+}
+
+.new-orders-list-item-info-quantity__container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.new-orders-list-item-info-quantity__quantity {
+  border: 1px solid $grey;
   border-radius: $radius;
-  height: 4rem;
-  min-height: 4rem;
-  min-width: 4rem;
-  width: 4rem;
+  padding: 0.4rem;
+}
+
+.new-orders-list-item-info-quantity__info {
+  padding-left: 1rem;
+}
+
+.new-orders-list__info-container-done {
+  visibility: hidden;
+}
+.new-orders-border-red {
+  border: 0.2rem solid $red;
+  width: 100vw;
+}
+
+.new-orders-border-blue {
+  border: 0.2rem solid $blue;
+  width: 100vw;
+}
+
+.new-orders-border-green {
+  border: 0.2rem solid $green;
+  width: 100vw;
 }

@@ -53,34 +53,47 @@ export default class NewOrdersListItem extends React.Component {
         index={ this.props.index }
       >
         {(provided, snapshot) => (
-          <div
-            className="new-orders-list-item-dnd"
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef} 
-          >
+
             <div
-              id={ this.props.order._id }
-              className={
-                this.props.index > MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C
-                ?
-                "blah button--not-on-grid"
-                :
-                  this.props.order.location === 'RESTAURANT BAR'
-                  ? 
-                  "blah button--red" 
-                  : 
-                    this.props.order.location === 'GAMING BAR'
-                    ?
-                    "blah button--green"
-                    :
-                    "blah button--blue"
-            }
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef} 
+              className="new-orders-list-item"
               onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }
             >
-              { /* this.props.order.tableNumber */}
-              <div className="board-list__course-container">
-                { 
+
+              <div className="new-orders-list-item-header__container">
+
+                <h1 className="new-orders-list-item-header__letter">
+                  { `${this.props.index+1}` }
+                </h1>
+
+                <h1
+                  className={ this.props.order.location === "RESTAURANT BAR" ?
+                    "heading-restaurant new-orders-list-item-header__table-number"
+                    :
+                    this.props.order.location === "GAMING BAR" ?
+                    "heading-gaming new-orders-list-item-header__table-number"
+                    :
+                    "heading-bar new-orders-list-item-header__table-number"
+                  }
+                >
+                  { this.props.order.tableNumber }
+                </h1>
+
+                <div className="new-orders-list-item-header__time-container">
+                  <h1 className="new-orders-list-item-header__time">
+                    { moment(this.props.order.orderReceivedAt).format("HH:mm") }
+                  </h1>
+                  <h1 className="new-orders-list-item-header__time">
+                    { this.state.orderAgeInMinutes }mins
+                  </h1>
+                </div>
+
+              </div>
+
+              <div className="new-orders-list__course-container">
+                {
                   sortCoursesInOrder(this.props.order).courses
                     .map(course => 
                       <Course
@@ -92,7 +105,7 @@ export default class NewOrdersListItem extends React.Component {
                 }
               </div>
             </div>
-          </div>
+
         )}
       </Draggable>
     )
@@ -152,21 +165,21 @@ export default class NewOrdersListItem extends React.Component {
 const Course = (props) => (
   <div
     className={ props.order.location === "RESTAURANT BAR" ?
-      "board-list__course border-red"
+      "new-orders-list__course new-orders-border-red"
       :
       props.order.location === "GAMING BAR" ?
-      "board-list__course border-green"
+      "new-orders-list__course new-orders-border-green"
       :
-      "board-list__course border-blue"
+      "new-orders-list__course new-orders-border-blue"
     }
   >
     <h3
       className={ 
         props.course.items.every( item => item.quantity === 0 )
         ?
-          "board-list__course-name-hide"
+          "new-orders-list__course-name-hide"
         :
-          "board-list__course-name__container"
+          "new-orders-list__course-name__container"
       }
     >
       { props.course.name }
@@ -183,8 +196,8 @@ const Course = (props) => (
 
 
 const Item = (props) => (
-  <div className={ props.item.quantity === 0 ? "board-list__item-container-done" : ""}>
-    <div className="board-list__item">{ props.item.quantity } { props.item.name }</div>
+  <div className={ props.item.quantity === 0 ? "new-orders-list__item-container-done" : ""}>
+    <div className="new-orders-list__item">{ props.item.quantity } { props.item.name }</div>
     {
       props.item.infos.map(info => <Info key={ info._id } info={ info }/>)
     }
@@ -192,10 +205,10 @@ const Item = (props) => (
 )
 
 const Info = (props) => (
-  <div className={ props.info.quantity === 0 ? "board-list__info-container-done" : "" }>
-    <div className="board-list-item-info-quantity__container">
-      <div className="board-list-item-info-quantity__quantity">{ props.info.quantity }</div>
-      <div className="board-list-item-info-quantity__info" >
+  <div className={ props.info.quantity === 0 ? "new-orders-list__info-container-done" : "" }>
+    <div className="new-orders-list-item-info-quantity__container">
+      <div className="new-orders-list-item-info-quantity__quantity">{ props.info.quantity }</div>
+      <div className="new-orders-list-item-info-quantity__info" >
         {
           props.info.infoLines.map(infoLine => <InfoLine key={ infoLine._id } infoLine={ infoLine }/>)
         }
