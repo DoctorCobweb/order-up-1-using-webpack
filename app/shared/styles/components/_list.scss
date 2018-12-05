@@ -27,14 +27,14 @@
 }
 
 .new-orders-list-container {
-  background: $off-white;
+  background: $light-grey;
   border: 0.2rem solid lightgrey;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   height: 71.4rem;
   min-height: 71.4rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1rem 0rem;
   width: 99vw;
 }
 
@@ -48,17 +48,29 @@
 }
 
 .new-orders-list-item-dnd {
-  align-items: center;
-  border: none;
-  border-radius: $radius;
-  color: $off-white;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.4rem;
-  min-height: 4rem;
-  min-width: 10rem;
+  // align-items: center;
+  // border: none;
+  // border-radius: $radius;
+  // color: $off-white;
+  // display: flex;
+  // justify-content: center;
+  // margin-bottom: 0.4rem;
+  // min-height: 4rem;
+  // min-width: 10rem;
+  // margin-right: 1rem;
+  // width: 19rem;
+
+  background: $off-white;
+  flex: 1 1 auto;
+  font-size: 10px;
+  height: 95vh;
+  margin-left: 1rem;
+  max-width: 18vw;
+  padding: 2rem 0.5rem;
+}
+
+.blah {
   margin-right: 1rem;
-  width: 19rem;
 }
 
 .drag-handle {

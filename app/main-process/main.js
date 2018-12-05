@@ -183,8 +183,8 @@ const createWindow = () => {
   winTwo.loadURL(appTwoUrl)
   winThree.loadURL(appThreeUrl)
 
-  // winMain.webContents.openDevTools()
-  winOne.webContents.openDevTools()
+  winMain.webContents.openDevTools()
+  // winOne.webContents.openDevTools()
   // winTwo.webContents.openDevTools()
   // winThree.webContents.openDevTools()
 
