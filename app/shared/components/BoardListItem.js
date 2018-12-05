@@ -1,8 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import { sortCoursesInOrder } from '../selectors/lists'
-import greenDot from '../assets/green-dot.png'
-import redDot from '../assets/red-dot.png'
 import HoldOrAwayOnMains from './HoldOrAwayOnMains'
 
 class BoardListItem extends React.Component {

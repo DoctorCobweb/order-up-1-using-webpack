@@ -1,20 +1,3 @@
-// -- REACT-BEAUTIFUL-DND -------
-.board-list-item-dnd {
-  align-items: center;
-  border: none;
-  border-radius: 50%;
-  color: $off-white;
-  display: flex;
-  flex-direction: row;
-  font-size: 3rem;
-  height: 9rem;
-  justify-content: center;
-  margin: 0 0.5rem;
-  padding: 0.2rem;
-  width: 9rem;
-}
-
-// ------ BOARD GENERIC --------
 .board-list-container {
   align-content: flex-start;
   display: flex;
