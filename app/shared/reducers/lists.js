@@ -67,6 +67,7 @@ export default (state=listsReducerDefaultState, action) => {
       // update the completed field 
       completedOrderClone.content.completed = true
       completedOrderClone.content.list = 'completed-orders' 
+      completedOrderClone.content.priority = false
 
       // put the clone completed order over to state.completedOrders object
       stateCloneForCompletedOrder.completedOrders[action.payload.orderId ] = {
@@ -96,8 +97,6 @@ export default (state=listsReducerDefaultState, action) => {
       return stateCloneForCompletedOrder
 
     case 'ADD_ORDER_BACK_TO_NEW_ORDERS_LIST':
-
-
       const stateCloneForAddOrderBackToNewOrdersList = _.cloneDeep(state)
 
       // in state.orders, an order data strucure is like:
@@ -105,11 +104,6 @@ export default (state=listsReducerDefaultState, action) => {
       const orderCloneForAddBackToNewOrdersList = 
         stateCloneForAddOrderBackToNewOrdersList.completedOrders[action.payload.orderId]
       
-      // console.log('state.completedOrders')
-      // console.log(stateCloneForAddOrderBackToNewOrdersList.completedOrders)
-      // console.log('orderCloneForAddBackToNewOrdersList')
-      // console.log(orderCloneForAddBackToNewOrdersList)
-
       // update the completed field 
       orderCloneForAddBackToNewOrdersList.content.completed = false
       orderCloneForAddBackToNewOrdersList.content.list = 'new-orders' 
@@ -148,10 +142,10 @@ export default (state=listsReducerDefaultState, action) => {
       orderCloneToggleOrderAsPriority.content.priority = !orderCloneToggleOrderAsPriority.content.priority
       stateCloneToggleOrderAsPriority.orders[action.payload.orderId] = orderCloneToggleOrderAsPriority
 
-      console.log('stateCloneToggleOrderAsPriority')
-      console.log(stateCloneToggleOrderAsPriority)
-      console.log('orderCloneToggleOrderAsPriority')
-      console.log(orderCloneToggleOrderAsPriority)
+      // console.log('stateCloneToggleOrderAsPriority')
+      // console.log(stateCloneToggleOrderAsPriority)
+      // console.log('orderCloneToggleOrderAsPriority')
+      // console.log(orderCloneToggleOrderAsPriority)
 
     return stateCloneToggleOrderAsPriority
 

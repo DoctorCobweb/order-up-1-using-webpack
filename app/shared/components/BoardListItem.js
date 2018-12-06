@@ -30,7 +30,7 @@ class BoardListItem extends React.Component {
   }
 
   render = () => (
-    <div className="board-list-item">
+    <div className={ this.props.order.priority ? "board-list-item board-list-item-priority" : "board-list-item" }>
 
       <div className="board-list-item-header__container">
 

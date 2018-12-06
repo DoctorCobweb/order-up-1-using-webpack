@@ -243,7 +243,7 @@ export const updateOrderIdsInList = (data) => ({
 export const startUpdateOrderIdsInList = (dndData) => {
   return (dispatch, getState) => {
     return List.findOneAndUpdate(
-      { nameId: 'new-orders'},
+      { nameId: 'new-orders' },
       { orderIds: dndData.lists['new-orders'].orderIds }).exec()
     .then(list => {
       dispatch(updateOrderIdsInList(dndData))
@@ -301,6 +301,7 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
       .then(order => {
         order.completed = true
         order.list = 'completed-orders'
+        order.priority = false
         return order.save()
       })
       .then(order => {
