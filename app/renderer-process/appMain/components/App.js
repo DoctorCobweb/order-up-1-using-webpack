@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable 
+} from 'react-beautiful-dnd'
 import {
   startSetupLists,
   startUpdateOrderIdsInList,
@@ -11,11 +15,20 @@ import {
 import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
+import PriorityModal from './PriorityModal'
 
 export class App extends React.Component {
   state = {
     selectedOrderId: undefined,
     isAddingNewOrder: false,
+    isPrioritisingOrder: false,
+    prioritisedOrders: {
+      first: '',
+      second: '',
+      third: '',
+      fourth: '',
+      fifth: '',
+    }
   }
 
   componentDidMount() {
@@ -53,7 +66,20 @@ export class App extends React.Component {
 
   handlePriorityClick = (orderId) => {
     console.log(`handlePriorityClick, orderId: ${orderId}`)
-    this.props.startSetToggleOrderAsPriority({ orderId })
+    this.setState(() => ({
+      isPrioritisingOrder: true,
+    }))
+    // this.props.startSetToggleOrderAsPriority({ orderId })
+  }
+
+  handleClearPrioritiseOrder = () => {
+    this.setState(() => ({
+      isPrioritisingOrder: false,
+    }))
+  }
+
+  handleSelectPriority = ({ priority }) => {
+    console.log(`handleSelectPriority ${priority}`)
   }
 
   onDragStart = start => {
@@ -147,6 +173,11 @@ export class App extends React.Component {
             selectedOrderId={ this.state.selectedOrderId }
             handleClearSelectedOrder={ this.handleClearSelectedOrder }
             handleOrderCompletedClick={ this.handleOrderCompletedClick }
+          />
+          <PriorityModal
+            isPrioritisingOrder={ this.state.isPrioritisingOrder }
+            handleClearPrioritiseOrder={ this.handleClearPrioritiseOrder}
+            handleSelectPriority={ this.handleSelectPriority }
           />
         </DragDropContext>
       </div>
