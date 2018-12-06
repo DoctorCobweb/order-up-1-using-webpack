@@ -22,6 +22,8 @@ export class App extends React.Component {
     selectedOrderId: undefined,
     isAddingNewOrder: false,
     isPrioritisingOrder: false,
+    prioritisingOrderId: '',
+    priority: 0,
     prioritisedOrders: {
       first: '',
       second: '',
@@ -68,6 +70,7 @@ export class App extends React.Component {
     console.log(`handlePriorityClick, orderId: ${orderId}`)
     this.setState(() => ({
       isPrioritisingOrder: true,
+      prioritisingOrderId: orderId,
     }))
     // this.props.startSetToggleOrderAsPriority({ orderId })
   }
@@ -75,11 +78,18 @@ export class App extends React.Component {
   handleClearPrioritiseOrder = () => {
     this.setState(() => ({
       isPrioritisingOrder: false,
+      prioritisingOrderId: '',
+      priority: 0,
     }))
   }
 
   handleSelectPriority = ({ priority }) => {
     console.log(`handleSelectPriority ${priority}`)
+    this.setState(() => ({
+      priority
+    }), () => {
+      console.log(this.state)
+    })
   }
 
   onDragStart = start => {
