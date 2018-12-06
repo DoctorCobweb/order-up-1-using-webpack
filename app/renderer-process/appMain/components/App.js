@@ -6,6 +6,7 @@ import {
   startSetupLists,
   startUpdateOrderIdsInList,
   startSetOrderAsCompleted,
+  startSetToggleOrderAsPriority
 } from '../../../shared/actions/lists'
 import OrderModal from './OrderModal'
 import Header from './Header'
@@ -48,6 +49,11 @@ export class App extends React.Component {
     }), () => {
       this.props.startSetOrderAsCompleted({ orderId })
     })
+  }
+
+  handlePriorityClick = (orderId) => {
+    console.log(`handlePriorityClick, orderId: ${orderId}`)
+    this.props.startSetToggleOrderAsPriority({ orderId })
   }
 
   onDragStart = start => {
@@ -113,6 +119,7 @@ export class App extends React.Component {
     this.props.startUpdateOrderIdsInList(newDndState)
   }
 
+
   render = () => {
     return (
       <div>
@@ -133,6 +140,7 @@ export class App extends React.Component {
               index={ 0 }
               handleOrderClick={ this.handleOrderClick }
               handleAddNewOrderClick = { this.handleAddNewOrderClick }
+              handlePriorityClick={ this.handlePriorityClick }
             />
           </div>
           <OrderModal
@@ -153,7 +161,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startSetupLists: () => dispatch(startSetupLists()),
   startUpdateOrderIdsInList: (data) => dispatch(startUpdateOrderIdsInList(data)),
-  startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data))
+  startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data)),
+  startSetToggleOrderAsPriority: (data) => dispatch(startSetToggleOrderAsPriority(data)),
 })
 
 const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)

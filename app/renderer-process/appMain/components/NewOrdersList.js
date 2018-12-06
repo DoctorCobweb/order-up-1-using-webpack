@@ -41,6 +41,7 @@ export class NewOrdersList extends React.Component {
                       order={ order.content }
                       index={ index }
                       handleOrderClick={ this.props.handleOrderClick }
+                      handlePriorityClick={ this.props.handlePriorityClick }
                     />
                   )
               }

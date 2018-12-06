@@ -51,15 +51,26 @@ export default class NewOrdersListItem extends React.Component {
         index={ this.props.index }
       >
         {(provided, snapshot) => (
-
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef} 
+            className={ this.props.index <= 29 ? "new-orders-list-item": "new-orders-list-item item-not-displayed-background"}
+          >
+            <div className={ this.props.order.priority ? "button-new-order-item__container priority" : "button-new-order-item__container"}>
+              {
+                this.props.index <= 29 &&
+                  <button
+                    className="button-new-order-item button--grey"
+                    onClick={ () => this.props.handlePriorityClick(this.props.order._id) }
+                  >
+                    Prioritise
+                  </button>
+              }
+            </div>
             <div
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              ref={provided.innerRef} 
-              className={ this.props.index <= 29 ? "new-orders-list-item": "new-orders-list-item item-not-displayed-background"}
               onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }
             >
-
               <div className="new-orders-list-item-header__container">
 
                 <h1 className="new-orders-list-item-header__letter">
@@ -79,7 +90,6 @@ export default class NewOrdersListItem extends React.Component {
                         'N/A'
                   }
                 </h1>
-
                 <h1
                   className={ this.props.order.location === "RESTAURANT BAR" ?
                     "heading-restaurant new-orders-list-item-header__table-number"
@@ -92,7 +102,6 @@ export default class NewOrdersListItem extends React.Component {
                 >
                   { this.props.order.tableNumber }
                 </h1>
-
                 <div className="new-orders-list-item-header__time-container">
                   <h1 className="new-orders-list-item-header__time">
                     { moment(this.props.order.orderReceivedAt).format("HH:mm") }
@@ -101,9 +110,7 @@ export default class NewOrdersListItem extends React.Component {
                     { this.state.orderAgeInMinutes }mins
                   </h1>
                 </div>
-
               </div>
-
               <div className="new-orders-list__course-container">
                 {
                   sortCoursesInOrder(this.props.order).courses
@@ -117,7 +124,7 @@ export default class NewOrdersListItem extends React.Component {
                 }
               </div>
             </div>
-
+          </div>
         )}
       </Draggable>
     )

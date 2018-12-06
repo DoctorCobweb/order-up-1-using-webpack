@@ -14,6 +14,7 @@ const orderSchema = new Schema({
   orderSentAt: Date,
   orderReceivedAt: Date,
   orderTakenUsing: String,
+  priority: Boolean,
   tableNumber: String,
   variableContent: [String],
   courses: [{type: String, ref: 'Course'}]

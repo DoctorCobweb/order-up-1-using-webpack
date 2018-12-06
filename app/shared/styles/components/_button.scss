@@ -61,6 +61,26 @@
   margin: 4px 4px 0 4px;
 }
 
+.button-new-order-item__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.button-new-order-item {
+  border: none;
+  border-radius: $radius;
+  color:$off-white;
+  font-size:$font-size-large;
+  font-weight: 300;
+  line-height:1;
+  margin: 0.3rem;
+  min-height: 3rem;
+  outline: none;
+  padding: 1rem;
+  text-decoration: none;
+}
+
 .button--hold-course {
   background: $red;
 }

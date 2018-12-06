@@ -204,6 +204,7 @@ const createOrderAndSave = (map, vals) => {
     orderReceivedAt: moment(),
     orderSentAt: moment(courseMetaData.orderSentAt, "DD-MM-YYYY HH:mm:ss"),
     orderTakenUsing: courseMetaData.orderTakenUsing,
+    priority: false,
     tableNumber: courseMetaData.tableNumber,
     variableContent: courseMetaData.variableContent,
     courses: courseIds

@@ -376,6 +376,29 @@ export const startAddOrderBackToNewOrdersList = (orderId, cb) => {
   }
 }
 
+export const setToggleOrderAsPriority = (orderId) => ({
+  type: 'TOGGLE_ORDER_AS_PRIORITY',
+  payload: { orderId }
+})
+
+export const startSetToggleOrderAsPriority = ({ orderId }) => {
+  return (dispatch, getState) => {
+    return Order.findById(orderId)
+      .exec()
+      .then(order => {
+        // update the order
+        order.priority = !order.priority
+        return order.save()
+      })
+      .then(order => {
+        return dispatch(setToggleOrderAsPriority(orderId))
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+
 ////////////////////////////////////////////////////////////
 //
 // ORDER-ORIENTED ACTIONS: FROM order.js actions.....

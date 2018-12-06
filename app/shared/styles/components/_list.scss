@@ -24,6 +24,7 @@
   font-size: 10px;
   height: 85vh;
   margin-left: 1rem;
+  max-width: 23vw;
   min-width: 20vw;
   overflow-x: scroll;
   padding: 2rem 0.5rem;
@@ -129,4 +130,8 @@
 
 .item-not-displayed-background {
   background:$dark-grey;
+}
+
+.priority {
+  background: $orange;
 }

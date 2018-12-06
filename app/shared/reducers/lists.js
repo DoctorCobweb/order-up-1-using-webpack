@@ -142,6 +142,19 @@ export default (state=listsReducerDefaultState, action) => {
 
     return stateCloneForAddOrderBackToNewOrdersList
 
+    case 'TOGGLE_ORDER_AS_PRIORITY':
+      const stateCloneToggleOrderAsPriority = _.cloneDeep(state)
+      const orderCloneToggleOrderAsPriority = stateCloneToggleOrderAsPriority.orders[action.payload.orderId]
+      orderCloneToggleOrderAsPriority.content.priority = !orderCloneToggleOrderAsPriority.content.priority
+      stateCloneToggleOrderAsPriority.orders[action.payload.orderId] = orderCloneToggleOrderAsPriority
+
+      console.log('stateCloneToggleOrderAsPriority')
+      console.log(stateCloneToggleOrderAsPriority)
+      console.log('orderCloneToggleOrderAsPriority')
+      console.log(orderCloneToggleOrderAsPriority)
+
+    return stateCloneToggleOrderAsPriority
+
 ////////////////////////////////////////////////////////////
 //
 // FROM order.js actions.....
