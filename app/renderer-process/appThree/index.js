@@ -14,11 +14,13 @@ import '../../shared/styles/styles.scss'
 import AppThree from './components/AppThree'
 
 import listsReducer from '../../shared/reducers/lists'
+import prioritiesReducer from '../../shared/reducers/priorities'
 
 const initialState = getInitialStateRenderer()
 const store = createStore(
   combineReducers({
     lists: listsReducer,
+    priorities: prioritiesReducer,
   }),
   initialState,
   compose(applyMiddleware(forwardToMain, thunk))

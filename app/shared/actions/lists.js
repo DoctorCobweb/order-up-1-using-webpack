@@ -161,7 +161,11 @@ const getTheListsInMongo = () => {
         acc[order._id] = {id: order._id, content: order.toJSON()}
         return acc
       }, {})
-      return List.find({})
+
+      // TODO
+      // *** DIDNT HAVE .exec() here and it apparently worked. weird.
+      // => check this out later
+      return List.find({}).exec()
     })
     .then(lists => {
       listsData.orders = ordersForListData

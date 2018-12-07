@@ -5,6 +5,7 @@ import { history } from '../../../shared/routers/AppRouter'
 import Header from './Header'
 import WarningModal from './WarningModal'
 import { startDeleteAllOrders } from '../../../shared/actions/lists'
+import { startDeletePriorities } from '../../../shared/actions/priorities'
 
 export class Settings extends React.Component {
   state = {
@@ -17,8 +18,9 @@ export class Settings extends React.Component {
 
   handleConfirmDeleteAllOrdersClick = () => {
     this.props.startDeleteAllOrders()
+    this.props.startDeletePriorities()
     this.setState({ displayWarningModal: false })
-    history.push('/home')
+    // history.push('/home')
   }
 
   handleCancelDeleteAllOrdersClick = () => {
@@ -50,7 +52,8 @@ export class Settings extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startDeleteAllOrders: () => dispatch(startDeleteAllOrders())
+  startDeleteAllOrders: () => dispatch(startDeleteAllOrders()),
+  startDeletePriorities: () => dispatch(startDeletePriorities()),
 })
 
 const ConnectedSettings = connect(null, mapDispatchToProps)(Settings)

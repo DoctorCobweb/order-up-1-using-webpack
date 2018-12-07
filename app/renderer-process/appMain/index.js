@@ -15,6 +15,7 @@ import '../../shared/styles/styles.scss'
 import App from './components/App'
 
 import listsReducer from '../../shared/reducers/lists'
+import prioritiesReducer from '../../shared/reducers/priorities'
 const dbHost= config['DB_HOST']
 const dbPort = config['DB_PORT']
 const dbName = config['DB_NAME']
@@ -23,7 +24,8 @@ const dbTableName= config['DB_TABLE_NAME']
 const initialState = getInitialStateRenderer()
 const store = createStore(
   combineReducers({
-    lists: listsReducer
+    lists: listsReducer,
+    priorities: prioritiesReducer,
   }),
   initialState,
   compose(applyMiddleware(forwardToMain, thunk))

@@ -12,6 +12,9 @@ import {
   startSetOrderAsCompleted,
   startSetToggleOrderAsPriority
 } from '../../../shared/actions/lists'
+import {
+  startSetupPriorities,
+} from '../../../shared/actions/priorities'
 import OrderModal from './OrderModal'
 import Header from './Header'
 import NewOrdersList from './NewOrdersList'
@@ -35,6 +38,9 @@ export class App extends React.Component {
   componentDidMount() {
     // this will setup the lists in using mongo & the state-slice of redux
     this.props.startSetupLists()
+
+    // this will setup the priorites in monge & the priorities state-slice in redux
+    this.props.startSetupPriorities()
   }
 
   handleOrderClick = (orderId) => {
@@ -239,6 +245,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   startSetupLists: () => dispatch(startSetupLists()),
+  startSetupPriorities: () => dispatch(startSetupPriorities()),
   startUpdateOrderIdsInList: (data) => dispatch(startUpdateOrderIdsInList(data)),
   startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data)),
   startSetToggleOrderAsPriority: (data) => dispatch(startSetToggleOrderAsPriority(data)),
