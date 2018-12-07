@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Modal from 'react-modal'
 
 Modal.setAppElement('#root')
@@ -29,11 +30,11 @@ const PriorityModal = (props) => (
         <div>{ props.prioritisingOrderId }</div>
         <div
           className={
-            (props.prioritisedOrders.first && props.prioritisedOrders.first !== props.prioritisingOrderId)
+            (props.priorities.first && props.priorities.first !== props.prioritisingOrderId)
             ? 
             "button button--grey"
             :
-              props.prioritisedOrders.first === props.prioritisingOrderId
+              props.priorities.first === props.prioritisingOrderId
               ?
               "button button--green"
               :
@@ -45,11 +46,11 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            (props.prioritisedOrders.second && props.prioritisedOrders.second !== props.prioritisingOrderId)
+            (props.priorities.second && props.priorities.second !== props.prioritisingOrderId)
             ? 
             "button button--grey"
             :
-              props.prioritisedOrders.second === props.prioritisingOrderId
+              props.priorities.second === props.prioritisingOrderId
               ?
               "button button--green"
               :
@@ -61,11 +62,11 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            (props.prioritisedOrders.third && props.prioritisedOrders.third !== props.prioritisingOrderId)
+            (props.priorities.third && props.priorities.third !== props.prioritisingOrderId)
             ? 
             "button button--grey"
             :
-              props.prioritisedOrders.third === props.prioritisingOrderId
+              props.priorities.third === props.prioritisingOrderId
               ?
               "button button--green"
               :
@@ -77,11 +78,11 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            (props.prioritisedOrders.fourth && props.prioritisedOrders.fourth !== props.prioritisingOrderId)
+            (props.priorities.fourth && props.priorities.fourth !== props.prioritisingOrderId)
             ? 
             "button button--grey"
             :
-              props.prioritisedOrders.fourth === props.prioritisingOrderId
+              props.priorities.fourth === props.prioritisingOrderId
               ?
               "button button--green"
               :
@@ -93,11 +94,11 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            (props.prioritisedOrders.fifth && props.prioritisedOrders.fifth !== props.prioritisingOrderId)
+            (props.priorities.fifth && props.priorities.fifth !== props.prioritisingOrderId)
             ? 
             "button button--grey"
             :
-              props.prioritisedOrders.fifth === props.prioritisingOrderId
+              props.priorities.fifth === props.prioritisingOrderId
               ?
               "button button--green"
               :
@@ -109,7 +110,7 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            !_.values(props.prioritisedOrders).includes(props.prioritisingOrderId) ?
+            !_.values(props.priorities).includes(props.prioritisingOrderId) ?
              "button button--green"
              :
              "button"
@@ -123,4 +124,8 @@ const PriorityModal = (props) => (
   </Modal>
 )
 
-export default PriorityModal
+const mapStateToProps = (state) => ({
+  priorities: state.priorities,
+})
+
+export default connect(mapStateToProps, null)(PriorityModal)

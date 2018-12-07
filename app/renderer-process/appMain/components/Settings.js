@@ -20,7 +20,7 @@ export class Settings extends React.Component {
     this.props.startDeleteAllOrders()
     this.props.startDeletePriorities()
     this.setState({ displayWarningModal: false })
-    // history.push('/home')
+    history.push('/home')
   }
 
   handleCancelDeleteAllOrdersClick = () => {

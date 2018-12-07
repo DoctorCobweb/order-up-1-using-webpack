@@ -35,10 +35,10 @@ const createThePrioritiesInMongo = () => {
     })
 }
 
-export const setupPriorities = (prioritiesData) => ({
+export const setupPriorities = (priorities) => ({
   type: 'SETUP_PRIORITIES',
   payload: {
-    prioritiesData,
+    priorities,
   }
 })
 
@@ -58,7 +58,7 @@ export const startSetupPriorities = () => {
       .then(prioritiesData => {
         console.log('prioritiesData')
         console.log(prioritiesData)
-        dispatch(setupPriorities(prioritiesData))
+        return dispatch(setupPriorities(prioritiesData.priorities))
       })
       .catch(err => {
         throw err
@@ -78,6 +78,45 @@ export const startDeletePriorities = () => {
         return dispatch(deletePriorities())
       })
       .catch(() => {
+        throw err
+      })
+  }
+}
+
+export const setPriority = (priorities) => ({
+  type: 'SET_PRIORITY',
+  payload: {
+    priorities,
+  }
+})
+
+export const startSetPriority = ({ priority, prioritisingOrderId }) => {
+  return (dispatch, getState) => {
+    return Priorities.findOne({})
+      .then(prioritiesDoc => {
+
+        if (priority === 'none') {
+          prioritiesDoc.priorities.forEach((val, key, map) => {
+            if (val === prioritisingOrderId) {
+              prioritiesDoc.priorities.set(key, '')
+            }
+          })
+        } else {
+          prioritiesDoc.priorities.forEach((val, key, map) => {
+            if (key === priority) {
+              prioritiesDoc.priorities.set(key, prioritisingOrderId)
+            }
+          })
+        }
+
+        return prioritiesDoc.save()
+      })
+      .then(prioritiesDoc => {
+        console.log('updated prioritiesDoc is')
+        console.log(prioritiesDoc)
+        return dispatch(setPriority(prioritiesDoc.priorities.toJSON()))
+      })
+      .catch(err => {
         throw err
       })
   }

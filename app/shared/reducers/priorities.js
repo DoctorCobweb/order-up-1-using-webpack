@@ -11,16 +11,16 @@ const prioritiesDefaultState = {
 export default (state=prioritiesDefaultState, action) => {
   switch(action.type) {
     case 'SETUP_PRIORITIES':
-      console.log('hello from SETUP_PRIORITIES')
-      // todo
-      console.log('action.payload.prioritiesData.priorities')
-      console.log(action.payload.prioritiesData.priorities)
-
-      return action.payload.prioritiesData.priorities
-
+      console.log('SETUP_PROPERTIES')
+      console.log(action.payload.priorities)
+      return action.payload.priorities
     case 'DELETE_PRIORITIES':
       console.log('deleting priorities from redux store')
       return prioritiesDefaultState
+    case 'SET_PRIORITY':
+      console.log('SET_PRIORITY, new priorities are')
+      console.log(action.payload.priorities)
+      return action.payload.priorities
     default:
       return state
   }
