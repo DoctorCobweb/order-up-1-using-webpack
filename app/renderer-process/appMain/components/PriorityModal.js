@@ -25,31 +25,73 @@ const PriorityModal = (props) => (
         X
       </button>
       <div>
-        yadda: TODO: be able to choose what priority the order should be.
+        <h1>Order Priority</h1>
+        <div>{ props.prioritisingOrderId }</div>
         <div
-          onClick={ () => props.handleSelectPriority({priority: 1})}
+          className={
+            props.prioritisedOrders.first === props.prioritisingOrderId ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('first') }
         >
           1
         </div>
         <div
-          onClick={ () => props.handleSelectPriority({priority: 2})}
+          className={
+            props.prioritisedOrders.second === props.prioritisingOrderId ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('second') }
         >
           2
         </div>
         <div
-          onClick={ () => props.handleSelectPriority({priority: 3})}
+          className={
+            props.prioritisedOrders.third === props.prioritisingOrderId ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('third') }
         >
           3
         </div>
         <div
-          onClick={ () => props.handleSelectPriority({priority: 4})}
+          className={
+            props.prioritisedOrders.fourth === props.prioritisingOrderId ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('fourth') }
         >
           4
         </div>
         <div
-          onClick={ () => props.handleSelectPriority({priority: 5})}
+          className={
+            props.prioritisedOrders.fifth === props.prioritisingOrderId ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('fifth') }
         >
           5
+        </div>
+        <div
+          className={
+            !_.values(props.prioritisedOrders).includes(props.prioritisingOrderId) ?
+             "button button--green"
+             :
+             "button"
+          }
+          onClick={ () => props.handleSelectPriority('none') }
+        >
+          None
         </div>
       </div>
     </div>

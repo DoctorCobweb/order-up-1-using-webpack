@@ -23,7 +23,6 @@ export class App extends React.Component {
     isAddingNewOrder: false,
     isPrioritisingOrder: false,
     prioritisingOrderId: '',
-    priority: 0,
     prioritisedOrders: {
       first: '',
       second: '',
@@ -79,17 +78,51 @@ export class App extends React.Component {
     this.setState(() => ({
       isPrioritisingOrder: false,
       prioritisingOrderId: '',
-      priority: 0,
     }))
   }
 
-  handleSelectPriority = ({ priority }) => {
+  handleSelectPriority = (priority) => {
     console.log(`handleSelectPriority ${priority}`)
-    this.setState(() => ({
-      priority
-    }), () => {
-      console.log(this.state)
-    })
+
+    if (priority === 'none') {
+      // remove the orderId from whatever priority value 
+      // it's set to
+      console.log('none priority')
+      this.setState(prevState => {
+        console.log(Object.keys(prevState.prioritisedOrders))
+
+        const newPrioritisedOrders =
+          _.reduce(Object.keys(prevState.prioritisedOrders), (acc, priority) => {
+
+            if (prevState.prioritisedOrders[priority] === prevState.prioritisingOrderId) {
+              console.log(1)
+              acc[priority] = ''
+              return acc
+            } else {
+              console.log(2)
+              console.log(acc, priority, prevState.prioritisedOrders)
+              acc[priority] = prevState.prioritisedOrders[priority]
+              return acc
+            }
+          }, {})
+
+        return {
+          prioritisedOrders: newPrioritisedOrders
+        }
+
+      }, () => { console.log(this.state) })
+
+    } else {
+      console.log('number priority')
+      this.setState(prevState => ({
+        prioritisedOrders: {
+          ... prevState.prioritisedOrders,
+          [priority]: prevState.prioritisingOrderId
+        }
+      }), () => {
+        console.log(this.state)
+      })
+    }
   }
 
   onDragStart = start => {
@@ -188,6 +221,8 @@ export class App extends React.Component {
             isPrioritisingOrder={ this.state.isPrioritisingOrder }
             handleClearPrioritiseOrder={ this.handleClearPrioritiseOrder}
             handleSelectPriority={ this.handleSelectPriority }
+            prioritisingOrderId={ this.state.prioritisingOrderId }
+            prioritisedOrders={ this.state.prioritisedOrders }
           />
         </DragDropContext>
       </div>
