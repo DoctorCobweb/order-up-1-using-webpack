@@ -29,10 +29,15 @@ const PriorityModal = (props) => (
         <div>{ props.prioritisingOrderId }</div>
         <div
           className={
-            props.prioritisedOrders.first === props.prioritisingOrderId ?
-             "button button--green"
-             :
-             "button"
+            (props.prioritisedOrders.first && props.prioritisedOrders.first !== props.prioritisingOrderId)
+            ? 
+            "button button--grey"
+            :
+              props.prioritisedOrders.first === props.prioritisingOrderId
+              ?
+              "button button--green"
+              :
+              "button"
           }
           onClick={ () => props.handleSelectPriority('first') }
         >
@@ -40,10 +45,15 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            props.prioritisedOrders.second === props.prioritisingOrderId ?
-             "button button--green"
-             :
-             "button"
+            (props.prioritisedOrders.second && props.prioritisedOrders.second !== props.prioritisingOrderId)
+            ? 
+            "button button--grey"
+            :
+              props.prioritisedOrders.second === props.prioritisingOrderId
+              ?
+              "button button--green"
+              :
+              "button"
           }
           onClick={ () => props.handleSelectPriority('second') }
         >
@@ -51,10 +61,15 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            props.prioritisedOrders.third === props.prioritisingOrderId ?
-             "button button--green"
-             :
-             "button"
+            (props.prioritisedOrders.third && props.prioritisedOrders.third !== props.prioritisingOrderId)
+            ? 
+            "button button--grey"
+            :
+              props.prioritisedOrders.third === props.prioritisingOrderId
+              ?
+              "button button--green"
+              :
+              "button"
           }
           onClick={ () => props.handleSelectPriority('third') }
         >
@@ -62,10 +77,15 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            props.prioritisedOrders.fourth === props.prioritisingOrderId ?
-             "button button--green"
-             :
-             "button"
+            (props.prioritisedOrders.fourth && props.prioritisedOrders.fourth !== props.prioritisingOrderId)
+            ? 
+            "button button--grey"
+            :
+              props.prioritisedOrders.fourth === props.prioritisingOrderId
+              ?
+              "button button--green"
+              :
+              "button"
           }
           onClick={ () => props.handleSelectPriority('fourth') }
         >
@@ -73,10 +93,15 @@ const PriorityModal = (props) => (
         </div>
         <div
           className={
-            props.prioritisedOrders.fifth === props.prioritisingOrderId ?
-             "button button--green"
-             :
-             "button"
+            (props.prioritisedOrders.fifth && props.prioritisedOrders.fifth !== props.prioritisingOrderId)
+            ? 
+            "button button--grey"
+            :
+              props.prioritisedOrders.fifth === props.prioritisingOrderId
+              ?
+              "button button--green"
+              :
+              "button"
           }
           onClick={ () => props.handleSelectPriority('fifth') }
         >

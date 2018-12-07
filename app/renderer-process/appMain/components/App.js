@@ -84,6 +84,9 @@ export class App extends React.Component {
   handleSelectPriority = (priority) => {
     console.log(`handleSelectPriority ${priority}`)
 
+    // cannot select a priority which is already assigned
+    if (this.state.prioritisedOrders[priority]) return 
+
     if (priority === 'none') {
       // remove the orderId from whatever priority value 
       // it's set to
