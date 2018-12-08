@@ -102,9 +102,20 @@ export const startSetPriority = ({ priority, prioritisingOrderId }) => {
             }
           })
         } else {
+
+          // check if the orderId is already present as a priority.
+          // if it is, then clear it out.
+          // then update priorites with the new priority for the order
+
           prioritiesDoc.priorities.forEach((val, key, map) => {
+            if (val === prioritisingOrderId) {
+              prioritiesDoc.priorities.set(key, '')
+              return
+            }
+
             if (key === priority) {
               prioritiesDoc.priorities.set(key, prioritisingOrderId)
+              return
             }
           })
         }

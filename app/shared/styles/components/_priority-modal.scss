@@ -1,0 +1,38 @@
+
+.ReactModalPortal > div {
+  opacity: 0;
+}
+
+.modal {
+  align-items: center;
+  background: $off-white;
+  border-radius: $radius;
+  color: $dark-blue;
+  justify-content: center;
+  margin: 6rem 0;
+  max-width: 60rem;
+  outline: none;
+  text-align: left;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+  // make the Modal scrollable 
+  overflow-y: auto !important;
+  transition: opacity 200ms ease-in-out;
+}
+
+
+
+.ReactModalPortal .ReactModal__Overlay--after-open {
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.ReactModalPortal .ReactModal__Overlay--before-close {
+  opacity: 0;
+}
