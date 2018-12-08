@@ -42,7 +42,7 @@ const PriorityModal = (props) => (
                 :
                 "button"
             }
-            onClick={ () => props.handleSelectPriority('first') }
+            onClick={ () => props.handleSelectPriority('1') }
           >
             1
           </div>
@@ -58,7 +58,7 @@ const PriorityModal = (props) => (
                 :
                 "button"
             }
-            onClick={ () => props.handleSelectPriority('second') }
+            onClick={ () => props.handleSelectPriority('2') }
           >
             2
           </div>
@@ -74,7 +74,7 @@ const PriorityModal = (props) => (
                 :
                 "button"
             }
-            onClick={ () => props.handleSelectPriority('third') }
+            onClick={ () => props.handleSelectPriority('3') }
           >
             3
           </div>
@@ -90,7 +90,7 @@ const PriorityModal = (props) => (
                 :
                 "button"
             }
-            onClick={ () => props.handleSelectPriority('fourth') }
+            onClick={ () => props.handleSelectPriority('4') }
           >
             4
           </div>
@@ -106,7 +106,7 @@ const PriorityModal = (props) => (
                 :
                 "button"
             }
-            onClick={ () => props.handleSelectPriority('fifth') }
+            onClick={ () => props.handleSelectPriority('5') }
           >
             5
           </div>

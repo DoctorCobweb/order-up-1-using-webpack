@@ -19,11 +19,11 @@ const createThePrioritiesInMongo = () => {
   const newPriorities = new Priorities({
     _id: uuidv1(), 
     priorities: {
-      'first': '',
-      'second': '',
-      'third': '',
-      'fourth': '',
-      'fifth': '',
+      '1': '',
+      '2': '',
+      '3': '',
+      '4': '',
+      '5': '',
     }
   })
   return newPriorities.save()

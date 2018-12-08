@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { sortCoursesInOrder } from '../selectors/lists'
 import HoldOrAwayOnMains from './HoldOrAwayOnMains'
@@ -29,8 +30,16 @@ class BoardListItem extends React.Component {
     }))
   }
 
-  render = () => (
-    <div className={ this.props.order.priority ? "board-list-item board-list-item-priority" : "board-list-item" }>
+  render = () => {
+    const hasAPriority = _.values(this.props.priorities).includes(this.props.order._id)
+    let orderPriority 
+    if (hasAPriority) {
+      orderPriority = _.invert(this.props.priorities)[this.props.order._id]
+    }
+
+    return (
+    <div className={ hasAPriority ? "board-list-item board-list-item-priority" : "board-list-item" }>
+      <h1>{ orderPriority }</h1>
 
       <div className="board-list-item-header__container">
 
@@ -74,9 +83,10 @@ class BoardListItem extends React.Component {
             )
         }
       </div>
-    </div>
-  )
+    </div>)
+  }
 }
+
 
 const Course = (props) => (
   <div
@@ -140,4 +150,9 @@ const InfoLine = (props) => (
   </div>
 )
 
-export default BoardListItem
+
+const mapStateToProps = (state) => ({
+  priorities: state.priorities,
+})
+
+export default connect(mapStateToProps, null)(BoardListItem)

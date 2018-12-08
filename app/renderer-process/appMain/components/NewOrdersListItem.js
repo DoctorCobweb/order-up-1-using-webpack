@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Draggable } from 'react-beautiful-dnd'
 import moment from 'moment'
 import { sortCoursesInOrder } from '../../../shared/selectors/lists'
@@ -18,7 +19,7 @@ import HoldOrAwayOnMains from '../../../shared/components/HoldOrAwayOnMains'
 
 const MAX_NUMBER_OF_NEW_ORDERS_DISPLAYED_ON_BOARD_C = 29
 
-export default class NewOrdersListItem extends React.Component {
+export class NewOrdersListItem extends React.Component {
   state = {
     orderAgeInMinutes: 0,
   }
@@ -45,6 +46,13 @@ export default class NewOrdersListItem extends React.Component {
   }
 
   render() {
+
+    const hasAPriority = _.values(this.props.priorities).includes(this.props.order._id)
+    let orderPriority 
+    if (hasAPriority) {
+      orderPriority = _.invert(this.props.priorities)[this.props.order._id]
+    }
+
     return (
       <Draggable
         draggableId={ this.props.order._id }
@@ -57,7 +65,8 @@ export default class NewOrdersListItem extends React.Component {
             ref={provided.innerRef} 
             className={ this.props.index <= 29 ? "new-orders-list-item": "new-orders-list-item item-not-displayed-background"}
           >
-            <div className={ this.props.order.priority ? "button-new-order-item__container priority" : "button-new-order-item__container"}>
+            <div className={ hasAPriority ? "button-new-order-item__container priority" : "button-new-order-item__container"}>
+              <h1>{ orderPriority }</h1>
               {
                 this.props.index <= 29 &&
                   <button
@@ -191,3 +200,10 @@ const InfoLine = (props) => (
     <div>{ props.infoLine.quantity } {props.infoLine.name }</div>
   </div>
 )
+
+
+const mapStateToProps = (state) => ({
+  priorities: state.priorities,
+})
+
+export default connect(mapStateToProps, null)(NewOrdersListItem)
