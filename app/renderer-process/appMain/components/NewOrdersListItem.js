@@ -66,7 +66,7 @@ export class NewOrdersListItem extends React.Component {
             className={ this.props.index <= 29 ? "new-orders-list-item": "new-orders-list-item item-not-displayed-background"}
           >
             <div className={ hasAPriority ? "button-new-order-item__container priority" : "button-new-order-item__container"}>
-              <h1>{ orderPriority }</h1>
+              <h1 className="heading-priority">{ orderPriority }</h1>
               {
                 this.props.index <= 29 &&
                   <button
@@ -76,6 +76,7 @@ export class NewOrdersListItem extends React.Component {
                     Prioritise
                   </button>
               }
+              <div className="block-filler"></div>
             </div>
             <div
               onClick={ () => { this.props.handleOrderClick(this.props.order._id) } }

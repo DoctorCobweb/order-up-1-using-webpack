@@ -13,6 +13,14 @@
   text-decoration: none;
 }
 
+.button:hover {
+  background: $dark-grey;
+}
+
+// .button:active {
+//   background: $orange;
+// }
+
 .button-priority {
   background:$blue;
   border: none;
@@ -29,6 +37,14 @@
   text-decoration: none;
   width: 10rem;
 }
+
+.button-priority:hover {
+  background: $dark-grey;
+} 
+
+// .button-priority:active {
+//   background: $orange;
+// }
 
 .button--link {
   background: none;
@@ -59,6 +75,10 @@
   text-decoration: none;
 }
 
+.button-button__stack:hover {
+  background: $dark-grey;
+}
+
 .container--button--infoline {
   display: flex;
   justify-content: space-between;
@@ -78,10 +98,17 @@
   margin: 4px 4px 0 4px;
 }
 
+.button--info:hover {
+  background: $darker-off-white;
+}
+
 .button-new-order-item__container {
+  align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin: 0.4rem;
+  max-height: 4rem;
 }
 
 .button-new-order-item {
@@ -92,11 +119,19 @@
   font-weight: 300;
   line-height:1;
   margin: 0.3rem;
-  min-height: 3rem;
+  max-height: 4rem;
   outline: none;
   padding: 1rem;
   text-decoration: none;
 }
+
+.button-new-order-item:hover {
+  background: $dark-grey;
+} 
+
+// .button-new-order-item:active {
+//   background: $orange;
+// } 
 
 .button--hold-course {
   background: $red;
@@ -126,6 +161,14 @@
   background: $not-active;
 }
 
+.button--not-active:hover {
+  background: $not-active;
+} 
+
+// .button--not-active:active {
+//   background: $not-active;
+// }
+
 .button--header {
   background: $grey;
   margin: 0.4rem;
@@ -141,4 +184,11 @@
 
 .button--not-on-grid {
   background: $grey;
+}
+
+.button--debug {
+  background: $red;
+  margin: 0.4rem;
+  font-size:$font-size-small;
+  font-weight: 300;
 }

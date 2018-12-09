@@ -15,6 +15,7 @@ import {
 import {
   startSetupPriorities,
   startSetPriority,
+  startRemoveOrderFromPriorities,
 } from '../../../shared/actions/priorities'
 import OrderModal from './OrderModal'
 import Header from './Header'
@@ -62,16 +63,21 @@ export class App extends React.Component {
       selectedOrderId: undefined,
     }), () => {
       this.props.startSetOrderAsCompleted({ orderId })
+      // if the order was set as a priority, we must also
+      // updated the priorities document in mongo
+      if (_.values(this.props.priorities).includes(orderId) ) {
+      // if the order was set as a priority, we must also
+        // order has a priority set to it.
+        this.props.startRemoveOrderFromPriorities({ orderId })
+      }
     })
   }
 
   handlePriorityClick = (orderId) => {
-    console.log(`handlePriorityClick, orderId: ${orderId}`)
     this.setState(() => ({
       isPrioritisingOrder: true,
       prioritisingOrderId: orderId,
     }))
-    // this.props.startSetToggleOrderAsPriority({ orderId })
   }
 
   handleClearPrioritiseOrder = () => {
@@ -82,54 +88,10 @@ export class App extends React.Component {
   }
 
   handleSelectPriority = (priority) => {
-    console.log(`handleSelectPriority ${priority}`)
-    console.log('this.props.priorities')
-    console.log(this.props.priorities)
-
     // cannot select a priority which is already assigned
     if (this.props.priorities[priority]) return 
 
     this.props.startSetPriority({ priority, prioritisingOrderId: this.state.prioritisingOrderId })
-
-    // if (priority === 'none') {
-    //   // remove the orderId from whatever priority value 
-    //   // it's set to
-    //   console.log('none priority')
-    //   this.setState(prevState => {
-    //     console.log(Object.keys(prevState.prioritisedOrders))
-
-    //     const newPrioritisedOrders =
-    //       _.reduce(Object.keys(prevState.prioritisedOrders), (acc, priority) => {
-
-    //         if (prevState.prioritisedOrders[priority] === prevState.prioritisingOrderId) {
-    //           console.log(1)
-    //           acc[priority] = ''
-    //           return acc
-    //         } else {
-    //           console.log(2)
-    //           console.log(acc, priority, prevState.prioritisedOrders)
-    //           acc[priority] = prevState.prioritisedOrders[priority]
-    //           return acc
-    //         }
-    //       }, {})
-
-    //     return {
-    //       prioritisedOrders: newPrioritisedOrders
-    //     }
-
-    //   }, () => { console.log(this.state) })
-
-    // } else {
-    //   console.log('number priority')
-    //   this.setState(prevState => ({
-    //     prioritisedOrders: {
-    //       ... prevState.prioritisedOrders,
-    //       [priority]: prevState.prioritisingOrderId
-    //     }
-    //   }), () => {
-    //     console.log(this.state)
-    //   })
-    // }
   }
 
   onDragStart = start => {
@@ -195,7 +157,6 @@ export class App extends React.Component {
     this.props.startUpdateOrderIdsInList(newDndState)
   }
 
-
   render = () => {
     return (
       <div>
@@ -247,7 +208,8 @@ const mapDispatchToProps = (dispatch) => ({
   startSetOrderAsCompleted: (data) => dispatch(startSetOrderAsCompleted(data)),
   startSetToggleOrderAsPriority: (data) => dispatch(startSetToggleOrderAsPriority(data)),
   startSetupPriorities: () => dispatch(startSetupPriorities()),
-  startSetPriority: (data) => dispatch(startSetPriority(data))
+  startSetPriority: (data) => dispatch(startSetPriority(data)),
+  startRemoveOrderFromPriorities: (data) => dispatch(startRemoveOrderFromPriorities(data)),
 })
 
 const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)

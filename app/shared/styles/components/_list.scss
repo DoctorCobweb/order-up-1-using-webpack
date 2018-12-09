@@ -12,7 +12,6 @@
 .new-orders-list {
   flex-grow: 1;
   display: flex;
-  padding: 2rem;
   overflow: hidden;
   overflow-x: scroll;
   width: 98vw;
@@ -22,12 +21,16 @@
   background: $off-white;
   flex: 1 1 auto;
   font-size: 10px;
-  height: 85vh;
+  height: 90vh;
   margin-left: 1rem;
   max-width: 23vw;
   min-width: 20vw;
   overflow-x: scroll;
-  padding: 2rem 0.5rem;
+  padding: 0.5rem;
+}
+
+.new-orders-list-item:hover {
+  background: $darker-off-white;
 }
 
 .new-orders-list-item-header__container {
@@ -134,4 +137,8 @@
 
 .priority {
   background: $orange;
+}
+
+.block-filler {
+  flex-grow: 1
 }

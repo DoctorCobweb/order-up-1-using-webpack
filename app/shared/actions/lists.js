@@ -4,6 +4,7 @@ import colors from 'colors'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 import { Order, Course, Item, Info, InfoLine } from '../models/order'
 import { List } from '../models/list'
+import { Priorities } from '../models/priorities'
 
 const NUMBER_OF_LISTS = 2
 
@@ -324,6 +325,17 @@ export const startSetOrderAsCompleted = ({ orderId }) => {
         list.orderIds.push(orderId)
         return list.save()
       })
+      // .then(list => {
+      //   return Priorities.findOne().exec()
+      // })
+      // .then(prioritiesDoc => {
+      //   prioritiesDoc.priorities.forEach((val, key, map) => {
+      //     if (val === orderId) {
+      //       prioritiesDoc.priorities.set(key, '')
+      //     }
+      //   })
+      //   return prioritiesDoc.save()
+      // })
       .then(list => {
         dispatch(setOrderAsCompleted(orderId))
       })

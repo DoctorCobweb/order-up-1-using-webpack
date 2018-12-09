@@ -23,6 +23,10 @@ export class Header extends React.Component {
     console.log(this.props.lists)
   }
 
+  handleLogPrioritiesStateButtonClick = () => {
+    console.log(this.props.priorities)
+  }
+
   render = () => (
     <header className="header__container">
       <div>
@@ -30,7 +34,8 @@ export class Header extends React.Component {
         <button className="button button--header" onClick={ this.handleCompletedButtonClick }>Completed Orders</button>
         <button className="button button--header" onClick={ this.handleSettingsButtonClick }>Settings</button>
         <button className="button button--header" onClick={ this.handleAddNewOrderClick }>Add New Order</button>
-        <button className="button button--header" onClick={ this.handleLogListsStateButtonClick }>Log state.lists</button>
+        <button className="button button--debug" onClick={ this.handleLogListsStateButtonClick }>Log state.lists</button>
+        <button className="button button--debug" onClick={ this.handleLogPrioritiesStateButtonClick }>Log state.priorities</button>
       </div>
     </header>
   )
@@ -38,6 +43,7 @@ export class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   lists: state.lists,
+  priorities: state.priorities,
 })
 
 export default connect(mapStateToProps, null)(Header)

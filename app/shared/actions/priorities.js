@@ -1,9 +1,7 @@
 import { Priorities } from '../models/priorities'
 import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 
-
 const NUMBER_OF_PRIORITIES_INSTANCES = 1
-
 
 const getThePrioritiesInMongo = () => {
   return Priorities.findOne({})
@@ -48,16 +46,12 @@ export const startSetupPriorities = () => {
       .then(count => {
         // there is only 1 priority instance for the entire OrderUp app
         if (count === NUMBER_OF_PRIORITIES_INSTANCES) {
-          console.log('only 1 priorities instance')
           return getThePrioritiesInMongo()
         } else {
-          console.log('no priorities instance')
           return createThePrioritiesInMongo()
         }
       })
       .then(prioritiesData => {
-        console.log('prioritiesData')
-        console.log(prioritiesData)
         return dispatch(setupPriorities(prioritiesData.priorities))
       })
       .catch(err => {
@@ -106,7 +100,6 @@ export const startSetPriority = ({ priority, prioritisingOrderId }) => {
           // check if the orderId is already present as a priority.
           // if it is, then clear it out.
           // then update priorites with the new priority for the order
-
           prioritiesDoc.priorities.forEach((val, key, map) => {
             if (val === prioritisingOrderId) {
               prioritiesDoc.priorities.set(key, '')
@@ -123,8 +116,6 @@ export const startSetPriority = ({ priority, prioritisingOrderId }) => {
         return prioritiesDoc.save()
       })
       .then(prioritiesDoc => {
-        console.log('updated prioritiesDoc is')
-        console.log(prioritiesDoc)
         return dispatch(setPriority(prioritiesDoc.priorities.toJSON()))
       })
       .catch(err => {
@@ -133,24 +124,29 @@ export const startSetPriority = ({ priority, prioritisingOrderId }) => {
   }
 }
 
+export const removeOrderFromPriorities = (priorities) => ({
+  type: 'REMOVE_ORDER_FROM_PRIORITIES',
+  payload: {
+    priorities,
+  }
+})
 
-
-// export const assignAPriorityToOrder = (orderId, priority) => ({
-//   type: 'ASSIGN_A_PRIORITY_TO_ORDER',
-//   payload: {
-//     orderId,
-//     priority,
-//   },
-// })
-
-// export const startAssignAPriorityToOrder = ({ orderId, priority }) => {
-//   return (dispatch, getState) => {
-//     // NOTE: from thunk: getState() gives you access to the entire state,
-//     // not just this slice of state.
-//     //
-//     // algo:
-//     // find order
-//     // update its priorityNumber
-//     // call dispatch assignAPriorityToOrder
-//   }
-// }
+export const startRemoveOrderFromPriorities = ({ orderId }) => {
+  return (dispatch, getState) => {
+    return Priorities.findOne().exec()
+    .then(priorities => {
+      priorities.priorities.forEach((val, key, map)=> {
+        if (val === orderId) {
+          priorities.priorities.set(key, '')
+        }
+      })
+      return priorities.save()
+    })
+    .then(priorities => {
+      return dispatch(removeOrderFromPriorities(priorities.toJSON()))
+    })
+    .catch(err => {
+      throw err
+    })
+  }
+}
