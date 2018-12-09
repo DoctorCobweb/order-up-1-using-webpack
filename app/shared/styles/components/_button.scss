@@ -13,6 +13,23 @@
   text-decoration: none;
 }
 
+.button-priority {
+  background:$blue;
+  border: none;
+  border-radius: $radius;
+  color:$off-white; 
+  display: inline-block;
+  font-size:$font-size-large;
+  font-weight: 300;
+  line-height:1;
+  min-height: 4rem;
+  outline: none;
+  padding: $s-size;
+  text-align: center;
+  text-decoration: none;
+  width: 10rem;
+}
+
 .button--link {
   background: none;
 }
@@ -103,6 +120,10 @@
 
 .button--grey {
   background: $grey;
+}
+
+.button--not-active {
+  background: $not-active;
 }
 
 .button--header {

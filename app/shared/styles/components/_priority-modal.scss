@@ -3,14 +3,15 @@
   opacity: 0;
 }
 
-.modal {
-  align-items: center;
+.priority-modal {
+  // align-items: center;
   background: $off-white;
   border-radius: $radius;
   color: $dark-blue;
-  justify-content: center;
+  height: 40vh;
+  // justify-content: center;
   margin: 6rem 0;
-  max-width: 60rem;
+  width: 50vw;
   outline: none;
   text-align: left;
 }
@@ -35,4 +36,14 @@
 
 .ReactModalPortal .ReactModal__Overlay--before-close {
   opacity: 0;
+}
+
+.priority-modal__container {
+
+}
+
+.priority-modal-buttons__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }

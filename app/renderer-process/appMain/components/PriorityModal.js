@@ -11,14 +11,14 @@ const PriorityModal = (props) => (
     onRequestClose={ props.handleClearPrioritiseOrder }
     contentLabel="Prioritise Order"
     // closeTimeoutMS={200}
-    className="modal"
+    className="priority-modal"
     style={{
       overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.75)'
       }
     }}
   >
-    <div className="">
+    <div>
       <button
         className="button button--header"
         onClick={ props.handleClearPrioritiseOrder }
@@ -26,21 +26,20 @@ const PriorityModal = (props) => (
         X
       </button>
       <div>
-        <h1>Order Priority</h1>
-        <div>{ props.prioritisingOrderId }</div>
-        <div>
+        <h1 className="heading">Order Priority</h1>
+        <div className="priority-modal-buttons__container">
 
           <div
             className={
               (props.priorities['1'] && props.priorities['1'] !== props.prioritisingOrderId)
               ? 
-              "button button--grey"
+              "button-priority button--not-active"
               :
                 props.priorities['1'] === props.prioritisingOrderId
                 ?
-                "button button--green"
+                "button-priority button--green"
                 :
-                "button"
+                "button-priority"
             }
             onClick={ () => props.handleSelectPriority('1') }
           >
@@ -50,13 +49,13 @@ const PriorityModal = (props) => (
             className={
               (props.priorities['2'] && props.priorities['2'] !== props.prioritisingOrderId)
               ? 
-              "button button--grey"
+              "button-priority button--not-active"
               :
                 props.priorities['2'] === props.prioritisingOrderId
                 ?
-                "button button--green"
+                "button-priority button--green"
                 :
-                "button"
+                "button-priority"
             }
             onClick={ () => props.handleSelectPriority('2') }
           >
@@ -66,13 +65,13 @@ const PriorityModal = (props) => (
             className={
               (props.priorities['3'] && props.priorities['3'] !== props.prioritisingOrderId)
               ? 
-              "button button--grey"
+              "button-priority button--not-active"
               :
                 props.priorities['3'] === props.prioritisingOrderId
                 ?
-                "button button--green"
+                "button-priority button--green"
                 :
-                "button"
+                "button-priority"
             }
             onClick={ () => props.handleSelectPriority('3') }
           >
@@ -82,13 +81,13 @@ const PriorityModal = (props) => (
             className={
               (props.priorities['4'] && props.priorities['4'] !== props.prioritisingOrderId)
               ? 
-              "button button--grey"
+              "button-priority button--not-active"
               :
                 props.priorities['4'] === props.prioritisingOrderId
                 ?
-                "button button--green"
+                "button-priority button--green"
                 :
-                "button"
+                "button-priority"
             }
             onClick={ () => props.handleSelectPriority('4') }
           >
@@ -98,13 +97,13 @@ const PriorityModal = (props) => (
             className={
               (props.priorities['5'] && props.priorities['5'] !== props.prioritisingOrderId)
               ? 
-              "button button--grey"
+              "button-priority button--not-active"
               :
                 props.priorities['5'] === props.prioritisingOrderId
                 ?
-                "button button--green"
+                "button-priority button--green"
                 :
-                "button"
+                "button-priority"
             }
             onClick={ () => props.handleSelectPriority('5') }
           >
@@ -113,9 +112,9 @@ const PriorityModal = (props) => (
           <div
             className={
               !_.values(props.priorities).includes(props.prioritisingOrderId) ?
-              "button button--green"
+              "button-priority button--green"
               :
-              "button"
+              "button-priority"
             }
             onClick={ () => props.handleSelectPriority('none') }
           >
