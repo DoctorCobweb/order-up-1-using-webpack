@@ -32,11 +32,11 @@ const PriorityModal = (props) => (
 
           <div
             className={
-              (props.priorities.first && props.priorities.first !== props.prioritisingOrderId)
+              (props.priorities['1'] && props.priorities['1'] !== props.prioritisingOrderId)
               ? 
               "button button--grey"
               :
-                props.priorities.first === props.prioritisingOrderId
+                props.priorities['1'] === props.prioritisingOrderId
                 ?
                 "button button--green"
                 :
@@ -48,11 +48,11 @@ const PriorityModal = (props) => (
           </div>
           <div
             className={
-              (props.priorities.second && props.priorities.second !== props.prioritisingOrderId)
+              (props.priorities['2'] && props.priorities['2'] !== props.prioritisingOrderId)
               ? 
               "button button--grey"
               :
-                props.priorities.second === props.prioritisingOrderId
+                props.priorities['2'] === props.prioritisingOrderId
                 ?
                 "button button--green"
                 :
@@ -64,11 +64,11 @@ const PriorityModal = (props) => (
           </div>
           <div
             className={
-              (props.priorities.third && props.priorities.third !== props.prioritisingOrderId)
+              (props.priorities['3'] && props.priorities['3'] !== props.prioritisingOrderId)
               ? 
               "button button--grey"
               :
-                props.priorities.third === props.prioritisingOrderId
+                props.priorities['3'] === props.prioritisingOrderId
                 ?
                 "button button--green"
                 :
@@ -80,11 +80,11 @@ const PriorityModal = (props) => (
           </div>
           <div
             className={
-              (props.priorities.fourth && props.priorities.fourth !== props.prioritisingOrderId)
+              (props.priorities['4'] && props.priorities['4'] !== props.prioritisingOrderId)
               ? 
               "button button--grey"
               :
-                props.priorities.fourth === props.prioritisingOrderId
+                props.priorities['4'] === props.prioritisingOrderId
                 ?
                 "button button--green"
                 :
@@ -96,11 +96,11 @@ const PriorityModal = (props) => (
           </div>
           <div
             className={
-              (props.priorities.fifth && props.priorities.fifth !== props.prioritisingOrderId)
+              (props.priorities['5'] && props.priorities['5'] !== props.prioritisingOrderId)
               ? 
               "button button--grey"
               :
-                props.priorities.fifth === props.prioritisingOrderId
+                props.priorities['5'] === props.prioritisingOrderId
                 ?
                 "button button--green"
                 :
