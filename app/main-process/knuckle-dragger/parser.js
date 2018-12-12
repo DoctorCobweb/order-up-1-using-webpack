@@ -55,8 +55,8 @@ export default (db, buffer) => {
       const zippedData = tokenizeData(data)
       // log.info(zippedData)
       const order = buildOrder(zippedData)
-      // console.log('pareser.js default func')
-      // console.log(colors.blue(stringify(order)))
+      console.log('pareser.js default func')
+      console.log(colors.blue(stringify(order)))
       insertSingleOrder(db, order)
     })
     .catch(err => {

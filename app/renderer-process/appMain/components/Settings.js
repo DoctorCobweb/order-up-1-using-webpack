@@ -32,15 +32,17 @@ export class Settings extends React.Component {
     <div>
       <Header />
       <div className="settings__container">
-        <h2>Delete All Orders</h2>
-        <p>This will remove every order from every screen (including all iPads). It's okay to do this if you want to start the service with an entirely clean app.</p>
-        <p>JUST DONT DO IT IN THE MIDDLE OF SERVICE.</p>
-        <button
-          className="button button--red"
-          onClick={ this.handleIntentToDeleteAllOrdersClick }
-        >
-          Delete all orders
-        </button>
+        <div>
+          <h2>Delete All Orders</h2>
+          <p>This will remove every order from every screen (including all iPads). It's okay to do this if you want to start the service with an entirely clean app.</p>
+          <p>JUST DONT DO IT IN THE MIDDLE OF SERVICE.</p>
+          <button
+            className="button button--red"
+            onClick={ this.handleIntentToDeleteAllOrdersClick }
+          >
+            Delete all orders
+          </button>
+        </div>
       </div>
       <WarningModal
         handleConfirmDeleteAllOrdersClick={ this.handleConfirmDeleteAllOrdersClick }
