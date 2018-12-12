@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import * as Yup from 'yup'
+import { menuItems } from '../../../main-process/knuckle-dragger/menu-constants'
 
 // 1. create the UI
 // 2. save to mongodb and then updated redux store
@@ -81,7 +82,7 @@ export default class AddOrderForm extends React.Component {
               <Field type="text" name="metaData.tableNumber" placeholder="Table Number"/>
               {/* <ErrorMessage name="metaData.tableNumber" component="div"/> */}
               <div>Location</div>
-              <Field name="metaData.location" component="select" label="Location">
+              <Field name="metaData['location']" component="select">
                 <option value="RESTAURANT BAR">Restaurant</option>
                 <option value="TAB BAR">Tab Bar</option>
                 <option value="JUKE BAR">Juke Bar</option>
@@ -111,7 +112,11 @@ export default class AddOrderForm extends React.Component {
                       ?
                         (values.meals['ENTREES DINNER'].map((entree, index) => (
                           <div key={ index }>
-                            <Field name={`meals['ENTREES DINNER'].${index}`} />
+                            <Field name={`meals['ENTREES DINNER'].${index}.quantity`} placeholder="quantity" />
+                            <Field name={`meals['ENTREES DINNER'].${index}.name`} component="select" placeholder="name">
+                              { menuItems.map(item => <option value={item}>{item}</option>) }
+                            </Field>
+                            <Field name={`meals['ENTREES DINNER'].${index}.info`} placeholder="info" />
                             <button
                               type="button"
                               onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
@@ -137,43 +142,92 @@ export default class AddOrderForm extends React.Component {
                 )}
               />
             </div>
-            {/* 
-              <div>Quantity</div>
-              <Field type="text" name="entreeQuantity" />
-              <ErrorMessage name="entreeQuantity" component="div>"/>
-              <div>Item</div>
-              <Field type="text" name="entreeItem" />
-              <ErrorMessage name="entreeItem" component="div>"/>
-              <div>Information</div>
-              <Field type="text" name="entreeInformation" />
-              <ErrorMessage name="entreeInformation" component="div>"/>
-            </div>
+
+
             <div>
               <h3>MAINS</h3>
-              <div>Quantity</div>
-              <Field type="text" name="mainQuantity" />
-              <ErrorMessage name="mainQuantity" component="div>"/>
-              <div>Item</div>
-              <Field type="text" name="mainItem" />
-              <ErrorMessage name="mainItem" component="div>"/>
-              <div>Information</div>
-              <Field type="text" name="mainInformation" />
-              <ErrorMessage name="mainInformation" component="div>"/>
+              <FieldArray
+                name="meals['MAINS DINNER']"
+                render={ arrayHelpers => (
+                  <div>
+                    { values.meals['MAINS DINNER'] && values.meals['MAINS DINNER'].length > 0
+                      ?
+                        (values.meals['MAINS DINNER'].map((entree, index) => (
+                          <div key={ index }>
+                            <Field name={`meals['MAINS DINNER'].${index}.quantity`} placeholder="quantity" />
+                            <Field name={`meals['MAINS DINNER'].${index}.name`} component="select" placeholder="name">
+                              { menuItems.map(item => <option value={item}>{item}</option>) }
+                            </Field>
+                            <Field name={`meals['MAINS DINNER'].${index}.info`} placeholder="info" />
+                            <button
+                              type="button"
+                              onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+                            >
+                              -
+                            </button>
+                            <button
+                              type="button"
+                              onClick={ () => arrayHelpers.insert(index, '') } // insert an empty entree at this position
+                            >
+                              +
+                            </button>
+                          </div>
+                        )))
+                      :
+                        (
+                          <button type="button" onClick={ () => arrayHelpers.push('') }>
+                            Add a main 
+                          </button>
+                        )
+                    }
+                  </div>
+                )}
+              />
             </div>
-            
+
+
             <div>
-              <h3>DESSERT</h3>
-              <div>Quantity</div>
-              <Field type="text" name="dessertQuantity" />
-              <ErrorMessage name="dessertQuantity" component="div>"/>
-              <div>Item</div>
-              <Field type="text" name="dessertItem" />
-              <ErrorMessage name="dessertItem" component="div>"/>
-              <div>Information</div>
-              <Field type="text" name="dessertInformation" />
-              <ErrorMessage name="dessertInformation" component="div>"/>
+              <h3>DESSERTS</h3>
+              <FieldArray
+                name="meals['DESSERT']"
+                render={ arrayHelpers => (
+                  <div>
+                    { values.meals['DESSERT'] && values.meals['DESSERT'].length > 0
+                      ?
+                        (values.meals['DESSERT'].map((entree, index) => (
+                          <div key={ index }>
+                            <Field name={`meals['DESSERT'].${index}.quantity`} placeholder="quantity" />
+                            <Field name={`meals['DESSERT'].${index}.name`} component="select" placeholder="name">
+                              { menuItems.map(item => <option value={item}>{item}</option>) }
+                            </Field>
+                            <Field name={`meals['DESSERT'].${index}.info`} placeholder="" />
+                            <button
+                              type="button"
+                              onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+                            >
+                              -
+                            </button>
+                            <button
+                              type="button"
+                              onClick={ () => arrayHelpers.insert(index, '') } // insert an empty entree at this position
+                            >
+                              +
+                            </button>
+                          </div>
+                        )))
+                      :
+                        (
+                          <button type="button" onClick={ () => arrayHelpers.push('') }>
+                            Add a dessert 
+                          </button>
+                        )
+                    }
+                  </div>
+                )}
+              />
             </div>
-            */}
+
+
             <button
               className="button"
               type="submit"
