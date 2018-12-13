@@ -1,13 +1,107 @@
 import React from 'react'
 import moment from 'moment'
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
+import Select from 'react-select'
+import CreatableSelect from 'react-select/lib/Creatable'
 import * as Yup from 'yup'
 import { menuItems } from '../../../main-process/knuckle-dragger/menu-constants'
 
 // 1. create the UI
 // 2. save to mongodb and then updated redux store
 
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+]
+
+const locationOptions = [
+  { value: 'RESTAURANT BAR', label: 'Restaurant' },
+  { value: 'TAB BAR', label: 'Tab Bar' },
+  { value: 'JUKE BAR', label: 'Juke' },
+  { value: 'SPORTS BAR', label: 'Sports Bar' },
+  { value: 'GAMING BAR', label: 'Gaming' },
+]
+
+const menuItemsOptions = menuItems.map(item => ({value: item, label: item}))
+
+const orderValidationSchema = Yup.object().shape({
+  metaData: Yup.object().shape({
+    orderTakenUsing: Yup.string(),
+    clerk: Yup.string(),
+    orderSentAt: Yup.string(),
+    variableContent: Yup.array(),
+    tableNumber: Yup.string(),
+    customerName: Yup.string(),
+    location: Yup.string(),
+    goOnMains: Yup.boolean(),
+  }),
+  meals: Yup.object().shape({
+    'ENTREES DINNER': Yup.array(),
+    'MAINS DINNER': Yup.array(),
+    'DESSERT': Yup.array(),
+  }),
+  topics: Yup.array(),
+})
+
+
+// const courseSection = ({ name, values, setFieldValue, setFieldTouched, touched }) => {
+//   return (
+//     <FieldArray
+//       name={`meals['${name}']`}
+//       render={ arrayHelpers => (
+//         <div>
+//           { values.meals[`'${name}'`] && values.meals[`'${name}'`].length > 0
+//             ?
+//               (
+//                 <div>
+//                   {
+//                     values.meals[`'${name}'`].map((entree, index) => (
+//                       <div key={ index }>
+//                         <Field name={`meals['${name}'].${index}.quantity`} placeholder="quantity" />
+//                         <MenuItemSelect
+//                           value={ values.meals[`'${name}'`][index].name}
+//                           onChange={ setFieldValue }
+//                           onBlur={ setFieldTouched }
+//                           touched={ touched[`meals['${name}'].${index}.name`]}
+//                           index={ index }
+//                           options={ menuItemsOptions }
+//                           course={ name }
+//                         />
+//                         <Field name={`meals['${name}'].${index}.info`} placeholder="info" />
+//                         <button
+//                           type="button"
+//                           onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+//                         >
+//                           -
+//                         </button>
+//                       </div>
+//                       )
+//                     )
+//                   }
+//                   <button
+//                     type="button"
+//                     onClick={ () => arrayHelpers.push('') } 
+//                   >
+//                     +
+//                   </button>
+//                 </div>
+//               )
+//             :
+//               (
+//                 <button type="button" onClick={ () => arrayHelpers.push('') }>
+//                   Add a { name } 
+//                 </button>
+//               )
+//           }
+//         </div>
+//       )}
+//     />
+//   )
+// }
+
 export default class AddOrderForm extends React.Component {
+
   render = () => (
     <div>
       <Formik 
@@ -17,10 +111,10 @@ export default class AddOrderForm extends React.Component {
             clerk: 'chef',
             orderSentAt: '',
             variableContent: [],
-            tableNumber: undefined,
+            tableNumber: '',
             customerName: 'kitchen',
-            covers: undefined,
-            location: undefined,
+            covers: '',
+            location: '',
             goOnMains: false,
           },
           meals: {
@@ -28,14 +122,9 @@ export default class AddOrderForm extends React.Component {
             'MAINS DINNER': [],
             'DESSERT': [],
           },
+          topics: [],
         }}
-        validate={ values => {
-          let errors = {}
-          // if (!values.metaData.tableNumber) {
-          //   errors.metaData.tableNumber = 'Required'
-          // }
-          return errors
-        }}
+        // validationSchema={orderValidationSchema}
         onSubmit={( values, { setSubmitting }) => {
 
           values.metaData.orderSentAt = moment()
@@ -82,13 +171,12 @@ export default class AddOrderForm extends React.Component {
               <Field type="text" name="metaData.tableNumber" placeholder="Table Number"/>
               {/* <ErrorMessage name="metaData.tableNumber" component="div"/> */}
               <div>Location</div>
-              <Field name="metaData['location']" component="select">
-                <option value="RESTAURANT BAR">Restaurant</option>
-                <option value="TAB BAR">Tab Bar</option>
-                <option value="JUKE BAR">Juke Bar</option>
-                <option value="SPORTS BAR">Sports Bar</option>
-                <option value="GAMING BAR">Gaming</option>
-              </Field>
+              <LocationSelect
+                value={ values.metaData.location }
+                onChange={ setFieldValue }
+                onBlur={ setFieldTouched }
+                touched={ touched.location }
+              />
               <button
                 type="button"
                 onClick={ () => values.metaData.goOnMains = false }
@@ -102,6 +190,8 @@ export default class AddOrderForm extends React.Component {
                 Dont Hold Mains
               </button>
             </div>
+
+
             <div>
               <h3>ENTREES</h3>
               <FieldArray
@@ -110,27 +200,40 @@ export default class AddOrderForm extends React.Component {
                   <div>
                     { values.meals['ENTREES DINNER'] && values.meals['ENTREES DINNER'].length > 0
                       ?
-                        (values.meals['ENTREES DINNER'].map((entree, index) => (
-                          <div key={ index }>
-                            <Field name={`meals['ENTREES DINNER'].${index}.quantity`} placeholder="quantity" />
-                            <Field name={`meals['ENTREES DINNER'].${index}.name`} component="select" placeholder="name">
-                              { menuItems.map(item => <option value={item}>{item}</option>) }
-                            </Field>
-                            <Field name={`meals['ENTREES DINNER'].${index}.info`} placeholder="info" />
+                        (
+                          <div>
+                            {
+                              values.meals['ENTREES DINNER'].map((entree, index) => (
+                                <div key={ index }>
+                                  <Field name={`meals['ENTREES DINNER'].${index}.quantity`} placeholder="quantity" />
+                                  <MenuItemSelect
+                                    value={ values.meals['ENTREES DINNER'][index].name}
+                                    onChange={ setFieldValue }
+                                    onBlur={ setFieldTouched }
+                                    touched={ touched[`meals['ENTREES DINNER'].${index}.name`]}
+                                    index={ index }
+                                    options={ menuItemsOptions }
+                                    course={ 'ENTREES DINNER' }
+                                  />
+                                  <Field name={`meals['ENTREES DINNER'].${index}.info`} placeholder="info" />
+                                  <button
+                                    type="button"
+                                    onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+                                  >
+                                    -
+                                  </button>
+                                </div>
+                                )
+                              )
+                            }
                             <button
                               type="button"
-                              onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
-                            >
-                              -
-                            </button>
-                            <button
-                              type="button"
-                              onClick={ () => arrayHelpers.insert(index, '') } // insert an empty entree at this position
+                              onClick={ () => arrayHelpers.push('') } 
                             >
                               +
                             </button>
                           </div>
-                        )))
+                        )
                       :
                         (
                           <button type="button" onClick={ () => arrayHelpers.push('') }>
@@ -152,31 +255,44 @@ export default class AddOrderForm extends React.Component {
                   <div>
                     { values.meals['MAINS DINNER'] && values.meals['MAINS DINNER'].length > 0
                       ?
-                        (values.meals['MAINS DINNER'].map((entree, index) => (
-                          <div key={ index }>
-                            <Field name={`meals['MAINS DINNER'].${index}.quantity`} placeholder="quantity" />
-                            <Field name={`meals['MAINS DINNER'].${index}.name`} component="select" placeholder="name">
-                              { menuItems.map(item => <option value={item}>{item}</option>) }
-                            </Field>
-                            <Field name={`meals['MAINS DINNER'].${index}.info`} placeholder="info" />
+                        (
+                          <div>
+                            {
+                              values.meals['MAINS DINNER'].map((entree, index) => (
+                                <div key={ index }>
+                                  <Field name={`meals['MAINS DINNER'].${index}.quantity`} placeholder="quantity" />
+                                  <MenuItemSelect
+                                    value={ values.meals['MAINS DINNER'][index].name}
+                                    onChange={ setFieldValue }
+                                    onBlur={ setFieldTouched }
+                                    touched={ touched[`meals['MAINS DINNER'].${index}.name`]}
+                                    index={ index }
+                                    options={ menuItemsOptions }
+                                    course={ 'MAINS DINNER' }
+                                  />
+                                  <Field name={`meals['MAINS DINNER'].${index}.info`} placeholder="info" />
+                                  <button
+                                    type="button"
+                                    onClick={ () => arrayHelpers.remove(index) } // remove an main from the list
+                                  >
+                                    -
+                                  </button>
+                                </div>
+                                )
+                              )
+                            }
                             <button
                               type="button"
-                              onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
-                            >
-                              -
-                            </button>
-                            <button
-                              type="button"
-                              onClick={ () => arrayHelpers.insert(index, '') } // insert an empty entree at this position
+                              onClick={ () => arrayHelpers.push('') } 
                             >
                               +
                             </button>
                           </div>
-                        )))
+                        )
                       :
                         (
                           <button type="button" onClick={ () => arrayHelpers.push('') }>
-                            Add a main 
+                            Add an main
                           </button>
                         )
                     }
@@ -194,31 +310,44 @@ export default class AddOrderForm extends React.Component {
                   <div>
                     { values.meals['DESSERT'] && values.meals['DESSERT'].length > 0
                       ?
-                        (values.meals['DESSERT'].map((entree, index) => (
-                          <div key={ index }>
-                            <Field name={`meals['DESSERT'].${index}.quantity`} placeholder="quantity" />
-                            <Field name={`meals['DESSERT'].${index}.name`} component="select" placeholder="name">
-                              { menuItems.map(item => <option value={item}>{item}</option>) }
-                            </Field>
-                            <Field name={`meals['DESSERT'].${index}.info`} placeholder="" />
+                        (
+                          <div>
+                            {
+                              values.meals['DESSERT'].map((entree, index) => (
+                                <div key={ index }>
+                                  <Field name={`meals['DESSERT'].${index}.quantity`} placeholder="quantity" />
+                                  <MenuItemSelect
+                                    value={ values.meals['DESSERT'][index].name}
+                                    onChange={ setFieldValue }
+                                    onBlur={ setFieldTouched }
+                                    touched={ touched[`meals['DESSERT'].${index}.name`]}
+                                    index={ index }
+                                    options={ menuItemsOptions }
+                                    course={ 'DESSERT' }
+                                  />
+                                  <Field name={`meals['DESSERT'].${index}.info`} placeholder="info" />
+                                  <button
+                                    type="button"
+                                    onClick={ () => arrayHelpers.remove(index) } // remove an dessert from the list
+                                  >
+                                    -
+                                  </button>
+                                </div>
+                                )
+                              )
+                            }
                             <button
                               type="button"
-                              onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
-                            >
-                              -
-                            </button>
-                            <button
-                              type="button"
-                              onClick={ () => arrayHelpers.insert(index, '') } // insert an empty entree at this position
+                              onClick={ () => arrayHelpers.push('') } 
                             >
                               +
                             </button>
                           </div>
-                        )))
+                        )
                       :
                         (
                           <button type="button" onClick={ () => arrayHelpers.push('') }>
-                            Add a dessert 
+                            Add an dessert 
                           </button>
                         )
                     }
@@ -240,4 +369,66 @@ export default class AddOrderForm extends React.Component {
       />
     </div>
   )
+}
+
+
+class LocationSelect extends React.Component {
+  handleChange = (newValue, actionMeta) => {
+    console.group('Location Value Changed')
+    console.log(newValue)
+    console.log(`action: ${actionMeta.action}`)
+    console.groupEnd()
+    
+    // this is going to call setFieldValue and manually update values.metaData.location
+    this.props.onChange('metaData.location', newValue)
+  }
+  handleInputChange = (inputValue, actionMeta) => {
+    console.group('Location Input Changed')
+    console.log(inputValue)
+    console.log(`action: ${actionMeta.action}`)
+    console.groupEnd()
+
+    // this is going to call setFieldTouched and manually update values.metaData.location 
+    this.props.onBlur('metaData.location', true)
+  }
+  render = () => (
+    <Select
+      isClearable 
+      options={ locationOptions }
+      onChange={ this.handleChange }
+      onInputChange={ this.handleInputChange }
+      value={ this.props.value}
+    />
+  )
+}
+
+class MenuItemSelect extends React.Component {
+  handleChange = (newValue, actionMeta) => {
+    console.group('Entree Value Changed')
+    console.log(newValue)
+    console.log(`action: ${actionMeta.action}`)
+    console.groupEnd()
+    
+    // this is going to call setFieldValue and manually update eg values.meals['ENTREES DINNER'].${index}.name
+    this.props.onChange(`meals[${this.props.course}].${this.props.index}.name`, newValue)
+  }
+  handleInputChange = (inputValue, actionMeta) => {
+    console.group('Entree Input Changed')
+    console.log(inputValue)
+    console.log(`action: ${actionMeta.action}`)
+    console.groupEnd()
+
+    // this is going to call setFieldTouched and manually update eg. values.meals['ENTREES DINNER'].${index}.name
+    this.props.onBlur(`meals[${this.props.course}].${this.props.index}.name`, true)
+  }
+  render = () => (
+    <CreatableSelect
+      isClearable 
+      options={ this.props.options }
+      onChange={ this.handleChange }
+      onInputChange={ this.handleInputChange }
+      value={ this.props.value }
+    />
+  )
+
 }
