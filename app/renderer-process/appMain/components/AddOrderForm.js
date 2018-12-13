@@ -1,13 +1,78 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/lib/Creatable'
 import * as Yup from 'yup'
 import { menuItems } from '../../../main-process/knuckle-dragger/menu-constants'
-
+// import { startAddOrderToList } from '../../../shared/actions/lists'
+import { addToMongoDB } from '../../../shared/db-utils/mongoose-orders'
 // 1. create the UI
 // 2. save to mongodb and then updated redux store
+
+const mockOrder = {
+  "metaData": {
+    "orderTakenUsing": "OrderUp",
+    "clerk": "chef",
+    "orderSentAt": "",
+    "variableContent": [],
+    "tableNumber": "123",
+    "customerName": "kitchen",
+    "covers": "",
+    "location": "JUKE BAR",
+    "goOnMains": false
+  },
+  "meals": {
+    "ENTREES DINNER": [
+      {
+        "quantity": 2,
+        "name": "CHILDS FISH",
+        "info": [
+          [
+            {"quantity": 1, "info": "EX CHEESE"},
+            {"quantity": 1, "info": "NO PEPPER"},
+            {"quantity": 1, "info": "ADD JALEPENOS"}
+          ]
+        ]
+      },
+      {"quantity": 4, "name": "BRUSCHETTA", "info": []}
+    ],
+    "MAINS DINNER": [
+      {"quantity": 1, "name": "WEDGES", "info": []},
+      {
+        "quantity": 3,
+        "name": "BEEF BURGER",
+        "info": [
+          [
+            {"quantity": 1, "info": "MED RARE"},
+            {"quantity": 1, "info": "MUSH"},
+            {"quantity": 1, "info": "CHIPS GREENS"},
+            {"quantity": 1, "info": "XTRA GARLIC BUTT"}
+          ]
+        ]
+      }
+    ],
+    "DESSERT": [
+      {"quantity": 1, "name": "SENIOR PUDDING", "info": []},
+      {
+        "quantity": 3,
+        "name": "CARAMEL TOPPING",
+        "info": [
+          [
+            {"quantity": 1, "info": "WITH SORBET INSTEAD"},
+            {"quantity": 1, "info": "EX COLD"},
+            {"quantity": 1, "info": "SPRINKLES O/S"}
+          ],
+          [
+            {"quantity": 1, "info": "LEMON SCE"},
+            {"quantity": 1, "info": "EX SCOOP"}
+          ]
+        ]
+      }
+    ]
+  }
+} 
 
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -44,62 +109,6 @@ const orderValidationSchema = Yup.object().shape({
   topics: Yup.array(),
 })
 
-
-// const courseSection = ({ name, values, setFieldValue, setFieldTouched, touched }) => {
-//   return (
-//     <FieldArray
-//       name={`meals['${name}']`}
-//       render={ arrayHelpers => (
-//         <div>
-//           { values.meals[`'${name}'`] && values.meals[`'${name}'`].length > 0
-//             ?
-//               (
-//                 <div>
-//                   {
-//                     values.meals[`'${name}'`].map((entree, index) => (
-//                       <div key={ index }>
-//                         <Field name={`meals['${name}'].${index}.quantity`} placeholder="quantity" />
-//                         <MenuItemSelect
-//                           value={ values.meals[`'${name}'`][index].name}
-//                           onChange={ setFieldValue }
-//                           onBlur={ setFieldTouched }
-//                           touched={ touched[`meals['${name}'].${index}.name`]}
-//                           index={ index }
-//                           options={ menuItemsOptions }
-//                           course={ name }
-//                         />
-//                         <Field name={`meals['${name}'].${index}.info`} placeholder="info" />
-//                         <button
-//                           type="button"
-//                           onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
-//                         >
-//                           -
-//                         </button>
-//                       </div>
-//                       )
-//                     )
-//                   }
-//                   <button
-//                     type="button"
-//                     onClick={ () => arrayHelpers.push('') } 
-//                   >
-//                     +
-//                   </button>
-//                 </div>
-//               )
-//             :
-//               (
-//                 <button type="button" onClick={ () => arrayHelpers.push('') }>
-//                   Add a { name } 
-//                 </button>
-//               )
-//           }
-//         </div>
-//       )}
-//     />
-//   )
-// }
-
 export default class AddOrderForm extends React.Component {
 
   render = () => (
@@ -128,6 +137,12 @@ export default class AddOrderForm extends React.Component {
         onSubmit={( values, { setSubmitting }) => {
 
           values.metaData.orderSentAt = moment()
+
+          mockOrder.metaData.orderSentAt = moment()
+
+          // DEMO this here
+          // this.props.startAddOrderToList(mockOrder)
+          addToMongoDB(null, mockOrder)
 
           // this is where we save the order to mongodb and redux
           setTimeout(() => {
@@ -432,3 +447,14 @@ class MenuItemSelect extends React.Component {
   )
 
 }
+
+// const mapStateToProps = (state) => ({
+//   lists: state.lists,
+//   priorities: state.priorities,
+// })
+
+// const mapDispatchToProps = (dispatch) => ({
+//   startAddOrderToList: (data) => dispatch(startAddOrderToList(data)),
+// })
+
+// export default connect(mapStateToProps, mapDispatchToProps)(AddOrderForm)

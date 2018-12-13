@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import config from './knuckle-dragger-config'
 import log from 'electron-log'
-import { addToMongoDB } from './mongoose-orders'
+// import { addToMongoDB } from './(((mongoose-orders)))'
+import { addToMongoDB } from '../../shared/db-utils/mongoose-orders'
 
 const dbHost= config['DB_HOST']
 const dbPort = config['DB_PORT']

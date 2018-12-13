@@ -66,8 +66,8 @@ export class App extends React.Component {
       // if the order was set as a priority, we must also
       // updated the priorities document in mongo
       if (_.values(this.props.priorities).includes(orderId) ) {
-      // if the order was set as a priority, we must also
-        // order has a priority set to it.
+        console.log('yadda')
+        // order has a priority set to it => remove it
         this.props.startRemoveOrderFromPriorities({ orderId })
       }
     })

@@ -143,7 +143,9 @@ export const startRemoveOrderFromPriorities = ({ orderId }) => {
       return priorities.save()
     })
     .then(priorities => {
-      return dispatch(removeOrderFromPriorities(priorities.toJSON()))
+      console.log('priorities.toJSON().priorities are')
+      console.log(priorities.toJSON().priorities)
+      return dispatch(removeOrderFromPriorities(priorities.toJSON().priorities))
     })
     .catch(err => {
       throw err
