@@ -209,6 +209,17 @@ export default class AddOrderForm extends React.Component {
         }) => (
           <Form>
             <div className="add-order-form__section-container">
+              <div
+                className="add-order-form__submit-container"
+              >
+                <button
+                  className="button"
+                  type="submit"
+                  disabled={ isSubmitting }
+                >
+                  Add Order
+                </button>
+              </div>
               <h3>VENUE DETAILS</h3>
               <div>Table Number</div>
               <Field
@@ -216,7 +227,7 @@ export default class AddOrderForm extends React.Component {
                 type="text"
                 name="metaData.tableNumber"
                 placeholder="Table Number"
-                />
+              />
               {/* <ErrorMessage name="metaData.tableNumber" component="div"/> */}
               <div>Location</div>
               <LocationSelect
@@ -306,7 +317,7 @@ export default class AddOrderForm extends React.Component {
                                       type="button"
                                       onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
                                     >
-                                      -
+                                      X
                                     </button>
                                   </div>
                                 </div>
@@ -379,7 +390,7 @@ export default class AddOrderForm extends React.Component {
                                       type="button"
                                       onClick={ () => arrayHelpers.remove(index) } // remove an main from the list
                                     >
-                                      -
+                                      X
                                     </button>
                                   </div>
                                 </div>
@@ -452,7 +463,7 @@ export default class AddOrderForm extends React.Component {
                                       type="button"
                                       onClick={ () => arrayHelpers.remove(index) } // remove an dessert from the list
                                     >
-                                      -
+                                      X
                                     </button>
                                   </div>
                                 </div>
@@ -483,17 +494,6 @@ export default class AddOrderForm extends React.Component {
               />
             </div>
 
-            <div
-              className="add-order-form__submit-container"
-            >
-              <button
-                className="button"
-                type="submit"
-                disabled={ isSubmitting }
-              >
-                Add Order
-              </button>
-            </div>
 
           </Form>
         )}
