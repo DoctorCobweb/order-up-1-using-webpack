@@ -11,7 +11,7 @@ import {
   docketStartFields,
   variableContentKeys
 } from './menu-constants'
-import { insertSingleOrder } from './db-handler'
+import { addToMongoDB } from '../../shared/db-utils/mongoose-orders'
 
 const nposParser = npos.parser()
 const docketTokens = ['VL', 'MD', 'CN', 'MI', 'II', 'IIS', 'RC']
@@ -57,7 +57,8 @@ export default (db, buffer) => {
       const order = buildOrder(zippedData)
       // console.log('pareser.js default func')
       // console.log(colors.blue(stringify(order)))
-      insertSingleOrder(db, order)
+
+      addToMongoDB(order)
     })
     .catch(err => {
       log.info('ERROR PARSER (textualize / parser ): '.red, err.message)

@@ -5,7 +5,7 @@ import uuidv1 from 'uuid/v1' // timestamp (UTC) version of uuid
 import moment from 'moment'
 
 
-export const addToMongoDB = (db, order) => {
+export const addToMongoDB = (order) => {
   // streamDemo()
 
   // order is a deeply nested object. at each 'level' of the order

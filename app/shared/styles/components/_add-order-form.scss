@@ -1,0 +1,47 @@
+.add-order-form__container {
+  background: $off-white;
+  border-radius: $radius;
+  height: 90vh;
+  margin: 0 25vw;
+  overflow-x: scroll;
+  padding: 0 2rem 2rem 2rem;
+  width: 50vw;
+}
+
+.add-order-form__section-container {
+  background: white;
+  border-radius: $radius;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 0.2rem 1rem 1rem 1rem;
+}
+
+.add-order-form-input {
+  height: 38px;
+  border-radius: $radius;
+  border: solid 1px #cccccc;
+  font-size: 1.6rem;
+  margin: 0.8rem 0;
+  padding-left: 0.8rem;
+}
+
+.add-order-form__item-container {
+  background: $light-grey;
+  border-radius: $radius;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.add-order-form__remove-item-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-order-form__submit-container {
+  display: flex;
+  justify-content: flex-end;
+
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import _ from 'lodash'
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/lib/Creatable'
@@ -110,9 +111,12 @@ const orderValidationSchema = Yup.object().shape({
 })
 
 export default class AddOrderForm extends React.Component {
+  state = {
+    goOnMains: false,
+  }
 
   render = () => (
-    <div>
+    <div className="add-order-form__container">
       <Formik 
         initialValues={{
           metaData: {
@@ -131,22 +135,46 @@ export default class AddOrderForm extends React.Component {
             'MAINS DINNER': [],
             'DESSERT': [],
           },
-          topics: [],
         }}
         // validationSchema={orderValidationSchema}
         onSubmit={( values, { setSubmitting }) => {
 
-          values.metaData.orderSentAt = moment()
+          const order = _.cloneDeep(values)
+          order.metaData.orderSentAt = moment()
 
-          mockOrder.metaData.orderSentAt = moment()
 
-          // DEMO this here
-          // this.props.startAddOrderToList(mockOrder)
-          addToMongoDB(null, mockOrder)
+          console.log('order')
+          console.log(order)
+
+          order.metaData.location = order.metaData.location.value
+
+          order.meals = _.reduce(order.meals, (acc, courseItems, course) => {
+            acc[course] = _.map(courseItems, (item, idx) => {
+
+              if (!item) {
+                return {
+                  quantity: '0',
+                  name: 'empty',
+                  inf: [],
+                }
+              }
+
+              return {
+                quantity: item.quantity,
+                name: item.name.value,
+                info: [ [ {quantity: 1, info: item.info } ] ]
+              }
+            })
+            return acc
+          }, {})
+          console.log('order.meals')
+          console.log(order.meals)
+
+          addToMongoDB(order)
 
           // this is where we save the order to mongodb and redux
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2))
+            alert(JSON.stringify(order, null, 2))
             setSubmitting(false)
           }, 400)
         }}
@@ -180,10 +208,15 @@ export default class AddOrderForm extends React.Component {
           validateField,
         }) => (
           <Form>
-            <div>
+            <div className="add-order-form__section-container">
               <h3>VENUE DETAILS</h3>
               <div>Table Number</div>
-              <Field type="text" name="metaData.tableNumber" placeholder="Table Number"/>
+              <Field
+                className="add-order-form-input"
+                type="text"
+                name="metaData.tableNumber"
+                placeholder="Table Number"
+                />
               {/* <ErrorMessage name="metaData.tableNumber" component="div"/> */}
               <div>Location</div>
               <LocationSelect
@@ -192,22 +225,45 @@ export default class AddOrderForm extends React.Component {
                 onBlur={ setFieldTouched }
                 touched={ touched.location }
               />
-              <button
-                type="button"
-                onClick={ () => values.metaData.goOnMains = false }
-              >
-                Hold Mains
-              </button>
-              <button
-                type="button"
-                onClick={ () => values.metaData.goOnMains = true }
-              >
-                Dont Hold Mains
-              </button>
+              <div>
+                <div>Hold mains?</div>
+                <button
+                  className={ this.state.goOnMains ? "button button-add-order-form--not-active" : "button button--green" } 
+                  type="button"
+                  onClick={ () => {
+
+                    if (!this.state.goOnMains) {
+                      return 
+                    }
+
+                    values.metaData.goOnMains = false
+                    this.setState(() => ({
+                      goOnMains: false,
+                    }))
+                  }}
+                >
+                  Yes
+                </button>
+                <button
+                  className={ this.state.goOnMains ? "button button--green": "button button-add-order-form--not-active"} 
+                  type="button"
+                  onClick={ () => {
+
+                    if (this.state.goOnMains) {
+                      return
+                    } 
+
+                    values.metaData.goOnMains = true
+                    this.setState(() => ({
+                      goOnMains: true,
+                    }))
+                  }}
+                >
+                  No
+                </button>
+              </div>
             </div>
-
-
-            <div>
+            <div className="add-order-form__section-container">
               <h3>ENTREES</h3>
               <FieldArray
                 name="meals['ENTREES DINNER']"
@@ -219,8 +275,15 @@ export default class AddOrderForm extends React.Component {
                           <div>
                             {
                               values.meals['ENTREES DINNER'].map((entree, index) => (
-                                <div key={ index }>
-                                  <Field name={`meals['ENTREES DINNER'].${index}.quantity`} placeholder="quantity" />
+                                <div
+                                  className="add-order-form__item-container"
+                                  key={ index }
+                                >
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['ENTREES DINNER'].${index}.quantity`}
+                                    placeholder="Quantity"
+                                  />
                                   <MenuItemSelect
                                     value={ values.meals['ENTREES DINNER'][index].name}
                                     onChange={ setFieldValue }
@@ -230,18 +293,28 @@ export default class AddOrderForm extends React.Component {
                                     options={ menuItemsOptions }
                                     course={ 'ENTREES DINNER' }
                                   />
-                                  <Field name={`meals['ENTREES DINNER'].${index}.info`} placeholder="info" />
-                                  <button
-                                    type="button"
-                                    onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['ENTREES DINNER'].${index}.info`}
+                                    placeholder="Info"
+                                  />
+                                  <div
+                                    className="add-order-form__remove-item-container"
                                   >
-                                    -
-                                  </button>
+                                    <button
+                                      className="button button--red"
+                                      type="button"
+                                      onClick={ () => arrayHelpers.remove(index) } // remove an entree from the list
+                                    >
+                                      -
+                                    </button>
+                                  </div>
                                 </div>
                                 )
                               )
                             }
                             <button
+                              className="button button--green"
                               type="button"
                               onClick={ () => arrayHelpers.push('') } 
                             >
@@ -251,7 +324,10 @@ export default class AddOrderForm extends React.Component {
                         )
                       :
                         (
-                          <button type="button" onClick={ () => arrayHelpers.push('') }>
+                          <button
+                            className="button button--green"
+                            type="button"
+                            onClick={ () => arrayHelpers.push('') }>
                             Add an entree
                           </button>
                         )
@@ -260,9 +336,7 @@ export default class AddOrderForm extends React.Component {
                 )}
               />
             </div>
-
-
-            <div>
+            <div className="add-order-form__section-container">
               <h3>MAINS</h3>
               <FieldArray
                 name="meals['MAINS DINNER']"
@@ -274,8 +348,15 @@ export default class AddOrderForm extends React.Component {
                           <div>
                             {
                               values.meals['MAINS DINNER'].map((entree, index) => (
-                                <div key={ index }>
-                                  <Field name={`meals['MAINS DINNER'].${index}.quantity`} placeholder="quantity" />
+                                <div
+                                  className="add-order-form__item-container"
+                                  key={ index }
+                                >
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['MAINS DINNER'].${index}.quantity`}
+                                    placeholder="Quantity"
+                                  />
                                   <MenuItemSelect
                                     value={ values.meals['MAINS DINNER'][index].name}
                                     onChange={ setFieldValue }
@@ -285,18 +366,28 @@ export default class AddOrderForm extends React.Component {
                                     options={ menuItemsOptions }
                                     course={ 'MAINS DINNER' }
                                   />
-                                  <Field name={`meals['MAINS DINNER'].${index}.info`} placeholder="info" />
-                                  <button
-                                    type="button"
-                                    onClick={ () => arrayHelpers.remove(index) } // remove an main from the list
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['MAINS DINNER'].${index}.info`}
+                                    placeholder="Info"
+                                  />
+                                  <div
+                                    className="add-order-form__remove-item-container"
                                   >
-                                    -
-                                  </button>
+                                    <button
+                                      className="button button--red"
+                                      type="button"
+                                      onClick={ () => arrayHelpers.remove(index) } // remove an main from the list
+                                    >
+                                      -
+                                    </button>
+                                  </div>
                                 </div>
                                 )
                               )
                             }
                             <button
+                              className="button button--green"
                               type="button"
                               onClick={ () => arrayHelpers.push('') } 
                             >
@@ -306,8 +397,11 @@ export default class AddOrderForm extends React.Component {
                         )
                       :
                         (
-                          <button type="button" onClick={ () => arrayHelpers.push('') }>
-                            Add an main
+                          <button
+                            className="button button--green"
+                            type="button"
+                            onClick={ () => arrayHelpers.push('') }>
+                            Add a main
                           </button>
                         )
                     }
@@ -315,9 +409,7 @@ export default class AddOrderForm extends React.Component {
                 )}
               />
             </div>
-
-
-            <div>
+            <div className="add-order-form__section-container">
               <h3>DESSERTS</h3>
               <FieldArray
                 name="meals['DESSERT']"
@@ -329,8 +421,15 @@ export default class AddOrderForm extends React.Component {
                           <div>
                             {
                               values.meals['DESSERT'].map((entree, index) => (
-                                <div key={ index }>
-                                  <Field name={`meals['DESSERT'].${index}.quantity`} placeholder="quantity" />
+                                <div
+                                  className="add-order-form__item-container"
+                                  key={ index }
+                                >
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['DESSERT'].${index}.quantity`}
+                                    placeholder="Quantity"
+                                  />
                                   <MenuItemSelect
                                     value={ values.meals['DESSERT'][index].name}
                                     onChange={ setFieldValue }
@@ -340,18 +439,28 @@ export default class AddOrderForm extends React.Component {
                                     options={ menuItemsOptions }
                                     course={ 'DESSERT' }
                                   />
-                                  <Field name={`meals['DESSERT'].${index}.info`} placeholder="info" />
-                                  <button
-                                    type="button"
-                                    onClick={ () => arrayHelpers.remove(index) } // remove an dessert from the list
+                                  <Field
+                                    className="add-order-form-input"
+                                    name={`meals['DESSERT'].${index}.info`}
+                                    placeholder="Info"
+                                  />
+                                  <div
+                                    className="add-order-form__remove-item-container"
                                   >
-                                    -
-                                  </button>
+                                    <button
+                                      className="button button--red"
+                                      type="button"
+                                      onClick={ () => arrayHelpers.remove(index) } // remove an dessert from the list
+                                    >
+                                      -
+                                    </button>
+                                  </div>
                                 </div>
                                 )
                               )
                             }
                             <button
+                              className="button button--green"
                               type="button"
                               onClick={ () => arrayHelpers.push('') } 
                             >
@@ -361,8 +470,11 @@ export default class AddOrderForm extends React.Component {
                         )
                       :
                         (
-                          <button type="button" onClick={ () => arrayHelpers.push('') }>
-                            Add an dessert 
+                          <button
+                            className="button button--green"
+                            type="button"
+                            onClick={ () => arrayHelpers.push('') }>
+                            Add a dessert 
                           </button>
                         )
                     }
@@ -371,14 +483,18 @@ export default class AddOrderForm extends React.Component {
               />
             </div>
 
-
-            <button
-              className="button"
-              type="submit"
-              disabled={ isSubmitting }
+            <div
+              className="add-order-form__submit-container"
             >
-              Submit
-            </button>
+              <button
+                className="button"
+                type="submit"
+                disabled={ isSubmitting }
+              >
+                Add Order
+              </button>
+            </div>
+
           </Form>
         )}
       />

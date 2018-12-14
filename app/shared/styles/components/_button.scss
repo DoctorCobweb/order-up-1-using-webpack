@@ -165,9 +165,13 @@
   background: $not-active;
 } 
 
-// .button--not-active:active {
-//   background: $not-active;
-// }
+.button-add-order-form--not-active {
+  background: $not-active;
+}
+
+.button-add-order-form--not-active:hover {
+  background: $dark-grey;
+} 
 
 .button--header {
   background: $grey;
