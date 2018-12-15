@@ -12,75 +12,6 @@ import { addToMongoDB } from '../../../shared/db-utils/mongoose-orders'
 // 1. create the UI
 // 2. save to mongodb and then updated redux store
 
-const mockOrder = {
-  "metaData": {
-    "orderTakenUsing": "OrderUp",
-    "clerk": "chef",
-    "orderSentAt": "",
-    "variableContent": [],
-    "tableNumber": "123",
-    "customerName": "kitchen",
-    "covers": "",
-    "location": "JUKE BAR",
-    "goOnMains": false
-  },
-  "meals": {
-    "ENTREES DINNER": [
-      {
-        "quantity": 2,
-        "name": "CHILDS FISH",
-        "info": [
-          [
-            {"quantity": 1, "info": "EX CHEESE"},
-            {"quantity": 1, "info": "NO PEPPER"},
-            {"quantity": 1, "info": "ADD JALEPENOS"}
-          ]
-        ]
-      },
-      {"quantity": 4, "name": "BRUSCHETTA", "info": []}
-    ],
-    "MAINS DINNER": [
-      {"quantity": 1, "name": "WEDGES", "info": []},
-      {
-        "quantity": 3,
-        "name": "BEEF BURGER",
-        "info": [
-          [
-            {"quantity": 1, "info": "MED RARE"},
-            {"quantity": 1, "info": "MUSH"},
-            {"quantity": 1, "info": "CHIPS GREENS"},
-            {"quantity": 1, "info": "XTRA GARLIC BUTT"}
-          ]
-        ]
-      }
-    ],
-    "DESSERT": [
-      {"quantity": 1, "name": "SENIOR PUDDING", "info": []},
-      {
-        "quantity": 3,
-        "name": "CARAMEL TOPPING",
-        "info": [
-          [
-            {"quantity": 1, "info": "WITH SORBET INSTEAD"},
-            {"quantity": 1, "info": "EX COLD"},
-            {"quantity": 1, "info": "SPRINKLES O/S"}
-          ],
-          [
-            {"quantity": 1, "info": "LEMON SCE"},
-            {"quantity": 1, "info": "EX SCOOP"}
-          ]
-        ]
-      }
-    ]
-  }
-} 
-
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
-
 const locationOptions = [
   { value: 'RESTAURANT BAR', label: 'Restaurant' },
   { value: 'TAB BAR', label: 'Tab Bar' },
@@ -93,17 +24,25 @@ const menuItemsOptions = menuItems.map(item => ({value: item, label: item}))
 
 const orderValidationSchema = Yup.object().shape({
   metaData: Yup.object().shape({
-    orderTakenUsing: Yup.string(),
-    clerk: Yup.string(),
-    orderSentAt: Yup.string(),
+    orderTakenUsing: Yup.string().required('Required'),
+    clerk: Yup.string().required('Required'),
+    orderSentAt: Yup.string().required('Required'),
     variableContent: Yup.array(),
-    tableNumber: Yup.string(),
+    tableNumber: Yup.string().required('Required'),
     customerName: Yup.string(),
-    location: Yup.string(),
+    covers: Yup.number().required('Required'),
+    location: Yup.string().required('Required'),
     goOnMains: Yup.boolean(),
   }),
   meals: Yup.object().shape({
-    'ENTREES DINNER': Yup.array(),
+    'ENTREES DINNER': Yup.array().of(Yup.object().shape({
+      'info': Yup.string(),
+      'quantity': Yup.string().required('Required'),
+      'name': Yup.object().shape({
+        'label': Yup.string().required('Required'),
+        'value': Yup.string().required('Required'),
+      })
+    }).nullable().required('Required')),
     'MAINS DINNER': Yup.array(),
     'DESSERT': Yup.array(),
   }),
@@ -136,44 +75,48 @@ export default class AddOrderForm extends React.Component {
             'DESSERT': [],
           },
         }}
-        // validationSchema={orderValidationSchema}
+        validationSchema={ orderValidationSchema }
         onSubmit={( values, { setSubmitting }) => {
 
           const order = _.cloneDeep(values)
           order.metaData.orderSentAt = moment()
+          order.metaData.location = order.metaData.location.value
 
+          let covers = 0
+
+          order.meals = _.reduce(order.meals, (acc, courseItems, course) => {
+            acc[course] = _.filter(
+              _.map(courseItems, (item, idx) => {
+                  if (!item) return
+                  return {
+                    quantity: item.quantity,
+                    name: item.name.value,
+                    info: [ [ {quantity: 1, info: item.info } ] ]
+                  }
+                }
+              ),
+              filterItem => {
+                  if (filterItem !== undefined) {
+                    covers++
+                    return true
+                  } else {
+                    return false
+                  }
+                }
+            )
+            return acc
+          }, {})
+
+          order.metaData.covers = covers
 
           console.log('order')
           console.log(order)
-
-          order.metaData.location = order.metaData.location.value
-
-          order.meals = _.reduce(order.meals, (acc, courseItems, course) => {
-            acc[course] = _.map(courseItems, (item, idx) => {
-
-              if (!item) {
-                return {
-                  quantity: '0',
-                  name: 'empty',
-                  inf: [],
-                }
-              }
-
-              return {
-                quantity: item.quantity,
-                name: item.name.value,
-                info: [ [ {quantity: 1, info: item.info } ] ]
-              }
-            })
-            return acc
-          }, {})
-          console.log('order.meals')
-          console.log(order.meals)
 
           addToMongoDB(order)
 
           // this is where we save the order to mongodb and redux
           setTimeout(() => {
+            // alert(JSON.stringify(values, null, 2))
             alert(JSON.stringify(order, null, 2))
             setSubmitting(false)
           }, 400)
@@ -228,7 +171,11 @@ export default class AddOrderForm extends React.Component {
                 name="metaData.tableNumber"
                 placeholder="Table Number"
               />
-              {/* <ErrorMessage name="metaData.tableNumber" component="div"/> */}
+
+              { console.log(errors['metaData.tableNumber']) }
+              { console.log(touched['metaData.tableNumber']) }
+
+              { touched.metaData && touched.metaData.tableNumber && errors.metaData && errors.metaData.tableNumber && <p>{ errors.metaData.tableNumber }</p> }
               <div>Location</div>
               <LocationSelect
                 value={ values.metaData.location }
@@ -236,6 +183,7 @@ export default class AddOrderForm extends React.Component {
                 onBlur={ setFieldTouched }
                 touched={ touched.location }
               />
+              { touched.metaData && touched.metaData.location && errors.metaData && errors.metaData.location && <p>{ errors.metaData.location }</p> }
               <div>
                 <div>Hold mains?</div>
                 <button
@@ -290,11 +238,26 @@ export default class AddOrderForm extends React.Component {
                                   className="add-order-form__item-container"
                                   key={ index }
                                 >
+                                  { console.log(touched) }
+                                  { console.log(errors) }
                                   <Field
                                     className="add-order-form-input"
                                     name={`meals['ENTREES DINNER'].${index}.quantity`}
                                     placeholder="Quantity"
                                   />
+
+                                  { 
+                                    /*
+                                    touched.meals &&
+                                    touched.meals['ENTREES DINNER'] &&
+                                    touched.meals['ENTREES DINNER'][index] &&
+                                    errors.meals &&
+                                    errors.meals['ENTREES DINNER'] &&
+                                    errors.meals['ENTREES DINNER'][index] &&
+                                    <p>Cannot have an empty item. Please remove this item by pressing on red cross</p> 
+                                    */
+                                  }
+
                                   <MenuItemSelect
                                     value={ values.meals['ENTREES DINNER'][index].name}
                                     onChange={ setFieldValue }
